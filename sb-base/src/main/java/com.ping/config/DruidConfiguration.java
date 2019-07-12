@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author thinkpad
@@ -13,10 +14,9 @@ import org.springframework.context.annotation.Bean;
  * @see
  */
 @Slf4j
+@Configuration
 public class DruidConfiguration {
-
-    private static final String DB_PREFIX = "spring.datasource";
-
+    
     @Bean
     public ServletRegistrationBean druidServlet() {
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");

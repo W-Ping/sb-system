@@ -1,11 +1,11 @@
-######## MySql 和 druid配置################
+################ MySql 和 druid配置################
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://localhost/sbdb?useSSL=false&serverTimezone=UTC
     username: root
-    password:root
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
     # 下面为连接池的补充设置，应用到上面所有数据源中
     # 初始化大小，最小，最大
     initialSize: 1
@@ -31,9 +31,10 @@ spring:
     # 合并多个DruidDataSource的监控数据
     useGlobalDataSourceStat: true
 
+
 ################ mybatis配置################
 mybatis:
-  mapper-locations: classpath*:/mapper/*Mapper.xml
+  mapper-locations: classpath*:/sqlmapper/*Mapper.xml
 
 server:
   port: 7000
