@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我的装修</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+</head>
+<body>
+<div class="page">
+    <!--    <header class="bar bar-nav">-->
+    <!--        <a class="button button-link button-nav pull-left" href="/demos/card" data-transition='slide-out'>-->
+    <!--            <span class="icon icon-left"></span>-->
+    <!--            返回-->
+    <!--        </a>-->
+    <!--        <h1 class="title">我的生活</h1>-->
+    <!--    </header>-->
+    <nav class="bar bar-tab">
+        <a th:href="@{'/house/info?mobile_phone='+${mobilePhone}}"
+           th:class="${type==0}?'tab-item external active':'tab-item external'">
+            <span class="icon icon-home"></span>
+            <span class="tab-label">房屋</span>
+        </a>
+        <a th:href="@{'/house/budget?mobile_phone='+${mobilePhone}}"
+           th:class="${type==1}?'tab-item external active':'tab-item external'">
+            <span class="icon icon-star"></span>
+            <span class="tab-label">材料</span>
+        </a>
+    </nav>
+    <div th:if="${type==0}" class="content">
+        <header class="bar bar-nav">
+            <h1 class='title'>表单</h1>
+        </header>
+        <form id="houseForm">
+            <input hidden th:value="${id}" name="id">
+            <div class="content">
+                <div class="list-block">
+                    <ul>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-name"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">手机号码</div>
+                                    <div class="item-input">
+                                        <input type="number" th:value="${vo?.mobilePhone}" name="mobilePhone" required
+                                               placeholder="手机号码">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-name"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">房屋面积</div>
+                                    <div class="item-input">
+                                        <input type="number" th:value="${vo?.houseAreaSize}" name="houseAreaSize"
+                                               required
+                                               placeholder="单位：平米">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-gender"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">房屋类型</div>
+                                    <div class="item-input">
+                                        <select name="houseType">
+                                            <option value="0" th:selected="${vo?.houseType==0}">新房</option>
+                                            <option value="1" th:selected="${vo?.houseType==1}">二手房</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-name"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">房屋户型</div>
+                                    <div class="item-input">
+                                        <input type="text" name="apartment" placeholder="选择户型" required id='picker-name'
+                                               th:value="${vo?.apartment}">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="align-top">
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-comment"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">备注</div>
+                                    <div class="item-input">
+                                        <textarea name="remark" th:text="${vo?.remark}" placeholder="备注"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content-block">
+                    <div class="row">
+                        <div class="col-50"><a href="#" class="button button-big button-fill button-danger">重置</a></div>
+                        <div class="col-50">
+                            <a href="javascript:;" onclick="submitHouse('/house/save')"
+                               class="button button-big button-fill button-success">提交</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div th:if="${type==1}" class="content">
+        <input hidden th:value="${mobilePhone}" id="mobilePhone">
+        <dive th:each="vo,stat:${list}">
+            <div class="card">
+                <h3>
+                    <div class="card-header" th:text="${vo?.budgetName}"></div>
+                </h3>
+                <div class="card-content">
+                    <div class="list-block inset">
+                        <ul>
+                            <li>
+                                <a class="item-content item-link"
+                                   th:href="@{'/house/budget/0/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.budgetName}}">
+                                    <div class="item-media"><i class="icon icon-f7"></i></div>
+                                    <div class="item-inner">
+                                        <div class="item-title">预算名称</div>
+
+                                        <div class="item-after" th:text="${vo?.budgetName}"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="item-content item-link"
+                                   th:href="@{'/house/budget/1/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.maxBudgetAmount}}">
+                                    <div class="item-media"><i class="icon icon-f7"></i></div>
+                                    <div class="item-inner">
+                                        <div class="item-title">最高金额</div>
+                                        <div class="item-after" th:text="${vo?.maxBudgetAmount}"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="item-content item-link"
+                                   th:href="@{'/house/budget/2/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.minBudgetAmount}}">
+                                    <div class="item-media"><i class="icon icon-f7"></i></div>
+                                    <div class="item-inner">
+                                        <div class="item-title">最低金额</div>
+                                        <div class="item-after" th:text="${vo?.minBudgetAmount}"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="item-content item-link"
+                                   th:href="@{'/house/budget/3/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.maxCost}}">
+                                    <div class="item-media"><i class="icon icon-f7"></i></div>
+                                    <div class="item-inner">
+                                        <div class="item-title">最高成本</div>
+                                        <div class="item-after" th:text="${vo?.maxCost}"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="item-content item-link"
+                                   th:href="@{'/house/budget/4/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.minCost}}">
+                                    <div class="item-media"><i class="icon icon-f7"></i></div>
+                                    <div class="item-inner">
+                                        <div class="item-title">最低成本</div>
+                                        <div class="item-after" th:text="${vo?.minCost}"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="item-content item-link"
+                                   th:href="@{'/house/budget/5/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.actualCost}}">
+                                    <div class="item-media"><i class="icon icon-f7"></i></div>
+                                    <div class="item-inner">
+                                        <div class="item-title">实际成本</div>
+                                        <div class="item-after" th:text="${vo?.actualCost}"></div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="link">赞</a>
+                    <a href="#" th:onclick="'javascript:deleteBudget(\''+${vo.id}+'\')'" class="link"
+                       style="color: red;">删除</a>
+                </div>
+            </div>
+
+        </dive>
+        <div class="content-block">
+            <p style="width: 60%;margin: auto;">
+                <a href="javascript:;" class="button button-big button-fill button-round create-popup">添加</a>
+            </p>
+        </div>
+    </div>
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+    <script>
+        let popupHTML;
+
+        function submitHouse(url) {
+            let data = $('#houseForm').serializeArray();
+            let param = {};
+            let validate = ['mobilePhone', 'houseAreaSize'];
+            for (let i = 0; i < data.length; i++) {
+                let dataName = data[i]['name'];
+                let dataValue = data[i]['value'];
+                if (!dataValue) {
+                    if ('mobilePhone' == dataName) {
+                        $.alert("请填写手机号码！");
+                        return;
+                    } else if ('houseAreaSize' == dataName) {
+                        $.alert("请填写房屋面积！");
+                        return;
+                    }
+                }
+                if (dataName == 'apartment') {
+                    if (!dataValue) {
+                        $.alert("请选择房屋户型")
+                        return;
+                    }
+                    let split = dataValue.split(",");
+                    param['bedroom'] = split[0].substr(0, 1);
+                    param['livingroom'] = split[1].substr(0, 1);
+                    param['kitchen'] = split[2].substr(0, 1);
+                    param['toilet'] = split[3].substr(0, 1);
+                    param['balcony'] = split[4].substr(0, 1);
+                    console.log("请求参数apartment %o", dataValue);
+                } else {
+
+                    param[dataName] = dataValue;
+                }
+            }
+            console.log("请求路径%o", url);
+            console.log("请求参数%o", param);
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                contentType: 'application/json',
+                url: url,
+                data: JSON.stringify(param),
+                success: function (result) {
+                    console.log("数据%o", result);
+                    if (result.code == 'success') {
+                        $.toast('提交成功！');
+                        let href = window.location.href;
+                        let mobilePhone = param['mobilePhone'];
+                        href = href.substr(0, href.indexOf("=") + 1);
+                        window.history.replaceState(null, null, href + mobilePhone)
+                    } else {
+                        $.toast(result.message);
+                    }
+                    // window.history.pushState(null, null, href + mobilePhone)
+                },
+                error: function (result, type, err) {
+                    $.toast("提交失败!");
+                }
+            });
+        }
+
+        function deleteBudget(id) {
+            if (!id) {
+                $.alert("主键不存在！");
+            }
+            let url = '/budget/delete/' + id;
+            $.confirm('确定要删除吗?', function () {
+                $.ajax({
+                    type: 'DELETE',
+                    url: url,
+                    success: function (result) {
+                        if (result.code == 'success') {
+                            $.toast('删除成功！');
+                            window.location.reload();
+                        } else {
+                            $.toast(result.message);
+                        }
+                    },
+                    error: function (result, type, err) {
+                        $.toast("删除失败!");
+                    }
+                })
+            });
+
+        }
+
+        function submitBudget() {
+            let data = $('#budgetForm').serializeArray();
+            let url = '/budget/save';
+            let param = {};
+            param['mobilePhone'] = $('#mobilePhone').val();
+            for (let i = 0; i < data.length; i++) {
+                let dataName = data[i]['name'];
+                let dataValue = data[i]['value'];
+                if (!dataValue) {
+                    let dd = $('input[name=' + dataName + ']').attr("placeholder");
+                    $.alert(dd + "值不能为空！");
+                    return;
+                }
+                param[dataName] = dataValue;
+            }
+            console.log("请求路径%o", url);
+            console.log("请求参数%o", param);
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                contentType: 'application/json',
+                url: url,
+                data: JSON.stringify(param),
+                success: function (result) {
+                    console.log("数据%o", result);
+                    if (result.code == 'success') {
+                        $.toast('提交成功！');
+                        $.closeModal()
+                        $(".popup-overlay").remove('modal-overlay-visible');
+                        window.location.reload();
+                    } else {
+                        $.toast(result.message);
+                    }
+                },
+                error: function (result, type, err) {
+                    $.toast("提交失败!");
+                }
+            });
+        }
+
+
+        $(document).on('click', '.create-popup', function () {
+            popupHTML = '<div class="popup">' +
+                '<header class="bar bar-nav">' +
+                '<h1 class="title">新增</h1>' +
+                '</header>' +
+                '<form id="budgetForm">' +
+                '<div class="list-block">' +
+                '<ul>' +
+                '<li>' +
+                '<div class="item-content">' +
+                '<div class="item-media"><i class="icon icon-form-name"></i></div>' +
+                '<div class="item-inner">' +
+                '<div class="item-title label">预算名称</div>' +
+                '<div class="item-input">' +
+                '<input type="text" name="budgetName" placeholder="预算名称">' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</li>' +
+                '<li>' +
+                '<div class="item-content">' +
+                '<div class="item-media"><i class="icon icon-form-name"></i></div>' +
+                '<div class="item-inner">' +
+                '<div class="item-title label">最高金额</div>' +
+                '<div class="item-input">' +
+                '<input type="text" name="maxBudgetAmount" placeholder="最高金额">' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</li>' +
+                '<li>' +
+                '<div class="item-content">' +
+                '<div class="item-media"><i class="icon icon-form-name"></i></div>' +
+                '<div class="item-inner">' +
+                '<div class="item-title label">最低金额</div>' +
+                '<div class="item-input">' +
+                '<input type="text" name="minBudgetAmount" placeholder="最低金额">' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</li>' +
+                '<li>' +
+                '<div class="item-content">' +
+                '<div class="item-media"><i class="icon icon-form-name"></i></div>' +
+                '<div class="item-inner">' +
+                '<div class="item-title label">最高成本</div>' +
+                '<div class="item-input">' +
+                '<input type="text" name="maxCost" placeholder="最高成本">' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</li>' +
+                '<li>' +
+                '<div class="item-content">' +
+                '<div class="item-media"><i class="icon icon-form-name"></i></div>' +
+                '<div class="item-inner">' +
+                '<div class="item-title label">最低成本</div>' +
+                '<div class="item-input">' +
+                '<input type="text" name="minCost" placeholder="最低成本">' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</li>' +
+                '<li>' +
+                '<div class="item-content">' +
+                '<div class="item-media"><i class="icon icon-form-name"></i></div>' +
+                '<div class="item-inner">' +
+                '<div class="item-title label">实际成本</div>' +
+                '<div class="item-input">' +
+                '<input type="text" name="actualCost" placeholder="实际成本">' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</li>' +
+                '</ul>' +
+                '</div>' +
+                '</form>' +
+                '<div class="content-block">' +
+                '<div class="row">' +
+                '<div class="col-50"><a href="javascript:;"   class="button button-big button-fill button-danger close-popup">取消</a></div>' +
+                '<div class="col-50"><a href="javascript:;" onclick="submitBudget()" id="submitBudget" class="button button-big button-fill button-success ">提交</a></div>' +
+                '</div> </div>' +
+                '</div>'
+
+            $.popup(popupHTML);
+        });
+        $("#picker-name").picker({
+            toolbarTemplate: '<header class="bar bar-nav">\
+  <button class="button button-link pull-right close-picker">确定</button>\
+  <h1 class="title">请选择户型</h1>\
+  </header>',
+            cols: [
+                {
+                    textAlign: 'center',
+                    values: ['1室', '2室', '3室', '4室', '5室', '6室'],
+                    //如果你希望显示文案和实际值不同，可以在这里加一个displayValues: [.....]
+                },
+                {
+                    textAlign: 'center',
+                    values: ['1厅', '2厅', '3厅', '4厅', '5厅', '6厅'],
+                },
+                {
+                    textAlign: 'center',
+                    values: ['1厨', '2厨', '3厨', '4厨', '5厨', '6厨'],
+                },
+                {
+                    textAlign: 'center',
+                    values: ['1卫', '2卫', '3卫', '4卫', '5卫', '6卫'],
+                },
+                {
+                    textAlign: 'center',
+                    values: ['1阳台', '2阳台', '3阳台', '4阳台', '5阳台', '6阳台'],
+                }
+            ],
+            formatValue: function (picker, value, displayValue) {
+                return value;
+            }
+        });
+        $.init();
+    </script>
+</body>
+</html>

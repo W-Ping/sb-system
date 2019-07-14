@@ -1,5 +1,7 @@
 package com.ping.mapper;
 
+import com.ping.BaseMapper;
+import com.ping.co.UserInfoCo;
 import com.ping.po.UserInfoPo;
 import org.springframework.stereotype.Repository;
 
@@ -11,10 +13,10 @@ import java.util.List;
  * @see
  */
 @Repository
-public interface IUserInfoMapper {
+public interface IUserInfoMapper extends BaseMapper<UserInfoPo> {
 
-    /**
-     * @return
-     */
-    List<UserInfoPo> queryUserInfoList();
+	/**
+	 * @return
+	 */
+	List<UserInfoPo> queryUserInfoList(UserInfoCo userInfoPo);
 }

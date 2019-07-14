@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ping.mapper.IUserInfoMapper">
-    <select id="queryUserInfoList" resultType="com.ping.po.UserInfoPo">
+    <resultMap type="com.ping.po.UserInfoPo" id="BaseResultMap">
+        <result property="id" column="id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userCode" column="user_code"/>
+        <result property="mobilePhone" column="mobile_phoe"/>
+        <result property="gender" column="gender"/>
+        <result property="email" column="email"/>
+        <result property="status" column="status"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+    <select id="queryUserInfoList" resultMap="BaseResultMap">
         select * FROM sbdb.user_info where 1=1
     </select>
+
 </mapper>

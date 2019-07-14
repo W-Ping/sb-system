@@ -1,6 +1,8 @@
 package com.ping.userinfo;
 
+import com.ping.co.UserInfoCo;
 import com.ping.po.UserInfoPo;
+import com.ping.vo.UserInfoVo;
 
 import java.util.List;
 
@@ -10,8 +12,14 @@ import java.util.List;
  * @see
  */
 public interface IUserInfoService {
-    /**
-     * @return
-     */
-    List<UserInfoPo> queryUserInfoList();
+	/**
+	 * @return
+	 */
+	List<UserInfoVo> queryUserInfoList(UserInfoCo userInfoPo);
+
+	/**
+	 * @param userInfoCo
+	 * @return
+	 */
+	boolean saveUserInfo(UserInfoCo userInfoCo);
 }

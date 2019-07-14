@@ -10,6 +10,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>sb-base</artifactId>
-
+    <dependencies>
+        <dependency>
+            <groupId>com.ping</groupId>
+            <artifactId>sb-controller</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>

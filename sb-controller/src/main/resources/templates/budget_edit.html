@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我的装修</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+
+</head>
+<body>
+<div class="page" id='router2'>
+    <header class="bar bar-nav">
+        <a class="button button-link button-nav pull-left back">
+            <span class="icon icon-left"></span>
+            返回
+        </a>
+        <h1 class='title' th:text="编辑"></h1>
+    </header>
+    <div class="content">
+        <input type="hidden" id="mobilePhone" th:value="${mobilePhone}">
+        <input type="hidden" id="budgetCode" th:value="${budgetCode}">
+        <input type="hidden" id="key" th:value="${key}">
+        <input type="hidden" id="name" th:value="${name}">
+        <div class="content">
+            <div class="list-block">
+                <ul>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label" th:text="${name}"></div>
+                                <div class="item-input">
+                                    <input type="text" id="val" th:value="${val}" th:placeholder="${name}">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="content-block">
+                <div class="row">
+                    <div class="col-50"><a href="#" class="button button-big button-fill button-danger back">取消</a>
+                    </div>
+                    <div class="col-50"><a href="#" onclick="submitBudget('/budget/save')"
+                                           class="button button-big button-fill button-success">确定</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+<script>
+    function submitBudget(url) {
+        let val = $("#val").val();
+        let name = $("#name").val();
+        if (!val) {
+            $.alert(name + "值不能为空！");
+            return;
+        }
+        let key = $("#key").val();
+        let mobilePhone = $("#mobilePhone").val();
+        let budgetCode = $("#budgetCode").val();
+        let param = {};
+        param['mobilePhone'] = mobilePhone;
+        param['budgetCode'] = budgetCode;
+        param[key] = val;
+        console.log("请求路径%o", url);
+        console.log("请求参数%o", param);
+        $.ajax({
+            type: 'POST',
+            cache: false,
+            contentType: 'application/json',
+            url: url,
+            data: JSON.stringify(param),
+            success: function (result) {
+                if (result.code == 'success') {
+                    $.toast('提交成功！');
+                    window.location.href = document.referrer;
+                } else {
+                    $.toast(result.message);
+                }
+            },
+            error: function (result, type, err) {
+                $.toast("提交失败!");
+            }
+        });
+    }
+
+    $.init();
+</script>
+</body>
+</html>

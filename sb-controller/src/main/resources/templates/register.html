@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>用户注册</title>
+<link rel="shortcut icon" href="/static/images/favicon.ico"/>
+<link rel="bookmark" href="/static/images/favicon.ico"/>
+<link rel="stylesheet" type="text/css" media="all"
+	href="/static/bootstrap/css/bootstrap.min.css"
+	th:href="@{/static/bootstrap/css/bootstrap.min.css}" />
+<style type="text/css">
+body {
+	margin-left: auto;
+	margin-right: auto;
+	margin-TOP: 100PX;
+}
+
+.container {
+	display: table;
+	height: 100%;
+}
+
+.row {
+	display: table-cell;
+	vertical-align: middle;
+} /* centered columns styles */
+.row-centered {
+	text-align: center;
+}
+
+.col-centered {
+	display: inline-block;
+	float: none;
+	text-align: left;
+	margin-right: -4px;
+}
+
+.sig-up {
+	width: 100%;
+	border-bottom: 1px solid #DDD;
+	padding-bottom: 10px;
+	overflow: hidden;
+}
+
+.sig-up .form-title {
+	margin: 0;
+	padding: 0;
+	float: left;
+	font-weight: normal;
+	font-size: 23px;
+	color: #333;
+}
+
+.sig-up a {
+	float: right;
+	margin-top: 5px;
+	font-size: 14px;
+}
+
+.required {
+	padding: 0px 5px;
+	font-size: 13px;
+	color: #ff0000;
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row row-centered">
+			<div class="well col-md-8 col-centered">
+				<div class="sig-up">
+					<h2 class="form-title">注册</h2>
+					<a th:href="@{/login}">已有账号，马上登录</a>
+				</div>
+				<div
+					style="border-top: 1px solid #cccccc; height: 1px; overflow: hidden"></div>
+				<br />
+				<!-- 			   <div style="border-top:2px dashed #cccccc;height:1px;overflow:hidden"/> <br/> -->
+				<form class="form-horizontal" th:action="@{/user-register}" method="post">
+					<div class="form-group">
+						<label for="userName" class="col-sm-2 control-label ">用户名<span
+							class="required">*</span></label>
+						<div class="col-sm-8">
+							<input type="text"   autofocus="true" class="form-control " id="userName"
+								placeholder="用户名" name="userName" required="true" /><span class="help-inline"></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="email" class="col-sm-2 control-label">邮箱<span
+							class="required">*</span></label>
+						<div class="col-sm-8">
+							<input type="email" class="form-control" id="email"
+								placeholder="邮箱" name="email" autocomplete="off"/><span class="help-inline"></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="loginPwd" class="col-sm-2 control-label">设置密码<span
+							class="required">*</span></label>
+						<div class="col-sm-8">
+							<input type="Password" class="form-control" id="loginPwd"
+								placeholder="设置密码" name="loginPwd" required="true" autocomplete="off"/> <span class="help-inline"></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="loginPwdConfirm" class="col-sm-2 control-label">确认密码<span
+							class="required">*</span></label>
+						<div class="col-sm-8">
+							<input type="password" class="form-control" id="loginPwdConfirm"
+								placeholder="确认密码" name="loginPwdConfirm" required="true" autocomplete="off"/><span
+								class="help-inline"></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="text-center">
+							<div class="checkbox">
+								<label><input type="checkbox" required="true" checked="true"/>我已阅读并同意<a
+									th:href="@{https://www.w3cschool.cn/about/agreement.html}"
+									target="_blank">《用户注册协议》</a></label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-8">
+							<button type="submit" class="btn btn-danger btn-block">立即注册</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/jquery/jquery.min.js}"></script>
+	<script th:src="@{/static/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+
+</html>

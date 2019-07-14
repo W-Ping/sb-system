@@ -1,12 +1,12 @@
 package com.ping.userinfo;
 
-import com.ping.ResponseVo;
-import com.ping.po.UserInfoPo;
+import com.ping.Result;
+import com.ping.co.UserInfoCo;
+import com.ping.vo.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -15,15 +15,20 @@ import java.util.List;
  * @date 2019/7/12 19:24
  * @see
  */
-@Controller
+@RestController
 public class UserInfoController {
-    @Autowired
-    private IUserInfoService iUserInfoService;
+	@Autowired
+	private IUserInfoService iUserInfoService;
 
-    @PostMapping(value = "/user/info/queryUserInfoList")
-    @ResponseBody
-    public ResponseVo queryUserInfoList(@RequestBody UserInfoPo userInfoPo) {
-        List<UserInfoPo> userInfoPos = iUserInfoService.queryUserInfoList();
-        return ResponseVo.success(userInfoPos);
-    }
+	@PostMapping(value = "/sb/user/queryUserInfoList")
+	public Result<List<UserInfoVo>> queryUserInfoList(@RequestBody UserInfoCo userInfoCo) {
+		List<UserInfoVo> userInfoVos = iUserInfoService.queryUserInfoList(userInfoCo);
+		return Result.success(userInfoVos);
+	}
+
+	@PostMapping(value = "/sb/user/saveUserInfo")
+	public Result<Boolean> saveUserInfo(@RequestBody UserInfoCo userInfoCo) {
+		boolean b = iUserInfoService.saveUserInfo(userInfoCo);
+		return Result.successOrFial(b, null);
+	}
 }

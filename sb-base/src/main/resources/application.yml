@@ -5,7 +5,7 @@ spring:
     url: jdbc:mysql://localhost/sbdb?useSSL=false&serverTimezone=UTC
     username: root
     password: root
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     # 下面为连接池的补充设置，应用到上面所有数据源中
     # 初始化大小，最小，最大
     initialSize: 1
@@ -30,11 +30,21 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
     # 合并多个DruidDataSource的监控数据
     useGlobalDataSourceStat: true
+  ################ thymeleaf 模板配置################
+  thymeleaf:
+    mode: HTML
+    encoding: UTF-8
+    cache: false
+    prefix: classpath:/templates/
+  mvc:
+    static-path-pattern: /static/**
 
 
 ################ mybatis配置################
 mybatis:
   mapper-locations: classpath*:/sqlmapper/*Mapper.xml
+  type-aliases-package: com.ping.po
 
 server:
   port: 7000
+
