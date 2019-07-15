@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2019-07-15 01:19:04
+Date: 2019-07-16 00:24:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -35,7 +35,7 @@ CREATE TABLE `budget_info` (
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='预算表';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COMMENT='预算表';
 
 -- ----------------------------
 -- Table structure for house_budget_info
@@ -98,7 +98,7 @@ CREATE TABLE `house_info` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk` (`mobile_phone`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COMMENT='房屋信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='房屋信息表';
 
 -- ----------------------------
 -- Table structure for user_info
@@ -109,6 +109,7 @@ CREATE TABLE `user_info` (
   `user_name` varchar(100) DEFAULT NULL,
   `user_code` varchar(100) DEFAULT NULL,
   `mobile_phone` varchar(100) DEFAULT NULL,
+  `password` varchar(200) DEFAULT NULL,
   `gender` int(11) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT '0' COMMENT '状态【0：有效；1：无效】',
@@ -117,7 +118,7 @@ CREATE TABLE `user_info` (
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for worker_node
