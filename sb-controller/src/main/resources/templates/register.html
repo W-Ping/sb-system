@@ -1,135 +1,124 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8" />
-<title>用户注册</title>
-<link rel="shortcut icon" href="/static/images/favicon.ico"/>
-<link rel="bookmark" href="/static/images/favicon.ico"/>
-<link rel="stylesheet" type="text/css" media="all"
-	href="/static/bootstrap/css/bootstrap.min.css"
-	th:href="@{/static/bootstrap/css/bootstrap.min.css}" />
-<style type="text/css">
-body {
-	margin-left: auto;
-	margin-right: auto;
-	margin-TOP: 100PX;
-}
-
-.container {
-	display: table;
-	height: 100%;
-}
-
-.row {
-	display: table-cell;
-	vertical-align: middle;
-} /* centered columns styles */
-.row-centered {
-	text-align: center;
-}
-
-.col-centered {
-	display: inline-block;
-	float: none;
-	text-align: left;
-	margin-right: -4px;
-}
-
-.sig-up {
-	width: 100%;
-	border-bottom: 1px solid #DDD;
-	padding-bottom: 10px;
-	overflow: hidden;
-}
-
-.sig-up .form-title {
-	margin: 0;
-	padding: 0;
-	float: left;
-	font-weight: normal;
-	font-size: 23px;
-	color: #333;
-}
-
-.sig-up a {
-	float: right;
-	margin-top: 5px;
-	font-size: 14px;
-}
-
-.required {
-	padding: 0px 5px;
-	font-size: 13px;
-	color: #ff0000;
-}
-</style>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我的生活</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!--    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">-->
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.css">
+    <!--    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">-->
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.css">
+    <link rel="stylesheet" type="text/css" media="all" href="/static/css/login.css"
+          th:href="@{/static/css/login.css}"/>
 </head>
 <body>
-	<div class="container">
-		<div class="row row-centered">
-			<div class="well col-md-8 col-centered">
-				<div class="sig-up">
-					<h2 class="form-title">注册</h2>
-					<a th:href="@{/login}">已有账号，马上登录</a>
-				</div>
-				<div
-					style="border-top: 1px solid #cccccc; height: 1px; overflow: hidden"></div>
-				<br />
-				<!-- 			   <div style="border-top:2px dashed #cccccc;height:1px;overflow:hidden"/> <br/> -->
-				<form class="form-horizontal" th:action="@{/user-register}" method="post">
-					<div class="form-group">
-						<label for="userName" class="col-sm-2 control-label ">用户名<span
-							class="required">*</span></label>
-						<div class="col-sm-8">
-							<input type="text"   autofocus="true" class="form-control " id="userName"
-								placeholder="用户名" name="userName" required="true" /><span class="help-inline"></span>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="email" class="col-sm-2 control-label">邮箱<span
-							class="required">*</span></label>
-						<div class="col-sm-8">
-							<input type="email" class="form-control" id="email"
-								placeholder="邮箱" name="email" autocomplete="off"/><span class="help-inline"></span>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="loginPwd" class="col-sm-2 control-label">设置密码<span
-							class="required">*</span></label>
-						<div class="col-sm-8">
-							<input type="Password" class="form-control" id="loginPwd"
-								placeholder="设置密码" name="loginPwd" required="true" autocomplete="off"/> <span class="help-inline"></span>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="loginPwdConfirm" class="col-sm-2 control-label">确认密码<span
-							class="required">*</span></label>
-						<div class="col-sm-8">
-							<input type="password" class="form-control" id="loginPwdConfirm"
-								placeholder="确认密码" name="loginPwdConfirm" required="true" autocomplete="off"/><span
-								class="help-inline"></span>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="text-center">
-							<div class="checkbox">
-								<label><input type="checkbox" required="true" checked="true"/>我已阅读并同意<a
-									th:href="@{https://www.w3cschool.cn/about/agreement.html}"
-									target="_blank">《用户注册协议》</a></label>
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-offset-2 col-sm-8">
-							<button type="submit" class="btn btn-danger btn-block">立即注册</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<script th:src="@{/static/jquery/jquery.min.js}"></script>
-	<script th:src="@{/static/bootstrap/js/bootstrap.min.js}"></script>
+<div class="page-group">
+    <div id="page-register" class="page">
+        <header class="bar bar-nav">
+            <a class="button button-link button-nav pull-left back">
+                <span class="icon icon-left"></span>
+                返回
+            </a>
+            <h1 class='title'>用户注册</h1>
+        </header>
+        <div class="content">
+            <div class="list-block">
+                <ul>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="icon icon-form-name"></i></div>
+                            <div class="item-inner">
+                                <div class="item-input">
+                                    <input type="number" id="mobilePhone" placeholder="输入手机号">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="icon icon-form-password"></i></div>
+                            <div class="item-inner">
+                                <div class="item-input">
+                                    <input type="password" id="password" placeholder="输入密码" class="">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="icon icon-form-password"></i></div>
+                            <div class="item-inner">
+                                <div class="item-input">
+                                    <input type="password" id="password2" placeholder="确认密码" class="">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="content-block">
+                <p>
+                    <a href="#" id="register" class="button button-big button-fill">注册</a>
+                </p>
+                <p>
+                    <a th:href="@{/login/index}" id="login" class="button button-big button-fill button-success external">已注册登录</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>-->
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.js' charset='utf-8'></script>
+<!--<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>-->
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.js' charset='utf-8'></script>
+<!--<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>-->
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.js' charset='utf-8'></script>
+<script>
+    $("#register").on('click', function () {
+        let mobilePhone = $("#mobilePhone").val();
+        let password = $("#password").val();
+        let password2 = $("#password2").val();
+        if (!mobilePhone) {
+            $.toast("请输入手机号码");
+            return;
+        }
+        if (!password) {
+            $.toast("请输入密码");
+            return;
+        }
+        if (!password2) {
+            $.toast("请确认密码");
+            return;
+        }
+        if (password2 != password) {
+            $.toast("两次输入的密码不一致");
+            return;
+        }
+        let params = {};
+        params['mobilePhone'] = mobilePhone;
+        params['password'] = password
+        $.ajax({
+            type: "POST",
+            contentType: 'application/json',
+            url: '/login/user_register',
+            data: JSON.stringify(params),
+            success: function (result) {
+                if (result.code == 'success') {
+                    $.toast("注册成功");
+                } else {
+                    $.toast(result.message);
+                }
+            },
+            error: function (result, type, err) {
+                $.toast(err);
+            }
+        })
+    })
+</script>
 </body>
 
 </html>

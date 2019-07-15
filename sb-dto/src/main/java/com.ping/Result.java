@@ -14,9 +14,13 @@ public class Result<T> {
 	private T obj;
 
 	public static <T> Result<T> success(T obj) {
+		return success("request is success", obj);
+	}
+
+	public static <T> Result<T> success(String message, T obj) {
 		Result<T> result = new Result<>();
 		result.setCode(SysConstant.SUCCESS_CODE);
-		result.setMessage("request is success");
+		result.setMessage(message);
 		result.setObj(obj);
 		return result;
 	}
@@ -25,10 +29,18 @@ public class Result<T> {
 		return bool ? success(obj) : fail(obj);
 	}
 
+	public static <T> Result<T> successOrFial(boolean bool, String message, T obj) {
+		return bool ? success(obj) : fail(message, obj);
+	}
+
 	public static <T> Result<T> fail(T obj) {
+		return fail("request is fail", obj);
+	}
+
+	public static <T> Result<T> fail(String message, T obj) {
 		Result<T> result = new Result<>();
 		result.setCode(SysConstant.FAIL_CODE);
-		result.setMessage("request is fail");
+		result.setMessage(message);
 		result.setObj(obj);
 		return result;
 	}

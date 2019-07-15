@@ -25,6 +25,11 @@ public class UserInfoCo extends BaseCo {
 	 *
 	 */
 	private String email;
+
+	/**
+	 *
+	 */
+	private String password;
 	/**
 	 * 状态【0：有效；1：无效】
 	 */
@@ -76,5 +81,13 @@ public class UserInfoCo extends BaseCo {
 
 	public void setStatus(final Integer status) {
 		this.status = status;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(final String password) {
+		this.password = password;
 	}
 }

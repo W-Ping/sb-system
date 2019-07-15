@@ -14,7 +14,7 @@
 
 </head>
 <body>
-<div class="page" id='router2'>
+<div class="page" id='page-budget-edit'>
     <header class="bar bar-nav">
         <a class="button button-link button-nav pull-left back">
             <span class="icon icon-left"></span>
@@ -62,7 +62,7 @@
         let val = $("#val").val();
         let name = $("#name").val();
         if (!val) {
-            $.alert(name + "值不能为空！");
+            $.toast(name + "值不能为空！");
             return;
         }
         let key = $("#key").val();
@@ -72,11 +72,8 @@
         param['mobilePhone'] = mobilePhone;
         param['budgetCode'] = budgetCode;
         param[key] = val;
-        console.log("请求路径%o", url);
-        console.log("请求参数%o", param);
         $.ajax({
             type: 'POST',
-            cache: false,
             contentType: 'application/json',
             url: url,
             data: JSON.stringify(param),

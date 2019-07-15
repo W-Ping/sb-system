@@ -34,7 +34,6 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
 	private IUserInfoService iUserInfoService;
 
 	@Override
-	@Transactional(rollbackFor = Exception.class)
 	public boolean saveHouseInfo(final HouseInfoVo houseInfoVo) {
 		if (houseInfoVo == null) {
 			throw new SBRuntimeException("参数不能为空");
@@ -49,11 +48,6 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
 			return iHouseInfoMapper.updateByPrimaryKeySelective(houseInfoPo) >= 0;
 		} else {
 			houseInfoPo.setHouseCode(super.getUniqueId(SysConstant.UNIQUEID_HOUSE_PRIFIX));
-			if (StringUtils.isNotBlank(houseInfoVo.getMobilePhone())) {
-				UserInfoCo userInfoCo = new UserInfoCo();
-				userInfoCo.setMobilePhone(houseInfoVo.getMobilePhone());
-				iUserInfoService.saveUserInfo(userInfoCo);
-			}
 			return iHouseInfoMapper.insertSelective(houseInfoPo) > 0;
 		}
 	}
@@ -80,6 +74,17 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
 		HouseInfoPo houseInfoPo = iHouseInfoMapper.selectOneByExample(example);
 		HouseInfoVo houseInfoVo = BeanMapperUtil.map(houseInfoPo, HouseInfoVo.class);
 		return houseInfoVo;
+	}
+
+	/**
+	 * @param mobilePhone
+	 * @return
+	 */
+	@Override
+	public HouseInfoVo getHouseInfoByMobilePhone(final String mobilePhone) {
+		HouseInfoCo houseInfoCo = new HouseInfoCo();
+		houseInfoCo.setMobilePhone(mobilePhone);
+		return getHouseInfo(houseInfoCo);
 	}
 
 	/**

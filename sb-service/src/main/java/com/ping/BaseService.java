@@ -1,6 +1,9 @@
 package com.ping;
 
+import com.ping.aop.HttpRequestAspect;
 import com.ping.utils.SnowFlakeWorkerUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +13,7 @@ import java.util.List;
  * @create 2019/07/14 10:40
  */
 public class BaseService {
+	protected final Logger LOGGER = LoggerFactory.getLogger(super.getClass());
 
 	/**
 	 * @param prefix

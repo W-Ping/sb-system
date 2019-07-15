@@ -1,5 +1,6 @@
 package com.ping;
 
+import com.ping.config.InitApplicationListener;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,6 +15,8 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringBootApplication
 public class SBSystemApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(SBSystemApplication.class, args);
+		SpringApplication application = new SpringApplication(SBSystemApplication.class);
+		application.addListeners(new InitApplicationListener("init.properties"));
+		application.run(args);
 	}
 }

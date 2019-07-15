@@ -32,5 +32,11 @@ public interface IHouseInfoService {
 	 * @param mobilePhone
 	 * @return
 	 */
+	HouseInfoVo getHouseInfoByMobilePhone(String mobilePhone);
+
+	/**
+	 * @param mobilePhone
+	 * @return
+	 */
 	HouseInfoVo getHouseInfo(String mobilePhone);
 }

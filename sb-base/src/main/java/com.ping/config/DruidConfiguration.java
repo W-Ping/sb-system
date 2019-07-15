@@ -2,7 +2,6 @@ package com.ping.config;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
  * @date 2019/7/12 16:00
  * @see
  */
-@Slf4j
 @Configuration
 public class DruidConfiguration {
     
