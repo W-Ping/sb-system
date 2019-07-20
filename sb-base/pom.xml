@@ -18,6 +18,17 @@
         </dependency>
     </dependencies>
     <build>
+        <finalName>sb-system</finalName>
+        <!-- 定义了变量配置文件的地址 -->
+        <filters>
+            <filter>src/main/resources/application-${profiles.active}.yml</filter>
+        </filters>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
