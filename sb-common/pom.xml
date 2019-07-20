@@ -9,17 +9,5 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>sb-dao</artifactId>
-    <dependencies>
-        <dependency>
-            <groupId>com.ping</groupId>
-            <artifactId>sb-dto</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ping</groupId>
-            <artifactId>sb-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
+    <artifactId>sb-common</artifactId>
 </project>

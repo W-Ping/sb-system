@@ -6,6 +6,7 @@ import com.ping.co.UserInfoCo;
 import com.ping.constant.CacheTypeEnum;
 import com.ping.userinfo.IUserInfoService;
 import com.ping.utils.DigestUtil;
+import com.ping.utils.JSONUtil;
 import com.ping.vo.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

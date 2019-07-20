@@ -1,6 +1,5 @@
 package com.ping;
 
-import com.ping.aop.HttpRequestAspect;
 import com.ping.utils.SnowFlakeWorkerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
