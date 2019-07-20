@@ -41,7 +41,6 @@
                     </archive>
                 </configuration>
             </plugin>
-
             <!--打包时跳过单元测试 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
