@@ -58,13 +58,31 @@ public class DefaultUrlFilter implements Filter {
 			if (ignoreFilterUrl.indexOf(IGNORE_FILTER_URL_SPILT) > 0) {
 				String[] urlList = ignoreFilterUrl.split(",");
 				if (urlList != null && urlList.length > 0) {
-					return Arrays.stream(urlList).anyMatch(v -> requestUrl.startsWith(v));
+					return Arrays.stream(urlList).filter(v -> StringUtils.isNotBlank(v)).anyMatch(v -> checkRequestUrl(requestUrl, v));
 				}
 			} else {
-				return requestUrl.startsWith(ignoreFilterUrl);
+				return checkRequestUrl(requestUrl, ignoreFilterUrl);
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * @param requestUrl
+	 * @param ignoreUrl
+	 * @return
+	 */
+	private boolean checkRequestUrl(String requestUrl, String ignoreUrl) {
+		if (ignoreUrl.lastIndexOf("*") >= 0) {
+			String urlPrefix = ignoreUrl.substring(0, ignoreUrl.lastIndexOf("*"));
+			return requestUrl.startsWith(urlPrefix)
+					&& requestUrl.length() > urlPrefix.length();
+		} else if (ignoreUrl.lastIndexOf("/") >= 0) {
+			return requestUrl.startsWith(ignoreUrl)
+					&& requestUrl.length() > ignoreUrl.length();
+		} else {
+			return requestUrl.startsWith(ignoreUrl);
+		}
 	}
 
 	private boolean checkLogin(HttpServletRequest httpServletRequest) {
