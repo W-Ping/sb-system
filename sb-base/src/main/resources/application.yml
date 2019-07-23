@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: sit
+    active: dev
 server:
   port: 7000
 
