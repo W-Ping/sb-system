@@ -26,7 +26,7 @@ public class HouseDetailInfoVo extends BaseVo {
 	/**
 	 * 房间类型【0：卧室，1：客厅，2：厨房，3：卫生间，4：阳台】
 	 */
-	private String roomType;
+	private Integer roomType;
 	/**
 	 * 顶面积
 	 */
@@ -64,11 +64,11 @@ public class HouseDetailInfoVo extends BaseVo {
 		this.houseDetailName = houseDetailName;
 	}
 
-	public String getRoomType() {
+	public Integer getRoomType() {
 		return roomType;
 	}
 
-	public void setRoomType(final String roomType) {
+	public void setRoomType(Integer roomType) {
 		this.roomType = roomType;
 	}
 

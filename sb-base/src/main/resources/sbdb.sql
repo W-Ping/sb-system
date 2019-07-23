@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50722
-Source Host           : localhost:3306
+Source Server         : vm_dev
+Source Server Version : 50721
+Source Host           : 192.168.16.16:3306
 Source Database       : sbdb
 
 Target Server Type    : MYSQL
-Target Server Version : 50722
+Target Server Version : 50721
 File Encoding         : 65001
 
-Date: 2019-07-16 00:24:06
+Date: 2019-07-23 18:20:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -63,7 +63,7 @@ CREATE TABLE `house_detail_info` (
   `house_code` varchar(100) NOT NULL,
   `house_detail_code` varchar(100) NOT NULL,
   `house_detail_name` varchar(100) DEFAULT NULL,
-  `room_type` varchar(100) DEFAULT NULL COMMENT '房间类型【0：卧室，1：客厅，2：厨房，3：卫生间，4：阳台】',
+  `room_type` int(11) DEFAULT NULL COMMENT '房间类型【0：卧室，1：客厅，2：厨房，3：卫生间，4：阳台】',
   `floor_area_size` decimal(8,2) DEFAULT NULL COMMENT '顶面积',
   `wall_area_size` decimal(8,2) DEFAULT NULL COMMENT '墙面积',
   `ceil_area_size` decimal(8,2) DEFAULT NULL COMMENT '地板面积',
@@ -73,7 +73,7 @@ CREATE TABLE `house_detail_info` (
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='房屋信息明细表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='房屋信息明细表';
 
 -- ----------------------------
 -- Table structure for house_info
@@ -98,7 +98,7 @@ CREATE TABLE `house_info` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk` (`mobile_phone`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='房屋信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='房屋信息表';
 
 -- ----------------------------
 -- Table structure for user_info
@@ -118,7 +118,7 @@ CREATE TABLE `user_info` (
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for worker_node

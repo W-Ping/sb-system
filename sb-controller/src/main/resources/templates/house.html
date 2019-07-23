@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--suppress ALL -->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
@@ -59,7 +60,7 @@
                                     <div class="item-title label">手机号码</div>
                                     <div class="item-input">
                                         <input type="number" th:readonly="${isRegister}"
-                                               th:value="${isRegister?mobilePhone:vo?.mobilePhone}"
+                                               th:value="${isRegister?mobilePhone:houseVo?.mobilePhone}"
                                                name="mobilePhone" required onfocus="inputFocus()"
                                                placeholder="手机号码">
                                     </div>
@@ -72,7 +73,7 @@
                                 <div class="item-inner">
                                     <div class="item-title label">房屋面积</div>
                                     <div class="item-input">
-                                        <input type="number" th:value="${vo?.houseAreaSize}" name="houseAreaSize"
+                                        <input type="number" th:value="${houseVo?.houseAreaSize}" name="houseAreaSize"
                                                required onfocus="inputFocus()"
                                                placeholder="（单位：平米）">
                                     </div>
@@ -86,8 +87,8 @@
                                     <div class="item-title label">房屋类型</div>
                                     <div class="item-input">
                                         <select name="houseType" onfocus="inputFocus()">
-                                            <option value="0" th:selected="${vo?.houseType==0}">新房</option>
-                                            <option value="1" th:selected="${vo?.houseType==1}">二手房</option>
+                                            <option value="0" th:selected="${houseVo?.houseType==0}">新房</option>
+                                            <option value="1" th:selected="${houseVo?.houseType==1}">二手房</option>
                                         </select>
                                     </div>
                                 </div>
@@ -100,7 +101,7 @@
                                     <div class="item-title label">房屋户型</div>
                                     <div class="item-input">
                                         <input type="text" name="apartment" placeholder="选择户型" required id='picker-name'
-                                               onclick="inputFocus()" th:value="${vo?.apartment}">
+                                               onclick="inputFocus()" th:value="${houseVo?.apartment}">
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +112,7 @@
                                 <div class="item-inner">
                                     <div class="item-title label">备注</div>
                                     <div class="item-input">
-                                        <textarea name="remark" onfocus="inputFocus()" th:text="${vo?.remark}"
+                                        <textarea name="remark" onfocus="inputFocus()" th:text="${houseVo?.remark}"
                                                   placeholder="备注"></textarea>
                                     </div>
                                 </div>
@@ -220,114 +221,161 @@
         </div>
     </div>
     <div th:if="${type==2}" class="content">
-        <div class="content-block">
-            <div th:if="${vo!=null and vo.balcony ge 1}" th:each="i,stat:${#numbers.sequence(1,vo.balcony)}">
-                <p><a href="#" class="button button-fill button-middle button-success create-room"
-                      th:text="${'阳台'+i}"></a></p>
+        <div class="content-block" th:if="${permitDecoration}">
+            <div th:if="${#lists.isEmpty(roomVos)}">
+                <div th:if="${houseVo!=null and houseVo.balcony ge 1}"
+                     th:each="i,stat:${#numbers.sequence(1,houseVo.balcony)}">
+                    <p><a href="#" th:attr="data-roomType=4"
+                          class="button button-fill button-middle button-success create-room"
+                          th:text="${'阳台'+i}"></a></p>
+                </div>
+                <div th:if="${houseVo!=null and houseVo.livingroom ge 1}"
+                     th:each="i,stat:${#numbers.sequence(1,houseVo.livingroom)}">
+                    <p><a href="#" th:attr="data-roomType=1"
+                          class="button button-fill button-middle button-dark create-room"
+                          th:text="${'客厅'+i}"> </a></p>
+                </div>
+                <div th:if="${houseVo!=null and houseVo.bedroom ge 1}"
+                     th:each="i,stat:${#numbers.sequence(1,houseVo.bedroom)}">
+                    <p><a href="#" th:attr="data-roomType=0"
+                          class="button button-fill button-middle button-primary create-room"
+                          th:text="${'卧室'+i}"> </a></p>
+                </div>
+                <div th:if="${houseVo!=null and houseVo.kitchen ge 1}"
+                     th:each="i,stat:${#numbers.sequence(1,houseVo.kitchen)}">
+                    <p><a href="#" th:attr="data-roomType=2"
+                          class="button button-fill button-middle button-danger create-room"
+                          th:text="${'厨房'+i}"></a></p>
+                </div>
+                <div th:if="${houseVo!=null and houseVo.toilet ge 1}"
+                     th:each="i,stat:${#numbers.sequence(1,houseVo.toilet)}">
+                    <p><a href="#" th:attr="data-roomType=3"
+                          class="button button-fill button-middle button-warning create-room"
+                          th:text="${'卫生间'+i}"> </a></p>
+                </div>
             </div>
-            <div th:if="${vo!=null and vo.livingroom ge 1}" th:each="i,stat:${#numbers.sequence(1,vo.livingroom)}">
-                <p><a href="#" class="button button-fill button-middle button-dark create-room"
-                      th:text="${'客厅'+i}"> </a></p>
-            </div>
-            <div th:if="${vo!=null and vo.bedroom ge 1}" th:each="i,stat:${#numbers.sequence(1,vo.bedroom)}">
-                <p><a href="#" class="button button-fill button-middle button-primary create-room"
-                      th:text="${'卧室'+i}"> </a></p>
-            </div>
-            <div th:if="${vo!=null and vo.kitchen ge 1}" th:each="i,stat:${#numbers.sequence(1,vo.kitchen)}">
-                <p><a href="#" class="button button-fill button-middle button-danger create-room"
-                      th:text="${'厨房'+i}"></a></p>
-            </div>
-            <div th:if="${vo!=null and vo.toilet ge 1}" th:each="i,stat:${#numbers.sequence(1,vo.toilet)}">
-                <p><a href="#" class="button button-fill button-middle button-warning create-room"
-                      th:text="${'卫生间'+i}"> </a></p>
+            <div th:unless="${#lists.isEmpty(roomVos)}" th:each="roomVo,stat1:${roomVo}"
+                 th:switch="${roomVo?.roomType}">
+                <div th:case="4">
+                    <p>
+                        <a href="#" th:attr="data-roomType=4"
+                          class="button button-fill button-middle button-success create-room"
+                          th:text="${roomVo.houseDetailName}"></a>
+                    </p>
+                </div>
+                <div th:case="1">
+                    <p>
+                        <a href="#" th:attr="data-roomType=1"
+                          class="button button-fill button-middle button-dark create-room"
+                          th:text="${roomVo.houseDetailName}"> </a></p>
+                </div>
+                <div th:case="0">
+                    <p><a href="#" th:attr="data-roomType=0"
+                          class="button button-fill button-middle button-primary create-room"
+                          th:text="${roomVo.houseDetailName}"> </a></p>
+                </div>
+                <div th:case="2">
+                    <p><a href="#" th:attr="data-roomType=2"
+                          class="button button-fill button-middle button-danger create-room"
+                          th:text="${roomVo.houseDetailName}"></a></p>
+                </div>
+                <div th:case="3">
+                    <p><a href="#" th:attr="data-roomType=3"
+                          class="button button-fill button-middle button-warning create-room"
+                          th:text="${roomVo.houseDetailName}"> </a></p>
+                </div>
             </div>
         </div>
-        <div class="" th:if="${!permitDecoration}">
+        <div class="content-block" th:unless="${permitDecoration}">
             <div class="content-padded to-page-link">
                 <div class="row">
                     <div class="col-50">
                         <a th:href="@{'/house/page/0?mobile_phone='+${mobilePhone}}"
                            class="button button-big button-fill external">我的房子</a>
                     </div>
-                    <div class="col-50">
-                        <a th:href="@{'/house/page/1?mobile_phone='+${mobilePhone}}"
-                           class="button button-big button-fill button-warning external">装修材料</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="popup room-popup">
-            <form id="roomForm">
-                <div class="list-block">
-                    <ul>
-                        <li>
-                            <div class="item-content">
-                                <div class="item-media"><i class="icon icon-form-name"></i></div>
-                                <div class="item-inner">
-                                    <div class="item-title label">名称</div>
-                                    <div class="item-input">
-                                        <input type="text" placeholder="名称">
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="item-content">
-                                <div class="item-media"><i class="icon icon-form-name"></i></div>
-                                <div class="item-inner">
-                                    <div class="item-title label">顶面积</div>
-                                    <div class="item-input">
-                                        <input type="number" placeholder="房顶面积(单位:平米)">
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="item-content">
-                                <div class="item-media"><i class="icon icon-form-name"></i></div>
-                                <div class="item-inner">
-                                    <div class="item-title label">墙面积</div>
-                                    <div class="item-input">
-                                        <input type="number" placeholder="墙面面积(单位:平米)">
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="item-content">
-                                <div class="item-media"><i class="icon icon-form-name"></i></div>
-                                <div class="item-inner">
-                                    <div class="item-title label">地面积</div>
-                                    <div class="item-input">
-                                        <input type="number" placeholder="地板面积(单位:平米)">
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="align-top">
-                            <div class="item-content">
-                                <div class="item-media"><i class="icon icon-form-comment"></i></div>
-                                <div class="item-inner">
-                                    <div class="item-title label">备注</div>
-                                    <div class="item-input">
-                                        <textarea></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </form>
-            <div class="content-block">
-                <div class="row">
-                    <div class="col-50"><a href="#"
-                                           class="button button-big button-fill button-danger close-popup">取消</a></div>
-                    <div class="col-50"><a href="#" onclick="submitRoom()"
-                                           class="button button-big button-fill button-success">提交</a></div>
+                    <a th:href="@{'/house/page/1?mobile_phone='+${mobilePhone}}"
+                       class="button button-big button-fill button-warning external">装修材料</a>
                 </div>
             </div>
         </div>
     </div>
+    <div class="popup room-popup">
+        <header class="bar bar-nav">
+            <h1 class='title' id="room-title">编辑</h1>
+        </header>
+        <form id="roomForm">
+            <input hidden th:value="${houseVo?.houseCode}" name="houseCode">
+            <input hidden id="room-Type" name="roomType">
+            <div class="list-block">
+                <ul>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="icon icon-form-name"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title label">名称</div>
+                                <div class="item-input">
+                                    <input type="text" name="houseDetailName" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="icon icon-form-name"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title label">顶面积</div>
+                                <div class="item-input">
+                                    <input type="number" name="floorAreaSize" placeholder="(单位:平米)">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="icon icon-form-name"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title label">墙面积</div>
+                                <div class="item-input">
+                                    <input type="number" name="wallAreaSize" placeholder="(单位:平米)">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="icon icon-form-name"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title label">地面积</div>
+                                <div class="item-input">
+                                    <input type="number" name="ceilAreaSize" placeholder="(单位:平米)">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="align-top">
+                        <div class="item-content">
+                            <div class="item-media"><i class="icon icon-form-comment"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title label">备注</div>
+                                <div class="item-input">
+                                    <textarea name="remark"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <div class="content-block">
+            <div class="row">
+                <div class="col-50"><a href="#"
+                                       class="button button-big button-fill button-danger close-popup">取消</a></div>
+                <div class="col-50"><a href="#" onclick="submitRoom()"
+                                       class="button button-big button-fill button-success">提交</a></div>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
@@ -473,12 +521,40 @@
     }
 
     function submitRoom() {
-        $.alert("提交成功！")
-        $(".modal-overlay").remove('modal-overlay-visible');
-        $.closeModal();
+        let data = $('#roomForm').serializeArray();
+        let url = "/house/save_room";
+        let param = {};
+        for (let i = 0; i < data.length; i++) {
+            let dataName = data[i]['name'];
+            let dataValue = data[i]['value'];
+            param[dataName] = dataValue;
+        }
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: url,
+            data: JSON.stringify(param),
+            success: function (result) {
+                console.log("数据%o", result);
+                if (result.code == 'success') {
+                    $.toast('提交成功！');
+                    $(".modal-overlay").remove('modal-overlay-visible');
+                    $.closeModal();
+                } else {
+                    $.toast(result.message);
+                }
+            },
+            error: function (result, type, err) {
+                $.toast("提交失败!");
+            }
+        });
     }
 
-    $(document).on('click', '.create-room', function () {
+    $(document).on('click', '.create-room', function (e) {
+        let roomType = $(this).attr("data-roomtype")
+        let title = $(this).text();
+        $("#room-title").text(title)
+        $("#room-Type").val(roomType)
         $.popup(".room-popup");
         $(".popup-overlay").removeClass("modal-overlay-visible")
     })
