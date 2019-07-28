@@ -18,4 +18,42 @@
         <result property="updateTime" column="update_time"/>
         <result property="createTime" column="create_time"/>
     </resultMap>
+    <insert id="replaceHouseDetailInfo" parameterType="com.ping.vo.hosue.HouseDetailInfoVo">
+        INSERT INTO `sbdb`.`house_detail_info` (
+            `house_code`,
+            `house_detail_code`,
+            `house_detail_name`,
+            `room_index`,
+            `room_type`,
+            `room_nick_name`,
+            `floor_area_size`,
+            `wall_area_size`,
+            `ceil_area_size`,
+            `status`,
+            `remark`,
+            `version`
+        )
+        VALUES(
+         #{houseCode},
+         #{houseDetailCode},
+         #{houseDetailName},
+         #{roomIndex},
+         #{roomType},
+         #{roomNickName},
+         #{floorAreaSize},
+         #{wallAreaSize},
+         #{ceilAreaSize},
+         #{status},
+         #{remark},
+         #{version}
+        )
+        ON DUPLICATE KEY UPDATE
+        house_detail_name=values(house_detail_name),
+        floor_area_size=values(floor_area_size),
+        wall_area_size=values(wall_area_size),
+        ceil_area_size=values(ceil_area_size),
+        status=values(status),
+        remark=values(remark),
+        version=values(version);
+    </insert>
 </mapper>

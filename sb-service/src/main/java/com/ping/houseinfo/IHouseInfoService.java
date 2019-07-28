@@ -11,45 +11,53 @@ import java.util.List;
  * @create 2019/07/14 10:24
  */
 public interface IHouseInfoService {
-    /**
-     * @param houseInfoVo
-     * @return
-     */
-    boolean saveHouseInfo(HouseInfoVo houseInfoVo);
+	/**
+	 * @param houseInfoVo
+	 * @return
+	 */
+	boolean saveHouseInfo(HouseInfoVo houseInfoVo);
 
-    /**
-     * @param houseDetailInfoVo
-     * @return
-     */
-    boolean saveHouseRoomInfo(HouseDetailInfoVo houseDetailInfoVo);
+	/**
+	 * @param houseDetailInfoVo
+	 * @return
+	 */
+	boolean saveHouseRoomInfo(HouseDetailInfoVo houseDetailInfoVo);
 
-    /**
-     * @param co
-     * @return
-     */
-    List<HouseInfoVo> queryHouseInfoList(HouseInfoCo co);
+	/**
+	 * @param co
+	 * @return
+	 */
+	List<HouseInfoVo> queryHouseInfoList(HouseInfoCo co);
 
-    /**
-     * @param co
-     * @return
-     */
-    HouseInfoVo getHouseInfo(HouseInfoCo co);
+	/**
+	 * @param co
+	 * @return
+	 */
+	HouseInfoVo getHouseInfo(HouseInfoCo co);
 
-    /**
-     * @param co
-     * @return
-     */
-    HouseInfoVo getHouseInfoDetail(HouseInfoCo co);
+	/**
+	 * @param co
+	 * @return
+	 */
+	HouseInfoVo getHouseInfoDetail(HouseInfoCo co);
 
-    /**
-     * @param mobilePhone
-     * @return
-     */
-    HouseInfoVo getHouseInfoByMobilePhone(String mobilePhone);
+	/**
+	 * @param mobilePhone
+	 * @return
+	 */
+	HouseInfoVo getHouseInfoByMobilePhone(String mobilePhone);
 
-    /**
-     * @param mobilePhone
-     * @return
-     */
-    HouseInfoVo getHouseInfo(String mobilePhone);
+	/**
+	 * @param mobilePhone
+	 * @return
+	 */
+	HouseInfoVo getHouseInfo(String mobilePhone);
+
+	/**
+	 * @param mobilePhone
+	 * @param roomType
+	 * @param roomIndex
+	 * @return
+	 */
+	HouseDetailInfoVo getHouseDetailInfo(String mobilePhone, Integer roomType, Integer roomIndex);
 }

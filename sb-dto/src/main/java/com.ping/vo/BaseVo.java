@@ -1,6 +1,7 @@
 package com.ping.vo;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.ping.constant.SysConstant;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -30,12 +31,22 @@ public class BaseVo implements Serializable {
 	/**
 	 *
 	 */
-	private Integer version;
+	private Integer version = 0;
 
 	/**
 	 *
 	 */
 	private String remark;
+
+	private Integer status = SysConstant.STATUS_0;
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(final Integer status) {
+		this.status = status;
+	}
 
 	public Long getId() {
 		return id;

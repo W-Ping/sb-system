@@ -28,6 +28,14 @@ public class HouseDetailInfoVo extends BaseVo {
 	 */
 	private Integer roomType;
 	/**
+	 *
+	 */
+	private Integer roomIndex;
+	/**
+	 *
+	 */
+	private String roomNickName;
+	/**
 	 * 顶面积
 	 */
 	private BigDecimal floorAreaSize;
@@ -48,6 +56,14 @@ public class HouseDetailInfoVo extends BaseVo {
 		this.houseCode = houseCode;
 	}
 
+	public String getRoomNickName() {
+		return roomNickName;
+	}
+
+	public void setRoomNickName(final String roomNickName) {
+		this.roomNickName = roomNickName;
+	}
+
 	public String getHouseDetailCode() {
 		return houseDetailCode;
 	}
@@ -66,6 +82,14 @@ public class HouseDetailInfoVo extends BaseVo {
 
 	public Integer getRoomType() {
 		return roomType;
+	}
+
+	public Integer getRoomIndex() {
+		return roomIndex;
+	}
+
+	public void setRoomIndex(final Integer roomIndex) {
+		this.roomIndex = roomIndex;
 	}
 
 	public void setRoomType(Integer roomType) {

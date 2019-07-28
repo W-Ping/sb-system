@@ -53,7 +53,7 @@ public class HouseController {
 				isRegister = true;
 			}
 		}
-		if (path == 0 || path == 2) {
+		if (path == 0 || path == 2 || path == 3) {
 			if (isMobilePhone) {
 				houseInfo = iHouseInfoService.getHouseInfoByMobilePhone(mobilePhone);
 			}
@@ -117,5 +117,20 @@ public class HouseController {
 	public Result<HouseDetailInfoVo> submitHouseRoomInfo(@RequestBody HouseDetailInfoVo houseDetailInfoVo) {
 		boolean b = iHouseInfoService.saveHouseRoomInfo(houseDetailInfoVo);
 		return Result.successOrFail(b, houseDetailInfoVo);
+	}
+
+	/**
+	 * @param roomType
+	 * @param index
+	 * @param mobilePhone
+	 * @return
+	 */
+	@ResponseBody
+	@GetMapping(value = "/detail/{roomType}/{index}")
+	public Result<HouseDetailInfoVo> getHouseDetail(@PathVariable("roomType") Integer roomType,
+	                                                @PathVariable("index") Integer index,
+	                                                @RequestParam("mobile_phone") String mobilePhone) {
+		HouseDetailInfoVo houseDetailInfo = iHouseInfoService.getHouseDetailInfo(mobilePhone, roomType, index);
+		return Result.success(houseDetailInfo);
 	}
 }

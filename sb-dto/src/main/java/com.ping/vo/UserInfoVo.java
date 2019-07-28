@@ -24,10 +24,7 @@ public class UserInfoVo extends BaseVo {
 	 *
 	 */
 	private String email;
-	/**
-	 * 状态【0：有效；1：无效】
-	 */
-	private Integer status;
+
 
 	public String getUserName() {
 		return userName;
@@ -69,11 +66,4 @@ public class UserInfoVo extends BaseVo {
 		this.email = email;
 	}
 
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(final Integer status) {
-		this.status = status;
-	}
 }

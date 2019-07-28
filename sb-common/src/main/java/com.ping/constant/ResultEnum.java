@@ -19,7 +19,8 @@ public enum ResultEnum {
 	SAVE_USER_INFO_FAILED(5001, "保存用户信息失败"),
 	GET_USER_INFO_FAILED(5002, "获取用户信息失败"),
 	UPDATE_BUDGETINFO_FAILED(5001, "更新材料信息失败"),
-	DATA_FAILED(6000, "数据异常");
+	DATA_FAILED(6000, "数据异常"),
+	HOUSE_IS_NOT_EXISTS(6001, "房屋信息不存在");
 
 	private Integer code;
 	private String message;

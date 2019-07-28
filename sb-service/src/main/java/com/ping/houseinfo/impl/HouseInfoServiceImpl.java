@@ -10,7 +10,6 @@ import com.ping.mapper.IHouseDetailInfoMapper;
 import com.ping.mapper.IHouseInfoMapper;
 import com.ping.po.house.HouseDetailInfoPo;
 import com.ping.po.house.HouseInfoPo;
-import com.ping.userinfo.IUserInfoService;
 import com.ping.utils.BeanMapperUtil;
 import com.ping.vo.hosue.HouseDetailInfoVo;
 import com.ping.vo.hosue.HouseInfoVo;
@@ -20,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -85,6 +85,7 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
 			Example.Criteria criteria = example.createCriteria();
 			criteria.andEqualTo("status", SysConstant.STATUS_0);
 			criteria.andEqualTo("houseCode", houseInfoVo.getHouseCode());
+			example.setOrderByClause("room_type asc ,room_index asc");
 			List<HouseDetailInfoPo> houseDetailInfoPos = iHouseDetailInfoMapper.selectByExample(example);
 			List<HouseDetailInfoVo> houseDetailInfoVos = BeanMapperUtil.mapToList(houseDetailInfoPos, HouseDetailInfoVo.class);
 			houseInfoVo.setDetailInfoVos(houseDetailInfoVos);
@@ -118,6 +119,28 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
 	}
 
 	/**
+	 * @param mobilePhone
+	 * @param roomType
+	 * @param roomIndex
+	 * @return
+	 */
+	@Override
+	public HouseDetailInfoVo getHouseDetailInfo(final String mobilePhone, final Integer roomType, final Integer roomIndex) {
+		HouseInfoVo houseInfo = getHouseInfo(mobilePhone);
+		if (houseInfo == null) {
+			throw new ValidateException(ResultEnum.HOUSE_IS_NOT_EXISTS);
+		}
+		Example example = new Example(HouseDetailInfoPo.class);
+		example.createCriteria().andEqualTo("status", SysConstant.STATUS_0)
+				.andEqualTo("houseCode", houseInfo.getHouseCode())
+				.andEqualTo("roomIndex", roomIndex)
+				.andEqualTo("roomType", roomType);
+		HouseDetailInfoPo houseDetailInfoPo = iHouseDetailInfoMapper.selectOneByExample(example);
+		HouseDetailInfoVo resultVo = BeanMapperUtil.map(houseDetailInfoPo, HouseDetailInfoVo.class);
+		return resultVo;
+	}
+
+	/**
 	 * @param houseDetailInfoVo
 	 * @return
 	 */
@@ -132,9 +155,8 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
 			throw new ValidateException(ResultEnum.REQ_PARAMETER_ERROR, "房间主档信息未填写");
 		}
 		checkRoomTypeInfo(houseDetailInfoVo, houseInfoPo);
-		HouseDetailInfoPo houseDetailInfoPo = BeanMapperUtil.map(houseDetailInfoVo, HouseDetailInfoPo.class);
-		houseDetailInfoPo.setHouseDetailCode(super.getUniqueId(SysConstant.UNIQUEID_HOUSE_DETAIL_PRIFIX));
-		int count = iHouseDetailInfoMapper.insertSelective(houseDetailInfoPo);
+		houseDetailInfoVo.setHouseDetailCode(super.getUniqueId(SysConstant.UNIQUEID_HOUSE_DETAIL_PRIFIX));
+		int count = iHouseDetailInfoMapper.replaceHouseDetailInfo(houseDetailInfoVo);
 		return count > 0;
 	}
 
