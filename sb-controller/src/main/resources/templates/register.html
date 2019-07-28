@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>我的生活</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="/static/favicon.ico">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <!--    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">-->
@@ -65,7 +65,8 @@
                     <a href="#" id="register" class="button button-big button-fill">注册</a>
                 </p>
                 <p>
-                    <a th:href="@{/login/index}" id="login" class="button button-big button-fill button-success external">已注册登录</a>
+                    <a th:href="@{/login/index}" id="login"
+                       class="button button-big button-fill button-success external">已注册登录</a>
                 </p>
             </div>
         </div>
@@ -107,10 +108,10 @@
             url: '/login/user_register',
             data: JSON.stringify(params),
             success: function (result) {
-                if (result.code == 'success') {
-                    $.toast("注册成功");
+                if (result.code == 200) {
+                    $.toast("注册成功", 3000);
                 } else {
-                    $.toast(result.message);
+                    $.toast(result.message, 3000);
                 }
             },
             error: function (result, type, err) {

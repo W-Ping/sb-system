@@ -1,8 +1,11 @@
 package com.ping.filter;
 
+import com.ping.config.GlobalExceptionHandler;
 import com.ping.constant.SysConstant;
 import com.ping.utils.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +18,7 @@ import java.util.Arrays;
  * @create 2019/07/15 12:59
  */
 public class DefaultUrlFilter implements Filter {
-
+	private final Logger logger = LogManager.getLogger(DefaultUrlFilter.class);
 	private static final String EMP_TOKEN = "";
 	private static final String LOGIN_URL_KEY = "login-url";
 	private static final String IGNORE_FILTER_URL_KEY = "ignore-filter-url";
@@ -33,10 +36,12 @@ public class DefaultUrlFilter implements Filter {
 		HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 		String requestURI = httpServletRequest.getRequestURI();
-		if (checkUrl(requestURI) || checkLogin(httpServletRequest)) {
+		if (isAjax(httpServletRequest) || checkUrl(requestURI)) {
 			filterChain.doFilter(httpServletRequest, httpServletResponse);
 		} else {
-			httpServletRequest.getRequestDispatcher(loginUrl).forward(servletRequest, servletResponse);
+			logger.warn("{}，重定向登录页面", requestURI);
+			httpServletResponse.sendRedirect(loginUrl);
+//			httpServletRequest.getRequestDispatcher(loginUrl).forward(servletRequest, servletResponse);
 		}
 
 	}
@@ -89,13 +94,19 @@ public class DefaultUrlFilter implements Filter {
 		String token = httpServletRequest.getHeader(EMP_TOKEN);
 		Object userInfo = httpServletRequest.getSession().getAttribute(SysConstant.USER_INFO_SESSION_KEY);
 		if (userInfo != null) {
-			return false;
+			return true;
 		}
+		logger.info("用户未登录");
 		return false;
 	}
 
 	@Override
 	public void destroy() {
 
+	}
+
+	public boolean isAjax(HttpServletRequest request) {
+		return (request.getHeader("X-Requested-With") != null &&
+				"XMLHttpRequest".equals(request.getHeader("X-Requested-With").toString()));
 	}
 }

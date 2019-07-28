@@ -3,8 +3,10 @@ package com.ping.budgetinfo.impl;
 import com.ping.BaseService;
 import com.ping.budgetinfo.IBudgetInfoService;
 import com.ping.co.BudgetInfoCo;
+import com.ping.constant.ResultEnum;
 import com.ping.constant.SysConstant;
-import com.ping.exception.SBRuntimeException;
+import com.ping.exception.OptionsException;
+import com.ping.exception.ValidateException;
 import com.ping.houseinfo.IHouseInfoService;
 import com.ping.mapper.IBudgetInfoMapper;
 import com.ping.po.house.BudgetInfoPo;
@@ -34,7 +36,7 @@ public class BudgetInfoServiceImpl extends BaseService implements IBudgetInfoSer
 	public boolean saveBudgetInfoBatch(final List<BudgetInfoVo> budgetInfoVos) {
 		List<BudgetInfoPo> budgetInfoPos = BeanMapperUtil.mapToList(budgetInfoVos, BudgetInfoPo.class);
 		if (CollectionUtils.isEmpty(budgetInfoPos)) {
-			throw new SBRuntimeException("参数不能为空");
+			throw new ValidateException(ResultEnum.REQ_PARAMETER_ERROR);
 		}
 		budgetInfoPos.forEach(v -> {
 			v.setBudgetCode(super.getUniqueId(SysConstant.UNIQUEID_BUDGET_PRIFIX));
@@ -47,7 +49,7 @@ public class BudgetInfoServiceImpl extends BaseService implements IBudgetInfoSer
 	public boolean saveBudgetInfo(final BudgetInfoVo budgetInfoVo) {
 		HouseInfoVo houseInfo = iHouseInfoService.getHouseInfo(budgetInfoVo.getMobilePhone());
 		if (houseInfo == null) {
-			throw new SBRuntimeException("请先填写房屋信息");
+			throw new ValidateException(ResultEnum.REQ_PARAMETER_ERROR, "请先填写房屋信息");
 		}
 		String budgetCode = budgetInfoVo.getBudgetCode();
 		if (StringUtils.isBlank(budgetCode)) {
@@ -60,7 +62,7 @@ public class BudgetInfoServiceImpl extends BaseService implements IBudgetInfoSer
 					.andEqualTo("status", SysConstant.STATUS_0).andEqualTo("budgetCode", budgetCode);
 			List<BudgetInfoPo> budgetInfoPos = iBudgetInfoMapper.selectByExample(example);
 			if (CollectionUtils.isEmpty(budgetInfoPos)) {
-				throw new SBRuntimeException("无法更新不存在当前信息");
+				throw new OptionsException(ResultEnum.UPDATE_BUDGETINFO_FAILED);
 			}
 			BudgetInfoPo budgetInfoPo = budgetInfoPos.get(0);
 			BudgetInfoPo updatePo = BeanMapperUtil.map(budgetInfoVo, BudgetInfoPo.class);

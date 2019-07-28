@@ -3,14 +3,16 @@ package com.ping.userinfo.impl;
 import com.ping.annotation.CacheSave;
 import com.ping.co.UserInfoCo;
 import com.ping.constant.CacheTypeEnum;
+import com.ping.constant.ResultEnum;
 import com.ping.constant.SysConstant;
-import com.ping.exception.SBRuntimeException;
+import com.ping.exception.UserException;
 import com.ping.mapper.IUserInfoMapper;
 import com.ping.po.UserInfoPo;
 import com.ping.userinfo.IUserInfoService;
 import com.ping.utils.BeanMapperUtil;
 import com.ping.utils.DigestUtil;
 import com.ping.vo.UserInfoVo;
+import org.apache.catalina.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +48,7 @@ public class UserInfoServiceImpl implements IUserInfoService {
 				.andEqualTo("mobilePhone", userInfoCo.getMobilePhone());
 		UserInfoPo userInfoPo1 = iUserInfoMapper.selectOneByExample(example);
 		if (userInfoPo1 != null) {
-			throw new SBRuntimeException("当前用户已存在");
+			throw new UserException(ResultEnum.REQ_PARAMETER_ERROR, "用户信息已存在");
 		}
 		UserInfoPo userInfoPo = BeanMapperUtil.map(userInfoCo, UserInfoPo.class);
 		int count = iUserInfoMapper.insertSelective(userInfoPo);

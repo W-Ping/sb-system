@@ -41,7 +41,8 @@ spring:
     prefix: classpath:/templates/
   mvc:
     static-path-pattern: /static/**
-
+    favicon:
+      enabled: false
 
 ################ mybatis配置################
 mybatis:

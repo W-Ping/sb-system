@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>我的装修</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="/static/favicon.ico">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
@@ -145,7 +145,7 @@
                         <ul>
                             <li>
                                 <a class="item-content item-link"
-                                   th:href="@{'/house/budget/0/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.budgetName}}">
+                                   th:href="@{'/house/page/budget/0/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.budgetName}}">
                                     <div class="item-media"><i class="icon icon-f7"></i></div>
                                     <div class="item-inner">
                                         <div class="item-title">预算名称</div>
@@ -155,7 +155,7 @@
                             </li>
                             <li>
                                 <a class="item-content item-link"
-                                   th:href="@{'/house/budget/1/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.maxBudgetAmount}}">
+                                   th:href="@{'/house/page/budget/1/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.maxBudgetAmount}}">
                                     <div class="item-media"><i class="icon icon-f7"></i></div>
                                     <div class="item-inner">
                                         <div class="item-title">最高金额</div>
@@ -165,7 +165,7 @@
                             </li>
                             <li>
                                 <a class="item-content item-link"
-                                   th:href="@{'/house/budget/2/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.minBudgetAmount}}">
+                                   th:href="@{'/house/page/budget/2/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.minBudgetAmount}}">
                                     <div class="item-media"><i class="icon icon-f7"></i></div>
                                     <div class="item-inner">
                                         <div class="item-title">最低金额</div>
@@ -175,7 +175,7 @@
                             </li>
                             <li>
                                 <a class="item-content item-link"
-                                   th:href="@{'/house/budget/3/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.maxCost}}">
+                                   th:href="@{'/house/page/budget/3/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.maxCost}}">
                                     <div class="item-media"><i class="icon icon-f7"></i></div>
                                     <div class="item-inner">
                                         <div class="item-title">最高成本</div>
@@ -185,7 +185,7 @@
                             </li>
                             <li>
                                 <a class="item-content item-link"
-                                   th:href="@{'/house/budget/4/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.minCost}}">
+                                   th:href="@{'/house/page/budget/4/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.minCost}}">
                                     <div class="item-media"><i class="icon icon-f7"></i></div>
                                     <div class="item-inner">
                                         <div class="item-title">最低成本</div>
@@ -195,7 +195,7 @@
                             </li>
                             <li>
                                 <a class="item-content item-link"
-                                   th:href="@{'/house/budget/5/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.actualCost}}">
+                                   th:href="@{'/house/page/budget/5/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.actualCost}}">
                                     <div class="item-media"><i class="icon icon-f7"></i></div>
                                     <div class="item-inner">
                                         <div class="item-title">实际成本</div>
@@ -259,15 +259,15 @@
                 <div th:case="4">
                     <p>
                         <a href="#" th:attr="data-roomType=4"
-                          class="button button-fill button-middle button-success create-room"
-                          th:text="${roomVo.houseDetailName}"></a>
+                           class="button button-fill button-middle button-success create-room"
+                           th:text="${roomVo.houseDetailName}"></a>
                     </p>
                 </div>
                 <div th:case="1">
                     <p>
                         <a href="#" th:attr="data-roomType=1"
-                          class="button button-fill button-middle button-dark create-room"
-                          th:text="${roomVo.houseDetailName}"> </a></p>
+                           class="button button-fill button-middle button-dark create-room"
+                           th:text="${roomVo.houseDetailName}"> </a></p>
                 </div>
                 <div th:case="0">
                     <p><a href="#" th:attr="data-roomType=0"
@@ -430,14 +430,14 @@
                 param[dataName] = dataValue;
             }
         }
+        console.log("参数%o", param);
         $.ajax({
             type: 'POST',
             contentType: 'application/json',
             url: url,
             data: JSON.stringify(param),
             success: function (result) {
-                console.log("数据%o", result);
-                if (result.code == 'success') {
+                if (result.code == 200) {
                     $.toast('提交成功！');
                     let href = window.location.href;
                     let mobilePhone = param['mobilePhone'];
@@ -465,7 +465,7 @@
                 type: 'DELETE',
                 url: url,
                 success: function (result) {
-                    if (result.code == 'success') {
+                    if (result.code == 200) {
                         $.toast('删除成功！');
                         window.location.reload();
                     } else {
@@ -505,7 +505,7 @@
             data: JSON.stringify(param),
             success: function (result) {
                 console.log("数据%o", result);
-                if (result.code == 'success') {
+                if (result.code == 200) {
                     $.toast('提交成功！');
                     $.closeModal()
                     $(".popup-overlay").remove('modal-overlay-visible');
@@ -536,7 +536,7 @@
             data: JSON.stringify(param),
             success: function (result) {
                 console.log("数据%o", result);
-                if (result.code == 'success') {
+                if (result.code == 200) {
                     $.toast('提交成功！');
                     $(".modal-overlay").remove('modal-overlay-visible');
                     $.closeModal();

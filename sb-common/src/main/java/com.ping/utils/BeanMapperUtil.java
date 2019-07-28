@@ -2,7 +2,10 @@ package com.ping.utils;
 
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
-import com.ping.exception.SBRuntimeException;
+import com.ping.constant.ResultEnum;
+import com.ping.exception.OptionsException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ import java.util.Map;
  * @create 2019/07/13 15:45
  */
 public class BeanMapperUtil {
+	private final static Logger logger = LogManager.getLogger(BeanMapperUtil.class);
 	private static final String SYMBOL = "_";
 	private static Mapper MAPPER = DozerBeanMapperBuilder.buildDefault();
 
@@ -104,7 +108,8 @@ public class BeanMapperUtil {
 			}
 			return instance;
 		} catch (Exception e) {
-			throw new SBRuntimeException("map cast to object error!", e);
+			logger.error("数据转换异常{}", e);
+			throw new OptionsException(ResultEnum.DATA_FAILED, "map cast to object error!");
 		}
 	}
 

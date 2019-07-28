@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>我的装修</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="/static/favicon.ico">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
@@ -78,15 +78,15 @@
             url: url,
             data: JSON.stringify(param),
             success: function (result) {
-                if (result.code == 'success') {
-                    $.toast('提交成功！');
+                if (result.code == 200) {
+                    $.toast('提交成功！', 3000);
                     window.location.href = document.referrer;
                 } else {
                     $.toast(result.message);
                 }
             },
-            error: function (result, type, err) {
-                $.toast("提交失败!");
+            error: function (result, type, error) {
+                $.toast(error);
             }
         });
     }

@@ -26,9 +26,15 @@ public class UserInfoController {
 		return Result.success(userInfoVos);
 	}
 
+	/**
+	 * 添加用户
+	 *
+	 * @param userInfoCo
+	 * @return
+	 */
 	@PostMapping(value = "/sb/user/saveUserInfo")
 	public Result<Boolean> saveUserInfo(@RequestBody UserInfoCo userInfoCo) {
 		boolean b = iUserInfoService.saveUserInfo(userInfoCo);
-		return Result.successOrFial(b, null);
+		return Result.successOrFail(b);
 	}
 }

@@ -24,7 +24,7 @@ public class BudgetController {
 	@PostMapping(value = "/save")
 	public Result<BudgetInfoVo> saveBudget(@RequestBody BudgetInfoVo houseInfoVo) {
 		boolean b = iBudgetInfoService.saveBudgetInfo(houseInfoVo);
-		return Result.successOrFial(b, houseInfoVo);
+		return Result.successOrFail(b, houseInfoVo);
 	}
 
 	/**
@@ -33,8 +33,8 @@ public class BudgetController {
 	 */
 	@ResponseBody
 	@DeleteMapping(value = "/delete/{id}")
-	public Result<String> deleteBudget(@PathVariable("id") Long id) {
+	public Result<Boolean> deleteBudget(@PathVariable("id") Long id) {
 		boolean b = iBudgetInfoService.deleteBudgetInfoById(id);
-		return Result.successOrFial(b, b ? "删除成功" : "删除失败");
+		return Result.successOrFail(b);
 	}
 }
