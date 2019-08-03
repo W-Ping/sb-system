@@ -7,19 +7,19 @@ import com.ping.constant.BudgetEnum;
 import com.ping.userinfo.IUserInfoService;
 import com.ping.vo.UserInfoVo;
 import com.ping.vo.hosue.BudgetInfoVo;
+import com.ping.vo.hosue.HouseBudgetInfoVo;
 import com.ping.vo.hosue.HouseDetailInfoVo;
 import com.ping.vo.hosue.HouseInfoVo;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author lwp
@@ -47,20 +47,27 @@ public class HouseController {
 		boolean isRegister = false;
 		boolean permitDecoration = false;
 		HouseInfoVo houseInfo = null;
+		Map<String, String> totalAmountMap = null;
 		if (isMobilePhone) {
 			UserInfoVo userInfoVo = iUserInfoService.getUserInfoByMobilePhone(mobilePhone);
 			if (userInfoVo != null) {
 				isRegister = true;
 			}
 		}
-		if (path == 0 || path == 2 || path == 3) {
+		if (path == 0 || path == 1 || path == 2) {
 			if (isMobilePhone) {
 				houseInfo = iHouseInfoService.getHouseInfoByMobilePhone(mobilePhone);
+				if (path == 0) {
+					totalAmountMap = iHouseInfoService.calculateBudgetTotalAmount(mobilePhone);
+//					modelAndView.addObject("minTotalAmount", totalAmountMap != null ? totalAmountMap.get("min_account_total") : null);
+//					modelAndView.addObject("maxTotalAmount", totalAmountMap != null ? totalAmountMap.get("max_account_total") : null);
+//					modelAndView.addObject("totalAmount", totalAmountMap != null ? totalAmountMap.get("account_total") : null);
+				}
 			}
 			if (houseInfo != null) {
 				permitDecoration = true;
 			}
-		} else if (path == 1) {
+		} else if (path == 3) {
 			if (isMobilePhone) {
 				BudgetInfoCo budgetInfoCo = new BudgetInfoCo();
 				budgetInfoCo.setMobilePhone(mobilePhone);
@@ -74,6 +81,9 @@ public class HouseController {
 		modelAndView.addObject("permitDecoration", permitDecoration);
 		modelAndView.addObject("isRegister", isRegister);
 		modelAndView.addObject("mobilePhone", mobilePhone);
+		modelAndView.addObject("minTotalAmount", totalAmountMap != null ? totalAmountMap.get("min_account_total") : null);
+		modelAndView.addObject("maxTotalAmount", totalAmountMap != null ? totalAmountMap.get("max_account_total") : null);
+		modelAndView.addObject("totalAmount", totalAmountMap != null ? totalAmountMap.get("account_total") : null);
 		modelAndView.setViewName("house");
 		return modelAndView;
 	}
@@ -132,5 +142,66 @@ public class HouseController {
 	                                                @RequestParam("mobile_phone") String mobilePhone) {
 		HouseDetailInfoVo houseDetailInfo = iHouseInfoService.getHouseDetailInfo(mobilePhone, roomType, index);
 		return Result.success(houseDetailInfo);
+	}
+
+	/**
+	 * @param houseDetailCode
+	 * @param houseBudgetCode
+	 * @return
+	 */
+	@GetMapping(value = "/detail/decorate/{houseDetailCode}")
+	public ModelAndView toHouseDecorate(@PathVariable("houseDetailCode") String houseDetailCode,
+	                                    @RequestParam(name = "hbc", required = false) String houseBudgetCode) {
+		HouseBudgetInfoVo houseBudgetInfoVo = new HouseBudgetInfoVo();
+
+		houseBudgetInfoVo.setHouseDetailCode(houseDetailCode);
+		ModelAndView modelAndView = new ModelAndView();
+		if (StringUtils.isNotBlank(houseBudgetCode)) {
+			houseBudgetInfoVo = iHouseInfoService.getHouseBudgetInfoByCode(houseBudgetCode);
+		} else {
+			HouseDetailInfoVo houseDetailInfo = iHouseInfoService.getHouseDetailInfo(houseDetailCode);
+			if (houseDetailInfo != null) {
+				houseBudgetInfoVo.setHouseDetailName(houseDetailInfo.getHouseDetailName());
+				houseBudgetInfoVo.setRoomNickName(houseDetailInfo.getRoomNickName());
+			}
+		}
+		modelAndView.addObject("vo", houseBudgetInfoVo);
+		modelAndView.setViewName("house_decorate");
+		return modelAndView;
+	}
+
+	/**
+	 * @param houseBudgetInfoVo
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping(value = "/detail/decorate/save")
+	public Result<HouseBudgetInfoVo> saveHouseBudgetInfo(@RequestBody HouseBudgetInfoVo houseBudgetInfoVo) {
+		boolean b = iHouseInfoService.saveHouseBudgetInfo(houseBudgetInfoVo);
+		return Result.successOrFail(b, houseBudgetInfoVo);
+	}
+
+	/**
+	 * @param budgetCode
+	 * @return
+	 */
+	@ResponseBody
+	@DeleteMapping(value = "/detail/decorate/delete/{budgetCode}")
+	public Result<Boolean> deleteHouseBudgetInfo(@PathVariable("budgetCode") String budgetCode) {
+		boolean b = iHouseInfoService.deleteHouseBudgetInfo(budgetCode);
+		return Result.successOrFail(b);
+	}
+
+	/**
+	 * @param houseDetailCode
+	 * @param budgetCodes
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping(value = "/detail/decorate/{houseDetailCode}/save")
+	public Result<Boolean> saveHouseBudgetInfo(@PathVariable("houseDetailCode") String houseDetailCode,
+	                                           @RequestBody List<String> budgetCodes) {
+		boolean b = iHouseInfoService.saveHouseBudgetInfo(houseDetailCode, budgetCodes);
+		return Result.successOrFail(b);
 	}
 }

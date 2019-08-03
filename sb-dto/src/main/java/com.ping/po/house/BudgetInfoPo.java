@@ -30,15 +30,10 @@ public class BudgetInfoPo extends BasePo {
 	@Column(name = "mobile_phone")
 	private String mobilePhone;
 	/**
-	 * 最小预算金额
+	 * 预算金额
 	 */
-	@Column(name = "min_budget_amount")
-	private BigDecimal minBudgetAmount;
-	/**
-	 * 最大预算金额
-	 */
-	@Column(name = "max_budget_amount")
-	private BigDecimal maxBudgetAmount;
+	@Column(name = "budget_amount")
+	private BigDecimal budgetAmount;
 	/**
 	 * 最小成本
 	 */
@@ -71,20 +66,12 @@ public class BudgetInfoPo extends BasePo {
 		this.budgetCode = budgetCode;
 	}
 
-	public BigDecimal getMinBudgetAmount() {
-		return minBudgetAmount;
+	public BigDecimal getBudgetAmount() {
+		return budgetAmount;
 	}
 
-	public void setMinBudgetAmount(final BigDecimal minBudgetAmount) {
-		this.minBudgetAmount = minBudgetAmount;
-	}
-
-	public BigDecimal getMaxBudgetAmount() {
-		return maxBudgetAmount;
-	}
-
-	public void setMaxBudgetAmount(final BigDecimal maxBudgetAmount) {
-		this.maxBudgetAmount = maxBudgetAmount;
+	public void setBudgetAmount(final BigDecimal budgetAmount) {
+		this.budgetAmount = budgetAmount;
 	}
 
 	public BigDecimal getMinCost() {

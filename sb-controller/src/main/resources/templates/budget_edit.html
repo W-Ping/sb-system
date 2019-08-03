@@ -46,7 +46,7 @@
                 <div class="row">
                     <div class="col-50"><a href="#" class="button button-big button-fill button-danger back">取消</a>
                     </div>
-                    <div class="col-50"><a href="#" onclick="submitBudget('/budget/save')"
+                    <div class="col-50"><a href="#" onclick="submitBudget()"
                                            class="button button-big button-fill button-success">确定</a></div>
                 </div>
             </div>
@@ -58,7 +58,8 @@
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
 <script>
-    function submitBudget(url) {
+    function submitBudget() {
+        let url = '/budget/save';
         let val = $("#val").val();
         let name = $("#name").val();
         if (!val) {

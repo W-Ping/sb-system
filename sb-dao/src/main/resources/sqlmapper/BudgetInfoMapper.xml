@@ -6,8 +6,7 @@
         <result property="id" column="id"/>
         <result property="budgetName" column="budget_name"/>
         <result property="budgetCode" column="budget_code"/>
-        <result property="minBudgetAmount" column="min_budget_amount"/>
-        <result property="maxBudgetAmount" column="max_budget_amount"/>
+        <result property="budgetAmount" column="budget_amount"/>
         <result property="minCost" column="min_cost"/>
         <result property="maxCost" column="max_cost"/>
         <result property="actualCost" column="actual_cost"/>

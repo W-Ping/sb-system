@@ -29,8 +29,6 @@ import java.util.List;
 public class BudgetInfoServiceImpl extends BaseService implements IBudgetInfoService {
 	@Autowired
 	private IBudgetInfoMapper iBudgetInfoMapper;
-	@Autowired
-	private IHouseInfoService iHouseInfoService;
 
 	@Override
 	public boolean saveBudgetInfoBatch(final List<BudgetInfoVo> budgetInfoVos) {
@@ -47,10 +45,10 @@ public class BudgetInfoServiceImpl extends BaseService implements IBudgetInfoSer
 
 	@Override
 	public boolean saveBudgetInfo(final BudgetInfoVo budgetInfoVo) {
-		HouseInfoVo houseInfo = iHouseInfoService.getHouseInfo(budgetInfoVo.getMobilePhone());
-		if (houseInfo == null) {
-			throw new ValidateException(ResultEnum.REQ_PARAMETER_ERROR, "请先填写房屋信息");
-		}
+//		HouseInfoVo houseInfo = iHouseInfoService.getHouseInfo(budgetInfoVo.getMobilePhone());
+//		if (houseInfo == null) {
+//			throw new ValidateException(ResultEnum.REQ_PARAMETER_ERROR, "请先填写房屋信息");
+//		}
 		String budgetCode = budgetInfoVo.getBudgetCode();
 		if (StringUtils.isBlank(budgetCode)) {
 			budgetInfoVo.setBudgetCode(super.getUniqueId(SysConstant.UNIQUEID_BUDGET_PRIFIX));
@@ -82,26 +80,40 @@ public class BudgetInfoServiceImpl extends BaseService implements IBudgetInfoSer
 	}
 
 	/**
-	 * @param budgetInfoVo
 	 * @return
 	 */
 	@Override
-	public List<BudgetInfoVo> queryBudgetInfoList(final BudgetInfoCo budgetInfoVo) {
-		if (StringUtils.isBlank(budgetInfoVo.getMobilePhone())) {
+	public List<BudgetInfoVo> queryBudgetInfoList(final BudgetInfoCo budgetInfoCo) {
+		if (StringUtils.isBlank(budgetInfoCo.getMobilePhone())) {
 			return null;
 		}
+		List<String> ignoreBudgetCodes = budgetInfoCo.getIgnoreBudgetCodes();
 		Example example = new Example(BudgetInfoPo.class);
 		Example.Criteria criteria = example.createCriteria();
 		criteria.andEqualTo("status", SysConstant.STATUS_0);
-		criteria.andEqualTo("mobilePhone", budgetInfoVo.getMobilePhone());
+		criteria.andEqualTo("mobilePhone", budgetInfoCo.getMobilePhone());
+		if (!CollectionUtils.isEmpty(ignoreBudgetCodes)) {
+			criteria.andNotIn("budgetCode", ignoreBudgetCodes);
+		}
 		example.setOrderByClause(" update_time desc");
 		List<BudgetInfoPo> budgetInfoPos = iBudgetInfoMapper.selectByExample(example);
 		List<BudgetInfoVo> budgetInfoVos = BeanMapperUtil.mapToList(budgetInfoPos, BudgetInfoVo.class);
 		return budgetInfoVos;
 	}
 
+
+	/**
+	 * @param budgetCodes
+	 * @return
+	 */
 	@Override
-	public BudgetInfoVo getBudgetInfo(final BudgetInfoCo budgetInfoVo) {
-		return null;
+	public List<BudgetInfoVo> queryBudgetInfosByCodes(final List<String> budgetCodes) {
+		Example example = new Example(BudgetInfoPo.class);
+		Example.Criteria criteria = example.createCriteria();
+		criteria.andEqualTo("status", SysConstant.STATUS_0);
+		criteria.andIn("budgetCode", budgetCodes);
+		List<BudgetInfoPo> budgetInfoPos = iBudgetInfoMapper.selectByExample(example);
+		List<BudgetInfoVo> budgetInfoVos = BeanMapperUtil.mapToList(budgetInfoPos, BudgetInfoVo.class);
+		return budgetInfoVos;
 	}
 }

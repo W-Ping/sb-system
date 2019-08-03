@@ -1,26 +1,36 @@
 package com.ping.houseinfo.impl;
 
 import com.ping.BaseService;
+import com.ping.budgetinfo.IBudgetInfoService;
 import com.ping.co.HouseInfoCo;
 import com.ping.constant.ResultEnum;
 import com.ping.constant.SysConstant;
+import com.ping.exception.OptionsException;
 import com.ping.exception.ValidateException;
 import com.ping.houseinfo.IHouseInfoService;
+import com.ping.mapper.IHouseBudgetInfoMapper;
 import com.ping.mapper.IHouseDetailInfoMapper;
 import com.ping.mapper.IHouseInfoMapper;
+import com.ping.po.house.HouseBudgetInfoPo;
 import com.ping.po.house.HouseDetailInfoPo;
 import com.ping.po.house.HouseInfoPo;
 import com.ping.utils.BeanMapperUtil;
+import com.ping.vo.hosue.BudgetInfoVo;
+import com.ping.vo.hosue.HouseBudgetInfoVo;
 import com.ping.vo.hosue.HouseDetailInfoVo;
 import com.ping.vo.hosue.HouseInfoVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author lwp
@@ -33,6 +43,10 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
 	private IHouseInfoMapper iHouseInfoMapper;
 	@Autowired
 	private IHouseDetailInfoMapper iHouseDetailInfoMapper;
+	@Autowired
+	private IHouseBudgetInfoMapper iHouseBudgetInfoMapper;
+	@Autowired
+	private IBudgetInfoService iBudgetInfoService;
 
 	@Override
 	public boolean saveHouseInfo(final HouseInfoVo houseInfoVo) {
@@ -88,6 +102,22 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
 			example.setOrderByClause("room_type asc ,room_index asc");
 			List<HouseDetailInfoPo> houseDetailInfoPos = iHouseDetailInfoMapper.selectByExample(example);
 			List<HouseDetailInfoVo> houseDetailInfoVos = BeanMapperUtil.mapToList(houseDetailInfoPos, HouseDetailInfoVo.class);
+			if (!CollectionUtils.isEmpty(houseDetailInfoVos)) {
+				List<String> houseDetailCodes = houseDetailInfoPos.stream().map(HouseDetailInfoPo::getHouseDetailCode).collect(Collectors.toList());
+				example = new Example(HouseBudgetInfoPo.class);
+				example.createCriteria().andEqualTo("status", SysConstant.STATUS_0)
+						.andIn("houseDetailCode", houseDetailCodes);
+				List<HouseBudgetInfoPo> houseBudgetInfoPos = iHouseBudgetInfoMapper.selectByExample(example);
+				if (!CollectionUtils.isEmpty(houseBudgetInfoPos)) {
+					Map<String, List<HouseBudgetInfoPo>> resultMap = houseBudgetInfoPos.stream().collect(Collectors.groupingBy(v -> v.getHouseDetailCode()));
+					List<HouseBudgetInfoVo> houseBudgetInfoVos = null;
+					for (final HouseDetailInfoVo houseDetailInfoVo : houseDetailInfoVos) {
+						houseBudgetInfoPos = resultMap.get(houseDetailInfoVo.getHouseDetailCode());
+						houseBudgetInfoVos = BeanMapperUtil.mapToList(houseBudgetInfoPos, HouseBudgetInfoVo.class);
+						houseDetailInfoVo.setHouseBudgetInfoVos(houseBudgetInfoVos);
+					}
+				}
+			}
 			houseInfoVo.setDetailInfoVos(houseDetailInfoVos);
 		}
 		return houseInfoVo;
@@ -102,6 +132,16 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
 		HouseInfoCo houseInfoCo = new HouseInfoCo();
 		houseInfoCo.setMobilePhone(mobilePhone);
 		return getHouseInfoDetail(houseInfoCo);
+	}
+
+	/**
+	 * @param mobilePhone
+	 * @return
+	 */
+	@Override
+	public Map<String, String> calculateBudgetTotalAmount(final String mobilePhone) {
+		Map<String, String> totalAmount = iHouseInfoMapper.calculateBudgetTotalAmount(mobilePhone);
+		return totalAmount;
 	}
 
 	/**
@@ -137,7 +177,69 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
 				.andEqualTo("roomType", roomType);
 		HouseDetailInfoPo houseDetailInfoPo = iHouseDetailInfoMapper.selectOneByExample(example);
 		HouseDetailInfoVo resultVo = BeanMapperUtil.map(houseDetailInfoPo, HouseDetailInfoVo.class);
+		if (resultVo != null) {
+			resultVo.setHouseBudgetInfoVos(this.queryHouseBudgetInfoByHouseDetailCode(resultVo.getHouseDetailCode()));
+
+		}
 		return resultVo;
+	}
+
+	/**
+	 * @param houseDetailCode
+	 * @return
+	 */
+	@Override
+	public HouseDetailInfoVo getHouseDetailInfo(final String houseDetailCode) {
+		Example example = new Example(HouseDetailInfoPo.class);
+		example.createCriteria().andEqualTo("status", SysConstant.STATUS_0)
+				.andEqualTo("houseDetailCode", houseDetailCode);
+		HouseDetailInfoPo houseDetailInfoPo = iHouseDetailInfoMapper.selectOneByExample(example);
+		HouseDetailInfoVo resultVo = BeanMapperUtil.map(houseDetailInfoPo, HouseDetailInfoVo.class);
+		if (resultVo != null) {
+			resultVo.setHouseBudgetInfoVos(this.queryHouseBudgetInfoByHouseDetailCode(houseDetailCode));
+
+		}
+		return resultVo;
+	}
+
+	/**
+	 * @param houseBudgetCode
+	 * @return
+	 */
+	@Override
+	public HouseBudgetInfoVo getHouseBudgetInfoByCode(final String houseBudgetCode) {
+		if (StringUtils.isBlank(houseBudgetCode)) {
+			throw new ValidateException(ResultEnum.REQ_PARAMETER_ERROR, "装修编码不能为空");
+		}
+		Example example = new Example(HouseBudgetInfoPo.class);
+		example.createCriteria().andEqualTo("status", SysConstant.STATUS_0)
+				.andEqualTo("houseBudgetCode", houseBudgetCode);
+		HouseBudgetInfoPo houseBudgetInfoPo = iHouseBudgetInfoMapper.selectOneByExample(example);
+		HouseBudgetInfoVo houseBudgetInfoVo = BeanMapperUtil.map(houseBudgetInfoPo, HouseBudgetInfoVo.class);
+		if (houseBudgetInfoVo != null) {
+			HouseDetailInfoVo houseDetailInfo = this.getHouseDetailInfo(houseBudgetInfoVo.getHouseDetailCode());
+			if (houseDetailInfo != null) {
+				houseBudgetInfoVo.setHouseDetailName(houseDetailInfo.getHouseDetailName());
+				houseBudgetInfoVo.setRoomNickName(houseDetailInfo.getRoomNickName());
+			}
+		}
+		return houseBudgetInfoVo;
+	}
+
+	/**
+	 * @param houseDetailCode
+	 * @return
+	 */
+	@Override
+	public List<HouseBudgetInfoVo> queryHouseBudgetInfoByHouseDetailCode(final String houseDetailCode) {
+		if (StringUtils.isBlank(houseDetailCode)) {
+			throw new ValidateException(ResultEnum.REQ_PARAMETER_ERROR, "房屋明细编码不能为空");
+		}
+		Example example = new Example(HouseBudgetInfoPo.class);
+		example.createCriteria().andEqualTo("status", SysConstant.STATUS_0)
+				.andEqualTo("houseDetailCode", houseDetailCode);
+		List<HouseBudgetInfoPo> houseBudgetInfoPos = iHouseBudgetInfoMapper.selectByExample(example);
+		return BeanMapperUtil.mapToList(houseBudgetInfoPos, HouseBudgetInfoVo.class);
 	}
 
 	/**
@@ -154,10 +256,97 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
 		if (houseInfoPo == null) {
 			throw new ValidateException(ResultEnum.REQ_PARAMETER_ERROR, "房间主档信息未填写");
 		}
-		checkRoomTypeInfo(houseDetailInfoVo, houseInfoPo);
+//		checkRoomTypeInfo(houseDetailInfoVo, houseInfoPo);
 		houseDetailInfoVo.setHouseDetailCode(super.getUniqueId(SysConstant.UNIQUEID_HOUSE_DETAIL_PRIFIX));
 		int count = iHouseDetailInfoMapper.replaceHouseDetailInfo(houseDetailInfoVo);
 		return count > 0;
+	}
+
+	/**
+	 * @param houseBudgetInfoVo
+	 * @return
+	 */
+	@Override
+	public boolean saveHouseBudgetInfo(final HouseBudgetInfoVo houseBudgetInfoVo) {
+		String houseBudgetCode = houseBudgetInfoVo.getHouseBudgetCode();
+		String houseDetailCode = houseBudgetInfoVo.getHouseDetailCode();
+		if (StringUtils.isBlank(houseDetailCode)) {
+			throw new ValidateException(ResultEnum.REQ_PARAMETER_ERROR, "房屋明细编码不能为空");
+		}
+		HouseDetailInfoVo houseDetailInfo = this.getHouseDetailInfo(houseDetailCode);
+		if (houseDetailInfo == null) {
+			throw new ValidateException(ResultEnum.DATA_NOT_EXISTS, "房屋信息不存在");
+		}
+		houseBudgetInfoVo.setHouseCode(houseDetailInfo.getHouseCode());
+		HouseBudgetInfoPo houseBudgetInfoPo = BeanMapperUtil.map(houseBudgetInfoVo, HouseBudgetInfoPo.class);
+		if (StringUtils.isNotBlank(houseBudgetCode)) {
+			Example example = new Example(HouseBudgetInfoPo.class);
+			example.createCriteria().andEqualTo("status", SysConstant.STATUS_0)
+					.andEqualTo("houseBudgetCode", houseBudgetCode);
+			houseBudgetInfoPo = iHouseBudgetInfoMapper.selectOneByExample(example);
+			if (houseBudgetInfoPo == null) {
+				throw new ValidateException(ResultEnum.DATA_NOT_EXISTS, "装修材料信息不存在");
+			}
+			if (StringUtils.isBlank(houseBudgetInfoVo.getBudgetCode())) {
+				houseBudgetInfoPo.setBudgetAmount(houseBudgetInfoVo.getBudgetAmount());
+				houseBudgetInfoPo.setBudgetName(houseBudgetInfoVo.getBudgetName());
+			}
+			houseBudgetInfoPo.setBudgetCount(houseBudgetInfoVo.getBudgetCount());
+			return iHouseBudgetInfoMapper.updateByPrimaryKeySelective(houseBudgetInfoPo) >= 0;
+		} else {
+			houseBudgetInfoPo.setHouseBudgetCode(super.getUniqueId(SysConstant.UNIQUEID_HOUSE_BUDGET_PRIFIX));
+			int i = iHouseBudgetInfoMapper.insertSelective(houseBudgetInfoPo);
+			return i > 0;
+		}
+	}
+
+	/**
+	 * @param houseDetailCode
+	 * @param budgetCodes
+	 * @return
+	 */
+	@Transactional(rollbackFor = {OptionsException.class, Exception.class})
+	@Override
+	public boolean saveHouseBudgetInfo(final String houseDetailCode, final List<String> budgetCodes) {
+
+		HouseDetailInfoVo houseDetailInfo = this.getHouseDetailInfo(houseDetailCode);
+		if (houseDetailInfo == null) {
+			throw new ValidateException(ResultEnum.DATA_NOT_EXISTS, "房屋信息不存在");
+		}
+		List<BudgetInfoVo> budgetInfoVos = iBudgetInfoService.queryBudgetInfosByCodes(budgetCodes);
+		if (CollectionUtils.isEmpty(budgetInfoVos)) {
+			throw new ValidateException(ResultEnum.DATA_NOT_EXISTS, "材料信息不存在");
+		}
+		for (final BudgetInfoVo budgetInfoVo : budgetInfoVos) {
+			HouseBudgetInfoPo po = new HouseBudgetInfoPo();
+			po.setHouseCode(houseDetailInfo.getHouseCode());
+			po.setHouseDetailCode(houseDetailCode);
+			po.setHouseBudgetCode(super.getUniqueId(SysConstant.UNIQUEID_HOUSE_BUDGET_PRIFIX));
+			po.setBudgetCode(budgetInfoVo.getBudgetCode());
+			po.setBudgetName(budgetInfoVo.getBudgetName());
+			po.setBudgetAmount(budgetInfoVo.getBudgetAmount());
+			po.setBudgetCount(1);
+			if (iHouseBudgetInfoMapper.insertSelective(po) != 1) {
+				throw new OptionsException(ResultEnum.SAVE_BUDGETINFO_FAILED);
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * @param budgetCode
+	 * @return
+	 */
+	@Override
+	public boolean deleteHouseBudgetInfo(final String budgetCode) {
+		if (StringUtils.isBlank(budgetCode)) {
+			throw new ValidateException(ResultEnum.REQ_PARAMETER_ERROR, "删除信息编码不能为空");
+		}
+		Example example = new Example(HouseBudgetInfoPo.class);
+		example.createCriteria().andEqualTo("status", SysConstant.STATUS_0)
+				.andEqualTo("budgetCode", budgetCode);
+		int i = iHouseBudgetInfoMapper.deleteByExample(example);
+		return i > 0;
 	}
 
 	private void checkRoomInfo(HouseDetailInfoVo houseDetailInfoVo) {

@@ -2,10 +2,12 @@ package com.ping.userinfo.impl;
 
 import com.ping.annotation.CacheSave;
 import com.ping.co.UserInfoCo;
+import com.ping.constant.CacheKeyRuleEnum;
 import com.ping.constant.CacheTypeEnum;
 import com.ping.constant.ResultEnum;
 import com.ping.constant.SysConstant;
 import com.ping.exception.UserException;
+import com.ping.exception.ValidateException;
 import com.ping.mapper.IUserInfoMapper;
 import com.ping.po.UserInfoPo;
 import com.ping.userinfo.IUserInfoService;
@@ -78,7 +80,7 @@ public class UserInfoServiceImpl implements IUserInfoService {
 	}
 
 	@Override
-	@CacheSave(key = SysConstant.USER_INFO_SESSION_KEY, cacheType = CacheTypeEnum.SESSION_CACHE)
+	@CacheSave(key = SysConstant.USER_INFO_SESSION_KEY, cacheKeyRule = CacheKeyRuleEnum.NORMAL, cacheType = CacheTypeEnum.SESSION_CACHE)
 	public UserInfoVo checkUser(final String mobilePhone, final String password) {
 		Example example = new Example(UserInfoPo.class);
 		Example.Criteria criteria = example.createCriteria();
@@ -86,6 +88,9 @@ public class UserInfoServiceImpl implements IUserInfoService {
 		criteria.andEqualTo("mobilePhone", mobilePhone);
 		criteria.andEqualTo("password", password);
 		UserInfoPo userInfoPo = iUserInfoMapper.selectOneByExample(example);
+		if (userInfoPo == null) {
+			throw new ValidateException(ResultEnum.LOGIN_FAIL);
+		}
 		UserInfoVo userInfoVo = BeanMapperUtil.map(userInfoPo, UserInfoVo.class);
 		return userInfoVo;
 	}

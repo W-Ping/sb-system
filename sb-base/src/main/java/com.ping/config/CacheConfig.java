@@ -103,7 +103,9 @@ public class CacheConfig {
 	 */
 	private String getCacheKey(String key, ProceedingJoinPoint joinPoint, CacheKeyRuleEnum cacheKeyRuleEnum) {
 		String sk = "";
-		if (StringUtils.isBlank(key) || CacheKeyRuleEnum.METHOD_SIGNATURE.equals(cacheKeyRuleEnum)) {
+		if (CacheKeyRuleEnum.NORMAL.equals(cacheKeyRuleEnum) && StringUtils.isNotBlank(key)) {
+			sk = key;
+		} else if (StringUtils.isBlank(key) || CacheKeyRuleEnum.METHOD_SIGNATURE.equals(cacheKeyRuleEnum)) {
 			sk = generateKey(joinPoint);
 		} else if (CacheKeyRuleEnum.SPEL.equals(cacheKeyRuleEnum)) {
 			sk = generateKeyBySpEL(key, joinPoint);
@@ -112,6 +114,7 @@ public class CacheConfig {
 				&& StringUtils.isNotBlank(key)) {
 			sk = key + ":" + sk;
 		}
+
 		return sk;
 	}
 

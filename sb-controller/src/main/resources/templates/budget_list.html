@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我的装修</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+    <style>
+        .selectIcon1 {
+            display: flex;
+            background: grey;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            align-items: center;
+            flex-direction: row;
+        }
+
+        .selectIcon2 {
+            display: flex;
+            background: #4cd964;;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            align-items: center;
+            flex-direction: row;
+            visibility: hidden;
+            display: none;
+        }
+    </style>
+</head>
+
+<div class="page" id='page-house-decorate'>
+    <header class="bar bar-nav">
+        <a class="button button-link button-nav pull-left back" style=" font-size: 20px;">
+            <span class="icon icon-left"></span>
+            返回
+        </a>
+        <a class="button button-link button-nav pull-right" onclick="submitSelectBudget()"
+           style="color: green;font-size: 20px; margin-right: 2px;"
+           th:style="'color: green;font-size: 20px; margin-right: 2px;'+${#lists.isEmpty(list)?'display: none':'display: block'}">
+            确定
+        </a>
+        <h1 class='title'
+            th:text="${vo?.houseDetailName}+${vo.roomNickName!=null && vo.roomNickName!=''?'【'+vo.roomNickName+'】':''}"></h1>
+    </header>
+    <div class="content">
+        <input type="hidden" id="houseDetailCode" th:value="${vo?.houseDetailCode}">
+        <div class="content">
+            <div class="content-block" th:if="${#lists.isEmpty(list)}">
+                <div class="content-padded to-page-link">
+                    <div class="row" style="margin: 0 auto; width: 60%;">
+                        <div style="margin: 0 auto; text-align: center;">
+                            <p><span style="font-size: 16px;">没有可选材料~~~</span></p>
+                            <a th:href="@{'/house/page/3?mobile_phone='+${mobilePhone}}"
+                               class="button button-big button-fill  external">添加新的材料</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <dive th:unless="${#lists.isEmpty(list)}" th:each="vo,stat:${list}">
+                <div class="card">
+                    <h3>
+                        <div class="card-header" th:text="${vo?.budgetName}"></div>
+                    </h3>
+                    <div class="card-content">
+                        <div class="list-block ">
+                            <ul>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title">最高成本</div>
+                                        <div class="item-after" th:text="${vo?.maxCost}"></div>
+                                    </div>
+                                </li>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title">最低成本</div>
+                                        <div class="item-after" th:text="${vo?.minCost}"></div>
+                                    </div>
+                                </li>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title">实际成本</div>
+                                        <div class="item-after" th:text="${vo?.actualCost}"></div>
+                                    </div>
+                                </li>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title">预算金额</div>
+                                        <div class="item-after" th:text="${vo?.budgetAmount}"></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="selectIcon1" id="selectIcon1" th:id="'selectIcon1_'+${stat.index}"></div>
+                        <div class="selectIcon2" th:id="'selectIcon2_'+${stat.index}"></div>
+                        <a href="#" th:attr="data-budgetCode=${vo?.budgetCode},data-index=${stat.index}"
+                           class="link selectBtn"
+                           style="font-size: 20px; ">点击选择</a>
+                    </div>
+                </div>
+
+            </dive>
+        </div>
+    </div>
+</div>
+<body>
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+<script>
+    let totalBudgetCodeArr = []
+
+    $(".selectBtn").on("click", function () {
+        let budgetCode = $(this).attr("data-budgetCode");
+        let index = $(this).attr("data-index");
+        let e1 = $("#selectIcon1_" + index);
+        let e2 = $("#selectIcon2_" + index);
+        if (e1.css("visibility") == "visible") {
+            e1.css("visibility", "hidden");
+            e2.css("visibility", "visible");
+            e1.hide();
+            e2.show();
+            totalBudgetCodeArr.push(budgetCode);
+            $(this).text("点击取消")
+        } else {
+            e1.css("visibility", "visible");
+            e2.css("visibility", "hidden");
+            e2.hide();
+            e1.show();
+            let index = totalBudgetCodeArr.indexOf(budgetCode)
+            if (index >= 0) {
+                totalBudgetCodeArr.splice(index, 1);
+            }
+            $(this).text("点击选择")
+        }
+    })
+
+    function submitSelectBudget() {
+        if (!totalBudgetCodeArr || totalBudgetCodeArr.length <= 0) {
+            $.toast('请点击选择');
+            return;
+        }
+        let houseDetailCode = $("#houseDetailCode").val();
+        $.confirm('确定保存吗?', function () {
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                url: '/house/detail/decorate/' + houseDetailCode + '/save',
+                data: JSON.stringify(totalBudgetCodeArr),
+                success: function (result) {
+                    if (result.code == 200) {
+                        $.toast('保存成功！');
+                        window.location.href = document.referrer;
+                    } else {
+                        $.toast(result.message);
+                    }
+                },
+                error: function (result, type, err) {
+                    $.toast("提交失败!");
+                }
+            });
+        });
+
+    }
+</script>
+</body>
+</html>

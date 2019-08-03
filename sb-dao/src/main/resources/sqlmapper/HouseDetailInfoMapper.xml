@@ -52,6 +52,7 @@
         floor_area_size=values(floor_area_size),
         wall_area_size=values(wall_area_size),
         ceil_area_size=values(ceil_area_size),
+        room_nick_name=values(room_nick_name),
         status=values(status),
         remark=values(remark),
         version=values(version);

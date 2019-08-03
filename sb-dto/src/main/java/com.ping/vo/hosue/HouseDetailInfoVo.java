@@ -1,8 +1,12 @@
 package com.ping.vo.hosue;
 
 import com.ping.vo.BaseVo;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 房屋信息明细表
@@ -47,6 +51,21 @@ public class HouseDetailInfoVo extends BaseVo {
 	 * 地板面积
 	 */
 	private BigDecimal ceilAreaSize;
+
+	/**
+	 *
+	 */
+	private BigDecimal totalBudgetAmount;
+
+	private List<HouseBudgetInfoVo> houseBudgetInfoVos;
+
+	public List<HouseBudgetInfoVo> getHouseBudgetInfoVos() {
+		return houseBudgetInfoVos;
+	}
+
+	public void setHouseBudgetInfoVos(final List<HouseBudgetInfoVo> houseBudgetInfoVos) {
+		this.houseBudgetInfoVos = houseBudgetInfoVos;
+	}
 
 	public String getHouseCode() {
 		return houseCode;
@@ -118,5 +137,19 @@ public class HouseDetailInfoVo extends BaseVo {
 
 	public void setCeilAreaSize(final BigDecimal ceilAreaSize) {
 		this.ceilAreaSize = ceilAreaSize;
+	}
+
+	public BigDecimal getTotalBudgetAmount() {
+		if (!CollectionUtils.isEmpty(houseBudgetInfoVos)) {
+			totalBudgetAmount = houseBudgetInfoVos.stream().map(v -> (v.getBudgetAmount() != null ? v.getBudgetAmount() : BigDecimal.ZERO)
+					.multiply(v.getBudgetCount() != null ? new BigDecimal(v.getBudgetCount()) : BigDecimal.ZERO)).
+					reduce(BigDecimal.ZERO, BigDecimal::add);
+			return totalBudgetAmount.setScale(2, BigDecimal.ROUND_HALF_UP);
+		}
+		return totalBudgetAmount;
+	}
+
+	public void setTotalBudgetAmount(final BigDecimal totalBudgetAmount) {
+		this.totalBudgetAmount = totalBudgetAmount;
 	}
 }

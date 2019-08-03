@@ -35,7 +35,7 @@ public class HttpRequestAspect {
 	@Around("cacheSavePointcut(cacheSave)")
 	public Object cacheSaveAround(ProceedingJoinPoint joinPoint, CacheSave cacheSave) throws Throwable {
 		Object result = joinPoint.proceed();
-		LOGGER.info("cacheSave result{}", JSONUtil.objectToString(result));
+		LOGGER.info("cacheSave result {}", JSONUtil.objectToString(result));
 		cacheConfig.put(result, cacheSave, joinPoint);
 		return result;
 	}

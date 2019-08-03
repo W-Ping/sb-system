@@ -23,14 +23,11 @@ public class BudgetInfoVo extends BaseVo {
 	 *
 	 */
 	private String mobilePhone;
+
 	/**
-	 * 最小预算金额
+	 * 预算金额
 	 */
-	private BigDecimal minBudgetAmount;
-	/**
-	 * 最大预算金额
-	 */
-	private BigDecimal maxBudgetAmount;
+	private BigDecimal budgetAmount;
 	/**
 	 * 最小成本
 	 */
@@ -60,20 +57,12 @@ public class BudgetInfoVo extends BaseVo {
 		this.budgetCode = budgetCode;
 	}
 
-	public BigDecimal getMinBudgetAmount() {
-		return minBudgetAmount;
+	public BigDecimal getBudgetAmount() {
+		return budgetAmount;
 	}
 
-	public void setMinBudgetAmount(final BigDecimal minBudgetAmount) {
-		this.minBudgetAmount = minBudgetAmount;
-	}
-
-	public BigDecimal getMaxBudgetAmount() {
-		return maxBudgetAmount;
-	}
-
-	public void setMaxBudgetAmount(final BigDecimal maxBudgetAmount) {
-		this.maxBudgetAmount = maxBudgetAmount;
+	public void setBudgetAmount(final BigDecimal budgetAmount) {
+		this.budgetAmount = budgetAmount;
 	}
 
 	public BigDecimal getMinCost() {

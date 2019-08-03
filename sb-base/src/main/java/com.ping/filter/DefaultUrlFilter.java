@@ -36,7 +36,7 @@ public class DefaultUrlFilter implements Filter {
 		HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 		String requestURI = httpServletRequest.getRequestURI();
-		if (isAjax(httpServletRequest) || checkUrl(requestURI)) {
+		if (isAjax(httpServletRequest) || checkUrl(requestURI) || checkLogin(httpServletRequest)) {
 			filterChain.doFilter(httpServletRequest, httpServletResponse);
 		} else {
 			logger.warn("{}，重定向登录页面", requestURI);

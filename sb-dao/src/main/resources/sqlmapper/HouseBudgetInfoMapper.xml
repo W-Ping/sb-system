@@ -8,6 +8,9 @@
         <result property="houseCode" column="house_code"/>
         <result property="houseDetailCode" column="house_detail_code"/>
         <result property="budgetCode" column="budget_code"/>
+        <result property="budgetName" column="budget_name"/>
+        <result property="budgetAmount" column="budget_amount"/>
+        <result property="budgetCount" column="budget_count"/>
         <result property="status" column="status"/>
         <result property="remark" column="remark"/>
         <result property="version" column="version"/>

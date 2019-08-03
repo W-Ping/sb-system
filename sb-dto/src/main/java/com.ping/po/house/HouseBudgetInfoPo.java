@@ -4,6 +4,7 @@ import com.ping.po.BasePo;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 
 /**
  * 房屋装修预算表
@@ -26,8 +27,28 @@ public class HouseBudgetInfoPo extends BasePo {
 	/**
 	 *
 	 */
+	@Column(name = "house_budget_code")
+	private String houseBudgetCode;
+	/**
+	 *
+	 */
 	@Column(name = "budget_code")
 	private String budgetCode;
+	/**
+	 *
+	 */
+	@Column(name = "budget_name")
+	private String budgetName;
+	/**
+	 *
+	 */
+	@Column(name = "budget_amount")
+	private BigDecimal budgetAmount;
+	/**
+	 *
+	 */
+	@Column(name = "budget_count")
+	private Integer budgetCount;
 
 	public String getHouseCode() {
 		return houseCode;
@@ -51,5 +72,37 @@ public class HouseBudgetInfoPo extends BasePo {
 
 	public void setBudgetCode(final String budgetCode) {
 		this.budgetCode = budgetCode;
+	}
+
+	public String getBudgetName() {
+		return budgetName;
+	}
+
+	public void setBudgetName(final String budgetName) {
+		this.budgetName = budgetName;
+	}
+
+	public BigDecimal getBudgetAmount() {
+		return budgetAmount;
+	}
+
+	public void setBudgetAmount(final BigDecimal budgetAmount) {
+		this.budgetAmount = budgetAmount;
+	}
+
+	public Integer getBudgetCount() {
+		return budgetCount;
+	}
+
+	public String getHouseBudgetCode() {
+		return houseBudgetCode;
+	}
+
+	public void setHouseBudgetCode(final String houseBudgetCode) {
+		this.houseBudgetCode = houseBudgetCode;
+	}
+
+	public void setBudgetCount(final Integer budgetCount) {
+		this.budgetCount = budgetCount;
 	}
 }

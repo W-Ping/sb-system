@@ -30,10 +30,10 @@ public interface IBudgetInfoService {
 	boolean deleteBudgetInfoById(Long id);
 
 	/**
-	 * @param budgetInfoVo
+	 * @param budgetInfoCo
 	 * @return
 	 */
-	List<BudgetInfoVo> queryBudgetInfoList(BudgetInfoCo budgetInfoVo);
+	List<BudgetInfoVo> queryBudgetInfoList(BudgetInfoCo budgetInfoCo);
 
 	/**
 	 * @param budgetInfoVo
@@ -41,9 +41,10 @@ public interface IBudgetInfoService {
 	 */
 	List<BudgetInfoVo> queryBudgetInfoListPage(BudgetInfoCo budgetInfoVo);
 
+
 	/**
-	 * @param budgetInfoVo
+	 * @param budgetCodes
 	 * @return
 	 */
-	BudgetInfoVo getBudgetInfo(BudgetInfoCo budgetInfoVo);
+	List<BudgetInfoVo> queryBudgetInfosByCodes(List<String> budgetCodes);
 }

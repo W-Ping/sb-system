@@ -1,10 +1,13 @@
 package com.ping.houseinfo;
 
 import com.ping.co.HouseInfoCo;
+import com.ping.vo.hosue.HouseBudgetInfoVo;
 import com.ping.vo.hosue.HouseDetailInfoVo;
 import com.ping.vo.hosue.HouseInfoVo;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lwp
@@ -22,6 +25,25 @@ public interface IHouseInfoService {
 	 * @return
 	 */
 	boolean saveHouseRoomInfo(HouseDetailInfoVo houseDetailInfoVo);
+
+	/**
+	 * @param houseBudgetInfoVo
+	 * @return
+	 */
+	boolean saveHouseBudgetInfo(HouseBudgetInfoVo houseBudgetInfoVo);
+
+	/**
+	 * @param houseDetailCode
+	 * @param budgetCodes
+	 * @return
+	 */
+	boolean saveHouseBudgetInfo(String houseDetailCode, List<String> budgetCodes);
+
+	/**
+	 * @param budgetCode
+	 * @return
+	 */
+	boolean deleteHouseBudgetInfo(String budgetCode);
 
 	/**
 	 * @param co
@@ -48,6 +70,14 @@ public interface IHouseInfoService {
 	HouseInfoVo getHouseInfoByMobilePhone(String mobilePhone);
 
 	/**
+	 * 计算装修费用
+	 *
+	 * @param mobilePhone
+	 * @return
+	 */
+	Map<String, String> calculateBudgetTotalAmount(String mobilePhone);
+
+	/**
 	 * @param mobilePhone
 	 * @return
 	 */
@@ -60,4 +90,22 @@ public interface IHouseInfoService {
 	 * @return
 	 */
 	HouseDetailInfoVo getHouseDetailInfo(String mobilePhone, Integer roomType, Integer roomIndex);
+
+	/**
+	 * @param houseDetailCode
+	 * @return
+	 */
+	HouseDetailInfoVo getHouseDetailInfo(String houseDetailCode);
+
+	/**
+	 * @param houseBudgetCode
+	 * @return
+	 */
+	HouseBudgetInfoVo getHouseBudgetInfoByCode(String houseBudgetCode);
+
+	/**
+	 * @param houseDetailCode
+	 * @return
+	 */
+	List<HouseBudgetInfoVo> queryHouseBudgetInfoByHouseDetailCode(String houseDetailCode);
 }

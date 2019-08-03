@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我的装修</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+</head>
+
+<div class="page" id='page-house-decorate'>
+    <header class="bar bar-nav">
+        <a class="button button-link button-nav pull-left back">
+            <span class="icon icon-left"></span>
+            返回
+        </a>
+        <h1 class='title'
+            th:text="${vo?.houseDetailName}+${vo.roomNickName!=null && vo.roomNickName!=''?'【'+vo.roomNickName+'】':''}"></h1>
+    </header>
+    <div class="content">
+        <input type="hidden" id="budgetCode" th:value="${vo?.budgetCode}">
+        <input type="hidden" id="houseBudgetCode" th:value="${vo?.houseBudgetCode}">
+        <input type="hidden" id="houseDetailCode" th:value="${vo?.houseDetailCode}">
+        <div class="content">
+            <div class="list-block">
+                <ul>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">材料名称</div>
+                                <div class="item-input">
+                                    <input type="text" id="budgetName"
+                                           th:disabled="${vo!=null and vo.budgetCode!=null and vo.budgetCode!=''?'true':'false'}"
+                                           th:value="${vo?.budgetName}"
+                                           th:placeholder="材料名称">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">材料金额</div>
+                                <div class="item-input">
+                                    <input type="text" id="budgetAmount"
+                                           th:disabled="${vo!=null and vo.budgetCode!=null and vo.budgetCode!=''?'true':'false'}"
+                                           th:value="${vo?.budgetAmount}"
+                                           th:placeholder="材料金额">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">数量</div>
+                                <div class="item-input">
+                                    <input type="text" id="budgetCount" th:value="${vo?.budgetCount}"
+                                           th:placeholder="数量">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <div style="font-size: 20px; text-align: center;">合计：<label id="totalAmount" style="font-size: 25px;"
+                                                                            th:text="${(vo!=null and vo.budgetAmount!=null?vo.budgetAmount:0) * (vo!=null and vo.budgetCount!=null?vo.budgetCount:0) }+' 元'"></label>
+                </div>
+            </div>
+            <div class="content-block">
+                <div class="row">
+                    <div class="col-50"><a href="#" class="button button-big button-fill button-danger back">取消</a>
+                    </div>
+                    <div class="col-50"><a href="#" onclick="submitDecorate()"
+                                           class="button button-big button-fill button-success">确定</a></div>
+                </div>
+                <div style="height: 40px;" th:if="${vo!=null and vo.budgetCode!=null}">
+                    <p><a href="#" onclick="deleteHouseDecorate()" class="button  button-big button-light"
+                          style="color: red;">删 除</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<body>
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+<script>
+    function submitDecorate() {
+        let url = '/house/detail/decorate/save';
+        let budgetName = $("#budgetName").val();
+        let budgetAmount = $("#budgetAmount").val();
+        let budgetCount = $("#budgetCount").val();
+        if (!budgetName) {
+            $.toast("材料名称不能为空！");
+            return;
+        }
+        if (!budgetAmount) {
+            $.toast("材料金额不能为空！");
+            return;
+        }
+        if (!budgetCount) {
+            $.toast("数量不能为空！");
+            return;
+        }
+        let houseDetailCode = $("#houseDetailCode").val();
+        let budgetCode = $("#budgetCode").val();
+        let houseBudgetCode = $("#houseBudgetCode").val();
+        let param = {};
+        param['houseDetailCode'] = houseDetailCode;
+        param['budgetCode'] = budgetCode;
+        param['houseBudgetCode'] = houseBudgetCode;
+        param['budgetName'] = budgetName;
+        param['budgetAmount'] = budgetAmount;
+        param['budgetCount'] = budgetCount;
+        param['budgetCount'] = budgetCount;
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: url,
+            data: JSON.stringify(param),
+            success: function (result) {
+                if (result.code == 200) {
+                    $.toast('保存成功！', 3000);
+                    window.location.href = document.referrer;
+                } else {
+                    $.toast(result.message);
+                }
+            },
+            error: function (result, type, error) {
+                $.toast(error);
+            }
+        });
+    }
+
+    function deleteHouseDecorate() {
+        let budgetCode = $("#budgetCode").val();
+        if (!budgetCode) {
+            $.toast("信息不存在！");
+            return;
+        }
+        let url = '/house/detail/decorate/delete/' + budgetCode;
+        $.confirm('确定要删除吗?', function () {
+            $.ajax({
+                type: 'DELETE',
+                url: url,
+                success: function (result) {
+                    if (result.code == 200) {
+                        $.toast('删除成功！');
+                        window.location.href = document.referrer;
+                    } else {
+                        $.toast(result.message);
+                    }
+                },
+                error: function (result, type, err) {
+                    $.toast("删除失败!");
+                }
+            })
+        });
+    }
+
+    $('#budgetAmount').on("input propertychange", function () {
+        let budgetAmount = $(this).val() || 0;
+        let budgetCount = $("#budgetCount").val() || 0;
+        console.log(budgetAmount);
+        console.log(budgetCount);
+        $("#totalAmount").text((budgetAmount * budgetCount).toFixed(2) + " 元");
+    });
+    $('#budgetCount').on("input propertychange", function () {
+        let budgetCount = $(this).val() || 0
+        let budgetAmount = $("#budgetAmount").val() || 0;
+        console.log(budgetAmount);
+        console.log(budgetCount);
+        $("#totalAmount").text((budgetAmount * budgetCount).toFixed(2) + " 元");
+    });
+
+</script>
+</body>
+</html>

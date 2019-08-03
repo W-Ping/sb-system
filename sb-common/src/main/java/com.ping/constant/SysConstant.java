@@ -9,6 +9,7 @@ public class SysConstant {
 	public static final String UNIQUEID_BUDGET_PRIFIX = "BG";
 	public static final String UNIQUEID_HOUSE_PRIFIX = "HS";
 	public static final String UNIQUEID_HOUSE_DETAIL_PRIFIX = "HSD";
+	public static final String UNIQUEID_HOUSE_BUDGET_PRIFIX = "HSB";
 	public static final int STATUS_0 = 0;
 	public static final int STATUS_1 = 1;
 	;

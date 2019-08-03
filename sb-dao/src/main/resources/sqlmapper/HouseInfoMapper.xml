@@ -20,4 +20,22 @@
         <result property="updateTime" column="update_time"/>
         <result property="createTime" column="create_time"/>
     </resultMap>
+    <select id="calculateBudgetTotalAmount" parameterType="string" resultType="map">
+        SELECT
+        SUM(ROUND(t2.budget_count* t2.budget_amount,2)) as account_total,
+        SUM(ROUND(t2.budget_count*IFNULL(t3.min_cost,0),2))+SUM(ROUND(IF(t2.budget_code is null or
+        t2.budget_code='',t2.budget_amount*budget_count,0),2)) as min_account_total,
+        SUM(ROUND(t2.budget_count*IFNULL(t3.max_cost,0),2))+SUM(ROUND(IF(t2.budget_code is null or
+        t2.budget_code='',t2.budget_amount*budget_count,0),2)) as max_account_total
+        FROM
+        sbdb.house_info AS t1
+        INNER JOIN house_budget_info AS t2 ON t1.house_code = t2.house_code
+        LEFT JOIN budget_info AS t3 ON t2.budget_code=t3.budget_code
+        WHERE
+        t1.`status` = 0
+        AND t2.`status` = 0
+        <if test="mobilePhone!=null and mobilePhone!=''">
+            AND t1.mobile_phone=#{mobilePhone}
+        </if>
+    </select>
 </mapper>
