@@ -53,7 +53,11 @@
             <span class="icon icon-left"></span>
             返回
         </a>
-        <h1 class='title' id="room-title">编辑</h1>
+        <h1 class='title' id="room-title">我的房子</h1>
+        <a class="button button-link button-nav pull-right" th:href="@{'/house/page/1?mobile_phone='+${mobilePhone}}">
+            装修房间
+            <span class="icon icon-right"></span>
+        </a>
     </header>
     <!--    <div class="content">-->
     <input hidden th:value="${mobilePhone}" id="mobilePhone">
