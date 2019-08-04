@@ -79,9 +79,9 @@ public class HouseController {
 	 * @param budgetCode
 	 * @return
 	 */
-	@DeleteMapping(value = "/detail/decorate/delete/{budgetCode}")
-	public Result<Boolean> deleteHouseBudgetInfo(@PathVariable("budgetCode") String budgetCode) {
-		boolean b = iHouseInfoService.deleteHouseBudgetInfo(budgetCode);
+	@DeleteMapping(value = "/detail/decorate/delete/{houseBudgetCode}")
+	public Result<Boolean> deleteHouseBudgetInfo(@PathVariable("houseBudgetCode") String houseBudgetCode) {
+		boolean b = iHouseInfoService.deleteHouseBudgetInfo(houseBudgetCode);
 		return Result.successOrFail(b);
 	}
 

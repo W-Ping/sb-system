@@ -334,17 +334,16 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
 	}
 
 	/**
-	 * @param budgetCode
 	 * @return
 	 */
 	@Override
-	public boolean deleteHouseBudgetInfo(final String budgetCode) {
-		if (StringUtils.isBlank(budgetCode)) {
+	public boolean deleteHouseBudgetInfo(final String houseBudgetCode) {
+		if (StringUtils.isBlank(houseBudgetCode)) {
 			throw new ValidateException(ResultEnum.REQ_PARAMETER_ERROR, "删除信息编码不能为空");
 		}
 		Example example = new Example(HouseBudgetInfoPo.class);
 		example.createCriteria().andEqualTo("status", SysConstant.STATUS_0)
-				.andEqualTo("budgetCode", budgetCode);
+				.andEqualTo("houseBudgetCode", houseBudgetCode);
 		int i = iHouseBudgetInfoMapper.deleteByExample(example);
 		return i > 0;
 	}

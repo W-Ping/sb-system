@@ -162,12 +162,12 @@
     }
 
     function deleteHouseDecorate() {
-        let budgetCode = $("#budgetCode").val();
-        if (!budgetCode) {
+        let houseBudgetCode = $("#houseBudgetCode").val();
+        if (!houseBudgetCode) {
             $.toast("信息不存在！");
             return;
         }
-        let url = '/house/detail/decorate/delete/' + budgetCode;
+        let url = '/house/detail/decorate/delete/' + houseBudgetCode;
         $.confirm('确定要删除吗?', function () {
             $.ajax({
                 type: 'DELETE',

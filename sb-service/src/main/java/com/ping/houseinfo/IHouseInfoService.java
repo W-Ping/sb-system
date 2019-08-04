@@ -40,10 +40,10 @@ public interface IHouseInfoService {
 	boolean saveHouseBudgetInfo(String houseDetailCode, List<String> budgetCodes);
 
 	/**
-	 * @param budgetCode
+	 * @param houseBudgetCode
 	 * @return
 	 */
-	boolean deleteHouseBudgetInfo(String budgetCode);
+	boolean deleteHouseBudgetInfo(String houseBudgetCode);
 
 	/**
 	 * @param co
