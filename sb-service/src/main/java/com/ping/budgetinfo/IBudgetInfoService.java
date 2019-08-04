@@ -24,6 +24,12 @@ public interface IBudgetInfoService {
 	boolean saveBudgetInfo(BudgetInfoVo budgetInfoVo);
 
 	/**
+	 * @param budgetInfoVo
+	 * @return
+	 */
+	boolean saveCopyBudget(BudgetInfoVo budgetInfoVo);
+
+	/**
 	 * @param id
 	 * @return
 	 */

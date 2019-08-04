@@ -95,6 +95,13 @@
                                         <div class="item-after" th:text="${vo?.budgetAmount}"></div>
                                     </div>
                                 </li>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title">备注</div>
+                                        <div class="item-after" th:onclick="showRemark([[${vo?.remark}]])"
+                                             th:text="${vo?.remark!=null?#strings.length(vo?.remark):0} le 10 ? ${vo?.remark}:${#strings.append(#strings.substring(vo.remark,0,10),'...')}"></div>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -142,6 +149,12 @@
             $(this).text("点击选择")
         }
     })
+
+    function showRemark(remark) {
+        if (remark) {
+            $.alert(remark);
+        }
+    }
 
     function submitSelectBudget() {
         if (!totalBudgetCodeArr || totalBudgetCodeArr.length <= 0) {

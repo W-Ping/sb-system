@@ -13,6 +13,7 @@ import com.ping.utils.BeanMapperUtil;
 import com.ping.vo.hosue.BudgetInfoVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -65,6 +66,37 @@ public class BudgetInfoServiceImpl extends BaseService implements IBudgetInfoSer
 			updatePo.setId(budgetInfoPo.getId());
 			return iBudgetInfoMapper.updateByPrimaryKeySelective(updatePo) >= 0;
 		}
+	}
+
+	/**
+	 * @param budgetInfoVo
+	 * @return
+	 */
+	@Override
+	public boolean saveCopyBudget(final BudgetInfoVo budgetInfoVo) {
+		if (StringUtils.isBlank(budgetInfoVo.getBudgetCode())) {
+			throw new ValidateException(ResultEnum.REQ_PARAMETER_ERROR, "复制材料信息不存在");
+		}
+		if (StringUtils.isBlank(budgetInfoVo.getBudgetName())) {
+			throw new ValidateException(ResultEnum.REQ_PARAMETER_ERROR, "复制新材料名称不不能为空");
+		}
+		Example example = new Example(BudgetInfoPo.class);
+		example.createCriteria().andEqualTo("status", SysConstant.STATUS_0)
+				.andEqualTo("budgetCode", budgetInfoVo.getBudgetCode());
+		BudgetInfoPo budgetInfoPo = iBudgetInfoMapper.selectOneByExample(example);
+		if (budgetInfoPo == null) {
+			throw new OptionsException(ResultEnum.DATA_NOT_EXISTS, "复制材料信息已不存在");
+		}
+		BudgetInfoPo newPo = new BudgetInfoPo();
+		newPo.setBudgetCode(super.getUniqueId(SysConstant.UNIQUEID_BUDGET_PRIFIX));
+		newPo.setBudgetName(budgetInfoVo.getBudgetName());
+		newPo.setBudgetAmount(budgetInfoPo.getBudgetAmount());
+		newPo.setActualCost(budgetInfoPo.getActualCost());
+		newPo.setMaxCost(budgetInfoPo.getMaxCost());
+		newPo.setMinCost(budgetInfoPo.getMinCost());
+		newPo.setMobilePhone(budgetInfoPo.getMobilePhone());
+		newPo.setRemark("复制于" + budgetInfoPo.getBudgetName());
+		return iBudgetInfoMapper.insertSelective(newPo) > 0;
 	}
 
 	@Override

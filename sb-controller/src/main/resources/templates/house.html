@@ -247,61 +247,72 @@
         </div>
 
     </div>
-    <div th:if="${type==1}" class="content infinite-scroll infinite-scroll-bottom">
-        <div class="content-block" th:if="${#lists.isEmpty(roomVos)}">
-            <div class="content-padded to-page-link">
-                <div class="row" style="margin: 0 auto; width: 60%;">
-                    <div>
-                        <a th:href="@{'/house/page/0?mobile_phone='+${mobilePhone}}"
-                           class="button button-big button-fill  external">我的房子</a>
-                    </div>
+    <div th:if="${type==1}">
+        <div class="bar bar-header-secondary" style="top: 0.1rem;">
+            <div class="searchbar">
+                <a class="searchbar-cancel">取消</a>
+                <div class="search-input">
+                    <label class="icon icon-search" for="search"></label>
+                    <input type="search" id='search' placeholder='输入关键字...'/>
                 </div>
             </div>
         </div>
-        <dive th:unless="${#lists.isEmpty(roomVos)}" th:each="vo,stat:${roomVos}">
-            <div class="card">
-                <h3>
-                    <div class="card-header"
-                         th:text="${vo?.houseDetailName}+${vo.roomNickName!=null && vo.roomNickName!=''?'【'+vo.roomNickName+'】':''}"></div>
-                </h3>
-                <div class="card-content">
-                    <div class="list-block inset">
-                        <ul th:each="hbVo,stat2:${vo?.houseBudgetInfoVos}">
-                            <li>
-                                <a class="item-content item-link"
-                                   th:href="@{'/house/page/detail/decorate/'+${hbVo?.houseDetailCode}+'?hbc='+${hbVo?.houseBudgetCode}}">
-                                    <div class="item-media"><i class="icon icon-f7"></i></div>
-                                    <div class="item-inner">
-                                        <div class="item-title" th:text="${hbVo?.budgetName}"></div>
-                                        <div class="item-title"
-                                             th:text="${hbVo?.budgetAmount * hbVo?.budgetCount}+' 元'"></div>
-                                        <!--                                        <div class="item-title" th:text="${hbVo?.budgetCount}"></div>-->
-                                        <div class="item-after"></div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
+        <div class="content" style="top: 1.5rem">
+            <div class="content-block" th:if="${#lists.isEmpty(roomVos)}">
+                <div class="content-padded to-page-link">
+                    <div class="row" style="margin: 0 auto; width: 60%;">
+                        <div>
+                            <a th:href="@{'/house/page/0?mobile_phone='+${mobilePhone}}"
+                               class="button button-big button-fill  external">我的房子</a>
+                        </div>
                     </div>
-                    <div class="list-block inset">
-                        <a class="item-content item-link list-button"
-                           th:href="@{'/house/page/detail/decorate/'+${vo?.houseDetailCode}}">添加材料</a>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <a th:href="@{'/budget/query/list/'+${vo?.houseDetailCode}+'/'+${mobilePhone}}"
-                       class="link" style="font-size: 16px;">选择材料</a>
-                    <label style="font-size: 16px;"
-                           th:text="'合计：'+${vo!=null and vo.totalBudgetAmount!=null ?vo.totalBudgetAmount:0}+' 元'"></label>
-                    <!--                    <a href="#" th:attr="data-houseDetailCode=${vo?.houseDetailCode}" th:onclick="calculate(this)"-->
-                    <!--                       class="link"-->
-                    <!--                    >计算成本</a>-->
                 </div>
             </div>
+            <dive th:unless="${#lists.isEmpty(roomVos)}" th:each="vo,stat:${roomVos}">
+                <div class="card">
+                    <h3>
+                        <div class="card-header"
+                             th:text="${vo?.houseDetailName}+${vo.roomNickName!=null && vo.roomNickName!=''?'【'+vo.roomNickName+'】':''}"></div>
+                    </h3>
+                    <div class="card-content">
+                        <div class="list-block inset">
+                            <ul th:each="hbVo,stat2:${vo?.houseBudgetInfoVos}">
+                                <li>
+                                    <a class="item-content item-link"
+                                       th:href="@{'/house/page/detail/decorate/'+${hbVo?.houseDetailCode}+'?hbc='+${hbVo?.houseBudgetCode}}">
+                                        <div class="item-media"><i class="icon icon-f7"></i></div>
+                                        <div class="item-inner">
+                                            <div class="item-title" th:text="${hbVo?.budgetName}"></div>
+                                            <div class="item-title"
+                                                 th:text="${hbVo?.budgetAmount * hbVo?.budgetCount}+' 元'"></div>
+                                            <!--                                        <div class="item-title" th:text="${hbVo?.budgetCount}"></div>-->
+                                            <div class="item-after"></div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="list-block inset">
+                            <a class="item-content item-link list-button"
+                               th:href="@{'/house/page/detail/decorate/'+${vo?.houseDetailCode}}">添加材料</a>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a th:href="@{'/budget/query/list/'+${vo?.houseDetailCode}+'/'+${mobilePhone}}"
+                           class="link" style="font-size: 16px;">选择材料</a>
+                        <label style="font-size: 16px;"
+                               th:text="'合计：'+${vo!=null and vo.totalBudgetAmount!=null ?vo.totalBudgetAmount:0}+' 元'"></label>
+                        <!--                    <a href="#" th:attr="data-houseDetailCode=${vo?.houseDetailCode}" th:onclick="calculate(this)"-->
+                        <!--                       class="link"-->
+                        <!--                    >计算成本</a>-->
+                    </div>
+                </div>
 
-        </dive>
-        <!--        <div class="infinite-scroll-preloader">-->
-        <!--            <div class="preloader"></div>-->
-        <!--        </div>-->
+            </dive>
+            <!--        <div class="infinite-scroll-preloader">-->
+            <!--            <div class="preloader"></div>-->
+            <!--        </div>-->
+        </div>
     </div>
     <div th:if="${type==2}" class="content  infinite-scroll infinite-scroll-bottom">
         <dive th:each="vo,stat:${list}">
@@ -362,11 +373,24 @@
                                     </div>
                                 </a>
                             </li>
+                            <li>
+                                <a class="item-content item-link"
+                                   th:href="@{'/house/page/budget/-1/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.remark}}">
+                                    <!--                                    <div class="item-media"><i class="icon icon-f7"></i></div>-->
+                                    <div class="item-inner">
+                                        <div class="item-title">备注</div>
+                                        <div class="item-after"
+                                             th:text="${vo?.remark!=null?#strings.length(vo?.remark):0} le 10 ? ${vo?.remark}:${#strings.append(#strings.substring(vo.remark,0,10),'...')}"></div>
+                                    </div>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
                 <div class="card-footer">
-                    <a href="#" style="font-size: 16px;" class="link" onclick="zan()">赞</a>
+                    <a href="#" style="font-size: 16px;"
+                       th:attr="date-budgetName=${vo?.budgetName},date-budgetCode=${vo?.budgetCode}"
+                       class="prompt-title-ok">快速复制</a>
                     <a href="#" style="font-size: 16px; color: red;"
                        th:onclick="'javascript:deleteBudget(\''+${vo.id}+'\')'"
                        class="link">删除</a>
@@ -390,9 +414,10 @@
         window.location.href = '/house/page/info/' + mobilePhone;
     }
 
-    function zan() {
-        $.toast("您已点赞");
-    }
+    //
+    // function zan(budgetCode) {
+    //     $.toast(budgetCode);
+    // }
 
 
     function deleteBudget(id) {
@@ -516,7 +541,40 @@
         })
 
     })
-
+    $(document).on('click', '.prompt-title-ok', function () {
+        let budgetName = $(this).attr("date-budgetName");
+        let budgetCode = $(this).attr("date-budgetCode");
+        $.prompt('请填写新的名称', '快速复制【' + budgetName + "】", function (value) {
+            if (!value) {
+                $.alert('请填写新的名称！');
+                return;
+            }
+            if (budgetName == value) {
+                $.toast('名称不能一样！');
+                return;
+            }
+            let param = {};
+            param['budgetName'] = value;
+            param['budgetCode'] = budgetCode;
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                url: '/budget/copy/save',
+                data: JSON.stringify(param),
+                success: function (result) {
+                    if (result.code == 200) {
+                        $.toast('复制成功！');
+                        window.location.reload();
+                    } else {
+                        $.toast(result.message);
+                    }
+                },
+                error: function (result, type, err) {
+                    $.toast(err);
+                }
+            });
+        });
+    });
     $(document).on('click', '.create-popup', function () {
         let popupHTML = '<div class="popup">' +
             '<header class="bar bar-nav">' +
@@ -576,6 +634,17 @@
             '<div class="item-title label">预算金额</div>' +
             '<div class="item-input">' +
             '<input type="number" name="budgetAmount" placeholder="金额">' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</li>' +
+            '<li class="align-top">' +
+            '<div class="item-content">' +
+            // '<div class="item-media"><i class="icon icon-form-name"></i></div>' +
+            '<div class="item-inner">' +
+            '<div class="item-title label">备注</div>' +
+            '<div class="item-input">' +
+            '<textarea name="remark" placeholder="备注"></textarea>' +
             '</div>' +
             '</div>' +
             '</div>' +

@@ -13,7 +13,8 @@ public enum BudgetEnum {
 	min_budget_amount(2, "minBudgetAmount", "最低金额"),
 	max_cost(3, "maxCost", "最高成本"),
 	min_cost(4, "minCost", "最低成本"),
-	actual_cost(5, "actualCost", "实际成本");
+	actual_cost(5, "actualCost", "实际成本"),
+	remark(-1, "remark", "备注");
 
 	BudgetEnum(Integer type, String key, String name) {
 		this.type = type;

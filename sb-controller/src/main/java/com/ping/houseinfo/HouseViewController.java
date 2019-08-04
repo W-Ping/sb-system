@@ -103,6 +103,8 @@ public class HouseViewController {
 	}
 
 	/**
+	 * 编辑材料信息页面
+	 *
 	 * @param model
 	 * @param mobilePhone
 	 * @param type

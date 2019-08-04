@@ -39,6 +39,17 @@ public class BudgetController {
 	}
 
 	/**
+	 * @param houseInfoVo
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping(value = "/copy/save")
+	public Result<BudgetInfoVo> saveCopyBudget(@RequestBody BudgetInfoVo houseInfoVo) {
+		boolean b = iBudgetInfoService.saveCopyBudget(houseInfoVo);
+		return Result.successOrFail(b, houseInfoVo);
+	}
+
+	/**
 	 * @param id
 	 * @return
 	 */

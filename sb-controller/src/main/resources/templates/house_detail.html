@@ -92,7 +92,7 @@
                   class="button button-fill button-middle button-warning create-room"
                   th:text="${'卫生间'+i}"> </a></p>
         </div>
-        <div class="popup room-popup" style="margin: 0 auto; position: fixed;">
+        <div class="popup room-popup" style="margin: 0 auto;">
             <form id="roomForm">
                 <input hidden th:value="${houseVo?.houseCode}" name="houseCode">
                 <input hidden id="room-type" name="roomType">
