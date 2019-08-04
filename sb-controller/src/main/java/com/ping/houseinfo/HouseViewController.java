@@ -3,7 +3,6 @@ package com.ping.houseinfo;
 import com.ping.budgetinfo.IBudgetInfoService;
 import com.ping.co.BudgetInfoCo;
 import com.ping.constant.BudgetEnum;
-import com.ping.userinfo.IUserInfoService;
 import com.ping.vo.hosue.BudgetInfoVo;
 import com.ping.vo.hosue.HouseBudgetInfoVo;
 import com.ping.vo.hosue.HouseDetailInfoVo;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
