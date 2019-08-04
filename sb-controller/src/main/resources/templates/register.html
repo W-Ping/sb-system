@@ -65,7 +65,7 @@
                     <a href="#" id="register" class="button button-big button-fill">注册</a>
                 </p>
                 <p>
-                    <a th:href="@{/login/index}" id="login"
+                    <a href="#" onclick="toLogin()"
                        class="button button-big button-fill button-success external">已注册登录</a>
                 </p>
             </div>
@@ -119,6 +119,15 @@
             }
         })
     })
+
+    function toLogin() {
+        let mobilePhone = $("#mobilePhone").val();
+        let url = '/login/index';
+        if (mobilePhone) {
+            url = '/login/index' + "?mobile_phone=" + mobilePhone;
+        }
+        window.location.href = url;
+    }
 </script>
 </body>
 

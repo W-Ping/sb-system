@@ -26,9 +26,8 @@ public class LoginController {
 	private IUserInfoService iUserInfoService;
 
 	@GetMapping(value = "/index")
-	public String login(Model model) {
-		model.addAttribute("uid", "123456789");
-		model.addAttribute("name", "Jerry");
+	public String login(Model model, @RequestParam(name = "mobile_phone", required = false) String mobilePhone) {
+		model.addAttribute("mobilePhone", mobilePhone);
 		return "login";
 	}
 

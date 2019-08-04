@@ -8,10 +8,10 @@
     <link rel="shortcut icon" href="/static/favicon.ico">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <!--    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">-->
-    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.css">
-    <!--    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">-->
-    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <!--    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.css">-->
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+    <!--    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.css">-->
     <link rel="stylesheet" type="text/css" media="all" href="/static/css/icon.css"
           th:href="@{/static/css/icon.css}"/>
 </head>
@@ -29,7 +29,8 @@
                             <div class="item-media"><i class="icon icon-form-tel"></i></div>
                             <div class="item-inner">
                                 <div class="item-input">
-                                    <input type="number"  value="13012881773" id="mobilePhone" placeholder="Your phone number">
+                                    <input type="number" th:value="${mobilePhone}" id="mobilePhone"
+                                           placeholder="Your phone number">
                                 </div>
                             </div>
                         </div>
@@ -39,7 +40,7 @@
                             <div class="item-media"><i class="icon icon-form-password"></i></div>
                             <div class="item-inner">
                                 <div class="item-input">
-                                    <input type="password"  value="123" id="password" placeholder="Password" class="">
+                                    <input type="password" id="password" placeholder="Password" class="">
                                 </div>
                             </div>
                         </div>
