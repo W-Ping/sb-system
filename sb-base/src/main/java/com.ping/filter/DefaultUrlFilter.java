@@ -1,6 +1,5 @@
 package com.ping.filter;
 
-import com.ping.config.GlobalExceptionHandler;
 import com.ping.constant.SysConstant;
 import com.ping.utils.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -36,14 +35,21 @@ public class DefaultUrlFilter implements Filter {
 		HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 		String requestURI = httpServletRequest.getRequestURI();
-		if (isAjax(httpServletRequest) || checkUrl(requestURI) || checkLogin(httpServletRequest)) {
-			filterChain.doFilter(httpServletRequest, httpServletResponse);
-		} else {
+		boolean flag = true;
+		if (checkUrl(requestURI)) {
+			flag = false;
+		} else if (!"/".equals(requestURI) && checkLogin(httpServletRequest)) {
+			flag = false;
+//				isAjax(httpServletRequest)
+		}
+		if (flag) {
+			removeSession(httpServletRequest);
 			logger.warn("{}，重定向登录页面", requestURI);
 			httpServletResponse.sendRedirect(loginUrl);
 //			httpServletRequest.getRequestDispatcher(loginUrl).forward(servletRequest, servletResponse);
+		} else {
+			filterChain.doFilter(httpServletRequest, httpServletResponse);
 		}
-
 	}
 
 	/**
@@ -98,6 +104,10 @@ public class DefaultUrlFilter implements Filter {
 		}
 		logger.info("用户未登录");
 		return false;
+	}
+
+	private void removeSession(HttpServletRequest httpServletRequest) {
+		httpServletRequest.getSession().removeAttribute(SysConstant.USER_INFO_SESSION_KEY);
 	}
 
 	@Override

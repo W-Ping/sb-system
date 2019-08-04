@@ -9,6 +9,7 @@ import com.ping.vo.hosue.HouseDetailInfoVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -55,8 +56,8 @@ public class BudgetController {
 	 * @return
 	 */
 	@GetMapping(value = "/query/list/{houseDetailCode}/{mobilePhone}")
-	public ModelAndView queryBudgetList(@PathVariable("houseDetailCode") String houseDetailCode,
-	                                    @PathVariable("mobilePhone") String mobilePhone) {
+	public String queryBudgetList(Model model, @PathVariable("houseDetailCode") String houseDetailCode,
+	                              @PathVariable("mobilePhone") String mobilePhone) {
 		BudgetInfoCo budgetInfoCo = new BudgetInfoCo();
 		budgetInfoCo.setMobilePhone(mobilePhone);
 		HouseDetailInfoVo houseDetailInfo = iHouseInfoService.getHouseDetailInfo(houseDetailCode);
@@ -68,10 +69,8 @@ public class BudgetController {
 			}
 		}
 		List<BudgetInfoVo> budgetInfoVos = iBudgetInfoService.queryBudgetInfoList(budgetInfoCo);
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("list", budgetInfoVos);
-		modelAndView.addObject("vo", houseDetailInfo);
-		modelAndView.setViewName("budget_list");
-		return modelAndView;
+		model.addAttribute("list", budgetInfoVos);
+		model.addAttribute("vo", houseDetailInfo);
+		return "budget_list";
 	}
 }

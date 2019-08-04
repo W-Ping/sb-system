@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我的房间</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+    <link rel="stylesheet" type="text/css" media="all" href="/static/css/icon.css"
+          th:href="@{/static/css/icon.css}"/>
+    <style>
+        .list-block-layout {
+            margin: 0 auto;
+            font-size: .85rem;
+        }
+    </style>
+</head>
+<body>
+<div class="page" id="page-house">
+    <div class="content">
+        <header class="bar bar-nav">
+            <a class="button button-link button-nav pull-left back">
+                <span class="icon icon-left"></span>
+                返回
+            </a>
+            <h1 class='title'>我的房子</h1>
+        </header>
+        <div class="content">
+            <form id="houseForm">
+                <input hidden th:value="${id}" name="id">
+                <div class="list-block list-block-layout">
+                    <ul>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-tel"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">手机号码</div>
+                                    <div class="item-input">
+                                        <input type="number" readonly
+                                               th:value="${houseVo?.mobilePhone}"
+                                               name="mobilePhone"
+                                               placeholder="手机号码">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-mj"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">房屋面积</div>
+                                    <div class="item-input">
+                                        <input type="number" th:value="${houseVo?.houseAreaSize}" name="houseAreaSize"
+                                               placeholder="（单位：平米）">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-lx"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">房屋类型</div>
+                                    <div class="item-input">
+                                        <select name="houseType">
+                                            <option value="0" th:selected="${houseVo?.houseType==0}">新房</option>
+                                            <option value="1" th:selected="${houseVo?.houseType==1}">二手房</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-hx"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">房屋户型</div>
+                                    <div class="item-input">
+                                        <input type="text" name="apartment" placeholder="选择户型"  id='picker-name'
+                                               th:value="${houseVo?.apartment}">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="align-top">
+                            <div class="item-content">
+                                <div class="item-media"><i class="icon icon-form-remark"></i></div>
+                                <div class="item-inner">
+                                    <div class="item-title label">备注</div>
+                                    <div class="item-input">
+                                        <textarea name="remark" th:text="${houseVo?.remark}"
+                                                  placeholder="备注"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+            <div class="content-block" id="submitBut">
+                <div class="row">
+                    <div class="col-50"><a href="#"
+                                           class="button button-big button-fill button-danger back">取消</a></div>
+                    <div class="col-50">
+                        <a href="javascript:;" onclick="submitHouse('/house/save')"
+                           class="button button-big button-fill button-success">保存</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+<script>
+
+    function outFocus() {
+        let e = $("#submitBut")
+        e.css("visibility", "hidden");
+        e.hide();
+        // if (e.css("visibility") == "visible") {
+        //     e.css("visibility", "hidden");
+        //     e.hide();
+        // } else {
+        //     e.css("visibility", "visible");
+        //     e.show();
+        // }
+    }
+
+    function inputFocus() {
+        let e = $("#submitBut")
+        e.css("visibility", "visible");
+        e.show();
+    }
+
+    function resetHouse() {
+        window.location.reload();
+    }
+
+    function submitHouse(url) {
+        let data = $('#houseForm').serializeArray();
+        let param = {};
+        for (let i = 0; i < data.length; i++) {
+            let dataName = data[i]['name'];
+            let dataValue = data[i]['value'];
+            if (!dataValue) {
+                if ('mobilePhone' == dataName) {
+                    $.toast("请输入手机号码！");
+                    return;
+                } else if ('houseAreaSize' == dataName) {
+                    $.toast("请输入房屋面积！");
+                    return;
+                }
+            }
+            if (dataName == 'apartment') {
+                if (!dataValue) {
+                    $.toast("请选择房屋户型！")
+                    return;
+                }
+                let split = dataValue.split(",");
+                param['bedroom'] = split[0].substr(0, 1);
+                param['livingroom'] = split[1].substr(0, 1);
+                param['kitchen'] = split[2].substr(0, 1);
+                param['toilet'] = split[3].substr(0, 1);
+                param['balcony'] = split[4].substr(0, 1);
+            } else {
+                param[dataName] = dataValue;
+            }
+        }
+        console.log("参数%o", param);
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: url,
+            data: JSON.stringify(param),
+            success: function (result) {
+                if (result.code == 200) {
+                    $.toast('保存成功！', 3000);
+                    window.location.href = document.referrer;
+                } else {
+                    $.toast(result.message);
+                }
+                // window.history.pushState(null, null, href + mobilePhone)
+            },
+            error: function (result, type, error) {
+                console.log(error);
+                $.toast("保存失败!");
+            }
+        });
+    }
+
+    $("#picker-name").picker({
+        toolbarTemplate: '<header class="bar bar-nav">\
+  <button class="button button-link pull-right close-picker">确定</button>\
+  <h1 class="title">请选择户型</h1>\
+  </header>',
+        cols: [
+            {
+                textAlign: 'center',
+                values: ['1室', '2室', '3室', '4室', '5室', '6室'],
+                //如果你希望显示文案和实际值不同，可以在这里加一个displayValues: [.....]
+            },
+            {
+                textAlign: 'center',
+                values: ['1厅', '2厅', '3厅', '4厅', '5厅', '6厅'],
+            },
+            {
+                textAlign: 'center',
+                values: ['1厨', '2厨', '3厨', '4厨', '5厨', '6厨'],
+            },
+            {
+                textAlign: 'center',
+                values: ['1卫', '2卫', '3卫', '4卫', '5卫', '6卫'],
+            },
+            {
+                textAlign: 'center',
+                values: ['1阳台', '2阳台', '3阳台', '4阳台', '5阳台', '6阳台'],
+            }
+        ],
+        formatValue: function (picker, value, displayValue) {
+            return value;
+        }
+    });
+    $.init();
+</script>
+</body>
+</html>

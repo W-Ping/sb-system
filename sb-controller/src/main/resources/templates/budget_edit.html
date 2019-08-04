@@ -11,7 +11,29 @@
 
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
-
+    <style>
+        .list-block .item-inner {
+            padding-right: .75rem;
+            position: static;
+            width: 100%;
+            padding-top: .4rem;
+            padding-bottom: .35rem;
+            min-height: 2.2rem;
+            overflow: hidden;
+            box-sizing: border-box;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            -webkit-box-pack: justify;
+            -webkit-justify-content: space-between;
+            justify-content: space-between;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
 <div class="page" id='page-budget-edit'>
@@ -47,7 +69,7 @@
                     <div class="col-50"><a href="#" class="button button-big button-fill button-danger back">取消</a>
                     </div>
                     <div class="col-50"><a href="#" onclick="submitBudget()"
-                                           class="button button-big button-fill button-success">确定</a></div>
+                                           class="button button-big button-fill button-success">保存</a></div>
                 </div>
             </div>
         </div>
@@ -80,14 +102,15 @@
             data: JSON.stringify(param),
             success: function (result) {
                 if (result.code == 200) {
-                    $.toast('提交成功！', 3000);
+                    $.toast('保存成功！', 3000);
                     window.location.href = document.referrer;
                 } else {
                     $.toast(result.message);
                 }
             },
             error: function (result, type, error) {
-                $.toast(error);
+                console.log(error);
+                $.toast("保存失败！");
             }
         });
     }
