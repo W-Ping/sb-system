@@ -30,6 +30,10 @@ public class HouseBudgetInfoVo extends BaseVo {
 	/**
 	 *
 	 */
+	private Integer roomType;
+	/**
+	 *
+	 */
 	private String houseBudgetCode;
 	/**
 	 *
@@ -118,5 +122,13 @@ public class HouseBudgetInfoVo extends BaseVo {
 
 	public void setHouseBudgetCode(final String houseBudgetCode) {
 		this.houseBudgetCode = houseBudgetCode;
+	}
+
+	public Integer getRoomType() {
+		return roomType;
+	}
+
+	public void setRoomType(final Integer roomType) {
+		this.roomType = roomType;
 	}
 }

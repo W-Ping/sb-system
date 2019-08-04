@@ -10,7 +10,10 @@ public class SysConstant {
 	public static final String UNIQUEID_HOUSE_PRIFIX = "HS";
 	public static final String UNIQUEID_HOUSE_DETAIL_PRIFIX = "HSD";
 	public static final String UNIQUEID_HOUSE_BUDGET_PRIFIX = "HSB";
+	public static final String QUERY_MAX = "max";
+	public static final String QUERY_min = "min";
+	public static final String QUERY_SELF = "self";
 	public static final int STATUS_0 = 0;
 	public static final int STATUS_1 = 1;
-	;
+
 }

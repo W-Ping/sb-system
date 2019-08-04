@@ -67,10 +67,6 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
 		}
 	}
 
-	@Override
-	public List<HouseInfoVo> queryHouseInfoList(final HouseInfoCo co) {
-		return null;
-	}
 
 	@Override
 	public HouseInfoVo getHouseInfo(final HouseInfoCo co) {
@@ -140,7 +136,7 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
 	 */
 	@Override
 	public Map<String, String> calculateBudgetTotalAmount(final String mobilePhone) {
-		Map<String, String> totalAmount = iHouseInfoMapper.calculateBudgetTotalAmount(mobilePhone);
+		Map<String, String> totalAmount = iHouseBudgetInfoMapper.calculateBudgetTotalAmount(mobilePhone);
 		return totalAmount;
 	}
 
@@ -346,6 +342,26 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
 				.andEqualTo("houseBudgetCode", houseBudgetCode);
 		int i = iHouseBudgetInfoMapper.deleteByExample(example);
 		return i > 0;
+	}
+
+	/**
+	 * @param mobilePhone
+	 * @param type
+	 * @return
+	 */
+	@Override
+	public List<HouseBudgetInfoVo> queryHouseBudgetInfoList(final String mobilePhone, final String type) {
+		List<HouseBudgetInfoPo> houseBudgetInfoPos = null;
+		if (SysConstant.QUERY_MAX.equals(type)) {
+			houseBudgetInfoPos = iHouseBudgetInfoMapper.queryBudgetAmountDetailOfMax(mobilePhone);
+		} else if (SysConstant.QUERY_min.equals(type)) {
+			houseBudgetInfoPos = iHouseBudgetInfoMapper.queryBudgetAmountDetailOfMin(mobilePhone);
+		} else {
+			houseBudgetInfoPos = iHouseBudgetInfoMapper.queryBudgetAmountDetailOfSelf(mobilePhone);
+		}
+		List<HouseBudgetInfoVo> houseBudgetInfoVos =
+				BeanMapperUtil.mapToList(houseBudgetInfoPos, HouseBudgetInfoVo.class);
+		return houseBudgetInfoVos;
 	}
 
 	private void checkRoomInfo(HouseDetailInfoVo houseDetailInfoVo) {

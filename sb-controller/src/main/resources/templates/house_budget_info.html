@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我的装修</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+    <link rel="stylesheet" type="text/css" media="all" href="/static/css/icon.css">
+<body>
+<div class="page" id='page-budget-detail'>
+    <header class="bar bar-nav">
+        <a class="button button-link button-nav pull-left back">
+            <span class="icon icon-left"></span>
+            返回
+        </a>
+        <h1 class='title'
+            th:text="${type=='max'? '最高预算费用':(type=='min'?'最低预算费用':'我的预算费用')}"></h1>
+    </header>
+    <div class="content">
+        <div th:each="map,stat:${mapList}">
+            <!--            <span th:each="total,s:${totalMap}">-->
+            <div class="content-block-title" style="font-size: 18px;"
+                 th:text="${map.key==0?'卧室':(map.key==1?'客厅':(map.key==2?'厨房':(map.key==3?'卫生间':'阳台')))}+${'（合计：'+totalMap[map.key]+' 元）'}"></div>
+            <div class="list-block">
+                <ul>
+                    <li class="item-content" th:each="vo,stat:${map.value}">
+                        <div class="item-inner">
+                            <div class="item-title" th:text="${vo?.budgetName}"></div>
+                            <div class="item-after" th:text="${vo?.budgetCount+'/'+vo?.budgetAmount}"></div>
+                            <div class="item-after" th:text="${vo?.budgetAmount * vo?.budgetCount}+' 元'"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!--            </span>-->
+        </div>
+    </div>
+</div>
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+</body>
+</html>

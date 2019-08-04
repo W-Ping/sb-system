@@ -117,12 +117,13 @@
             <div><i th:class="${type==2}?'icon icon-form-budget':'icon icon-form-budget-bk'"></i></div>
             <span class="tab-label">材料仓库</span>
         </a>
-
     </nav>
+    <input hidden id="mobilePhone" th:value="${mobilePhone}">
     <div th:if="${type==0}" class="content">
         <header class="bar bar-nav">
             <h1 class='title'>我的房子</h1>
         </header>
+
         <div class="content">
             <div class="list-block list-block-layout" th:attr="data-mobilePhone=${mobilePhone}"
                  th:onclick="toHouse(this)">
@@ -195,22 +196,12 @@
                 <a th:href="@{'/house/page/detail/'+${mobilePhone}}"
                    class="link" style="font-size: 20px;">房子详情</a>
             </div>
-            <div class="content-block" style=" margin: 1.2rem 0;" id="submitBut" hidden>
-                <div class="row">
-                    <div class="col-50"><a href="javascript:;" onclick="resetHouse()"
-                                           class="button button-big button-fill button-danger">重置</a></div>
-                    <div class="col-50">
-                        <a href="javascript:;" onclick="submitHouse('/house/save')"
-                           class="button button-big button-fill button-success">提交</a>
-                    </div>
-
-                </div>
-            </div>
             <div th:if="${totalAmount!=null or minTotalAmount!=null or maxTotalAmount!=null}"
                  class="swiper-pagination budgetResult-box bdg-pagination"></div>
             <div class="swiper-container" data-space-between='10' data-pagination='.swiper-pagination'>
                 <div class="swiper-wrapper">
-                    <div th:if="${totalAmount!=null}" class="swiper-slide budgetResult-box">
+                    <div th:if="${totalAmount!=null}" onclick="toBudgetDetail('self')"
+                         class="swiper-slide budgetResult-box">
                         <div class="budgetResult">
                             <div class="budgetResult-insert">
                                 <span>我的预算费用</span>
@@ -223,7 +214,8 @@
                             </div>
                         </div>
                     </div>
-                    <div th:if="${minTotalAmount!=null}" class="swiper-slide budgetResult-box">
+                    <div th:if="${minTotalAmount!=null}" onclick="toBudgetDetail('min')"
+                         class="swiper-slide budgetResult-box">
                         <div class="budgetResult" style="background: #0894ec;">
                             <div class="budgetResult-insert">
                                 <span>最低预算费用</span>
@@ -236,7 +228,8 @@
                             </div>
                         </div>
                     </div>
-                    <div th:if="${maxTotalAmount!=null}" class="swiper-slide budgetResult-box">
+                    <div th:if="${maxTotalAmount!=null}" onclick="toBudgetDetail('max')"
+                         class="swiper-slide budgetResult-box">
                         <div class="budgetResult" style="background: #ff6600;">
                             <div class="budgetResult-insert">
                                 <span>最高预算费用</span>
@@ -311,7 +304,6 @@
         <!--        </div>-->
     </div>
     <div th:if="${type==2}" class="content  infinite-scroll infinite-scroll-bottom">
-        <input hidden th:value="${mobilePhone}" id="mobilePhone">
         <dive th:each="vo,stat:${list}">
             <div class="card">
                 <h3>
@@ -427,6 +419,11 @@
             })
         });
 
+    }
+
+    function toBudgetDetail(type) {
+        let mobilePhone = $("#mobilePhone").val();
+        window.location.href = "/house/page/budgetInfo/detail/" + type + "/" + mobilePhone;
     }
 
     function submitBudget() {

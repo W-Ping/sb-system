@@ -16,5 +16,159 @@
         <result property="version" column="version"/>
         <result property="updateTime" column="update_time"/>
         <result property="createTime" column="create_time"/>
+        <result property="roomType" column="room_type"/>
+        <result property="roomNickName" column="room_nick_name"/>
+        <result property="houseDetailName" column="house_detail_name"/>
     </resultMap>
+    <select id="calculateBudgetTotalAmount" parameterType="string" resultType="map">
+        SELECT
+        SUM(ROUND(t2.budget_count* t2.budget_amount,2)) as account_total,
+        SUM(ROUND(t2.budget_count*IFNULL(t3.min_cost,0),2))+SUM(ROUND(IF(t2.budget_code is null or
+        t2.budget_code='',t2.budget_amount*budget_count,0),2)) as min_account_total,
+        SUM(ROUND(t2.budget_count*IFNULL(t3.max_cost,0),2))+SUM(ROUND(IF(t2.budget_code is null or
+        t2.budget_code='',t2.budget_amount*budget_count,0),2)) as max_account_total
+        FROM
+        sbdb.house_info AS t1
+        INNER JOIN house_budget_info AS t2 ON t1.house_code = t2.house_code
+        INNER JOIN house_detail_info AS t4 ON t2.house_detail_code = t4.house_detail_code
+        LEFT JOIN budget_info AS t3 ON t2.budget_code=t3.budget_code AND t3.`status`=0
+        WHERE
+        t1.`status` = 0
+        AND t2.`status` = 0
+        AND t4.`status` = 0
+        <if test="mobilePhone!=null and mobilePhone!=''">
+            AND t1.mobile_phone=#{mobilePhone}
+        </if>
+    </select>
+    <select id="queryBudgetAmountDetailOfMax" parameterType="string" resultMap="BaseResultMap">
+        SELECT
+        t2.`id`,
+        t4.room_type,
+        t4.room_nick_name,
+        t4.house_detail_name,
+        t2.`house_code`,
+        t2.`house_detail_code`,
+        t2.`house_budget_code`,
+        t3.`budget_code`,
+        t2.`budget_name`,
+        t3. `max_cost` as `budget_amount`,
+        t2.`budget_count`,
+        t2.`status`,
+        t2.`remark`,
+        t2.`version`,
+        t2.`update_time`,
+        t2.`create_time`
+        FROM
+        sbdb.house_info AS t1
+        INNER JOIN house_budget_info AS t2 ON t1.house_code = t2.house_code
+        INNER JOIN budget_info AS t3 ON t2.budget_code = t3.budget_code
+        INNER JOIN house_detail_info AS t4 ON t2.house_detail_code = t4.house_detail_code
+        WHERE
+        t1.`status` = 0
+        AND t2.`status` = 0
+        AND t3.`status` = 0
+        AND t4.`status` = 0
+        AND t2.budget_code is not null AND t2.budget_code!=''
+        <if test="mobilePhone!=null and mobilePhone!=''">
+            AND t1.mobile_phone=#{mobilePhone}
+        </if>
+        UNION ALL
+        <include refid="HouseBudgetInfoBudgetCodeIsNullSQL"/>
+    </select>
+    <select id="queryBudgetAmountDetailOfMin" parameterType="string" resultMap="BaseResultMap">
+        SELECT
+        t2.`id`,
+        t4.room_type,
+        t4.room_nick_name,
+        t4.house_detail_name,
+        t2.`house_code`,
+        t2.`house_detail_code`,
+        t2.`house_budget_code`,
+        t3.`budget_code`,
+        t2.`budget_name`,
+        t3. `min_cost` as `budget_amount`,
+        t2.`budget_count`,
+        t2.`status`,
+        t2.`remark`,
+        t2.`version`,
+        t2.`update_time`,
+        t2.`create_time`
+        FROM
+        sbdb.house_info AS t1
+        INNER JOIN house_budget_info AS t2 ON t1.house_code = t2.house_code
+        INNER JOIN budget_info AS t3 ON t2.budget_code = t3.budget_code
+        INNER JOIN house_detail_info AS t4 ON t2.house_detail_code = t4.house_detail_code
+        WHERE
+        t1.`status` = 0
+        AND t2.`status` = 0
+        AND t3.`status` = 0
+        AND t4.`status` = 0
+        AND t2.budget_code is not null AND t2.budget_code!=''
+        <if test="mobilePhone!=null and mobilePhone!=''">
+            AND t1.mobile_phone=#{mobilePhone}
+        </if>
+        UNION ALL
+        <include refid="HouseBudgetInfoBudgetCodeIsNullSQL"/>
+    </select>
+    <select id="queryBudgetAmountDetailOfSelf" parameterType="string" resultMap="BaseResultMap">
+        SELECT
+        t2.`id`,
+        t3.room_type,
+        t3.room_nick_name,
+        t3.house_detail_name,
+        t2.`house_code`,
+        t2.`house_detail_code`,
+        t2.`house_budget_code`,
+        t2.`budget_code`,
+        t2.`budget_name`,
+        t2.`budget_amount`,
+        t2.`budget_count`,
+        t2.`status`,
+        t2.`remark`,
+        t2.`version`,
+        t2.`update_time`,
+        t2.`create_time`
+        FROM
+        sbdb.house_info AS t1
+        INNER JOIN house_budget_info AS t2 ON t1.house_code = t2.house_code
+        INNER JOIN house_detail_info AS t3 ON t3.house_detail_code = t2.house_detail_code
+        WHERE
+        t1.`status` = 0
+        AND t2.`status` = 0
+        <if test="mobilePhone!=null and mobilePhone!=''">
+            AND t1.mobile_phone=#{mobilePhone}
+        </if>
+    </select>
+
+    <sql id="HouseBudgetInfoBudgetCodeIsNullSQL">
+        SELECT
+        t2.`id`,
+        t3.room_type,
+        t3.room_nick_name,
+        t3.house_detail_name,
+        t2.`house_code`,
+        t2.`house_detail_code`,
+        t2.`house_budget_code`,
+        t2.`budget_code`,
+        t2.`budget_name`,
+        t2.`budget_amount`,
+        t2.`budget_count`,
+        t2.`status`,
+        t2.`remark`,
+        t2.`version`,
+        t2.`update_time`,
+        t2.`create_time`
+        FROM
+        sbdb.house_info AS t1
+        INNER JOIN house_budget_info AS t2 ON t1.house_code = t2.house_code
+        INNER JOIN house_detail_info AS t3 ON t3.house_detail_code = t2.house_detail_code
+        WHERE
+        t1.`status` = 0
+        AND t2.`status` = 0
+        AND t3.`status` = 0
+        AND (t2.budget_code is null OR t2.budget_code='')
+        <if test="mobilePhone!=null and mobilePhone!=''">
+            AND t1.mobile_phone=#{mobilePhone}
+        </if>
+    </sql>
 </mapper>

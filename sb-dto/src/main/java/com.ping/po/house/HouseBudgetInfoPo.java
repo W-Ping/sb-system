@@ -4,6 +4,7 @@ import com.ping.po.BasePo;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.math.BigDecimal;
 
 /**
@@ -49,6 +50,13 @@ public class HouseBudgetInfoPo extends BasePo {
 	 */
 	@Column(name = "budget_count")
 	private Integer budgetCount;
+
+	@Transient
+	private Integer roomType;
+	@Transient
+	private String roomNickName;
+	@Transient
+	private String houseDetailName;
 
 	public String getHouseCode() {
 		return houseCode;
@@ -104,5 +112,29 @@ public class HouseBudgetInfoPo extends BasePo {
 
 	public void setBudgetCount(final Integer budgetCount) {
 		this.budgetCount = budgetCount;
+	}
+
+	public Integer getRoomType() {
+		return roomType;
+	}
+
+	public void setRoomType(final Integer roomType) {
+		this.roomType = roomType;
+	}
+
+	public String getRoomNickName() {
+		return roomNickName;
+	}
+
+	public void setRoomNickName(final String roomNickName) {
+		this.roomNickName = roomNickName;
+	}
+
+	public String getHouseDetailName() {
+		return houseDetailName;
+	}
+
+	public void setHouseDetailName(final String houseDetailName) {
+		this.houseDetailName = houseDetailName;
 	}
 }

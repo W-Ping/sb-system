@@ -76,7 +76,7 @@ public class HouseController {
 	}
 
 	/**
-	 * @param budgetCode
+	 * @param houseBudgetCode
 	 * @return
 	 */
 	@DeleteMapping(value = "/detail/decorate/delete/{houseBudgetCode}")
@@ -96,4 +96,5 @@ public class HouseController {
 		boolean b = iHouseInfoService.saveHouseBudgetInfo(houseDetailCode, budgetCodes);
 		return Result.successOrFail(b);
 	}
+
 }

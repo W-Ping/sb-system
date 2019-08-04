@@ -46,10 +46,11 @@ public interface IHouseInfoService {
 	boolean deleteHouseBudgetInfo(String houseBudgetCode);
 
 	/**
-	 * @param co
+	 * @param mobilePhone
+	 * @param type
 	 * @return
 	 */
-	List<HouseInfoVo> queryHouseInfoList(HouseInfoCo co);
+	List<HouseBudgetInfoVo> queryHouseBudgetInfoList(String mobilePhone, String type);
 
 	/**
 	 * @param co

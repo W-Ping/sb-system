@@ -1,5 +1,6 @@
 package com.ping.houseinfo;
 
+import com.ping.Result;
 import com.ping.budgetinfo.IBudgetInfoService;
 import com.ping.co.BudgetInfoCo;
 import com.ping.constant.BudgetEnum;
@@ -7,6 +8,7 @@ import com.ping.vo.hosue.BudgetInfoVo;
 import com.ping.vo.hosue.HouseBudgetInfoVo;
 import com.ping.vo.hosue.HouseDetailInfoVo;
 import com.ping.vo.hosue.HouseInfoVo;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,9 +18,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author lwp
@@ -98,8 +103,10 @@ public class HouseViewController {
 	}
 
 	/**
+	 * @param model
 	 * @param mobilePhone
 	 * @param type
+	 * @param val
 	 * @param budgetCode
 	 * @return
 	 */
@@ -143,4 +150,32 @@ public class HouseViewController {
 		return "house_decorate";
 	}
 
+	/**
+	 * 预算明细页面
+	 *
+	 * @param model
+	 * @param mobilePhone
+	 * @param type
+	 * @return
+	 */
+	@GetMapping(value = "/budgetInfo/detail/{type}/{mobilePhone}")
+	public String toHouseBudgetInfo(Model model, @PathVariable("mobilePhone") String mobilePhone,
+	                                @PathVariable("type") String type) {
+		Map<Integer, List<HouseBudgetInfoVo>> mapList = null;
+		List<HouseBudgetInfoVo> houseBudgetInfoVos = iHouseInfoService.queryHouseBudgetInfoList(mobilePhone, type);
+		Map<Integer, BigDecimal> totalMap = new HashMap<>();
+		if (!CollectionUtils.isEmpty(houseBudgetInfoVos)) {
+			mapList = houseBudgetInfoVos.stream().filter(v -> v.getRoomType() != null).collect(Collectors.groupingBy(HouseBudgetInfoVo::getRoomType));
+			for (Map.Entry<Integer, List<HouseBudgetInfoVo>> map : mapList.entrySet()) {
+				BigDecimal total = map.getValue().stream().map(v -> v.getBudgetAmount().multiply(new BigDecimal(v.getBudgetCount()))).reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, BigDecimal.ROUND_HALF_UP);
+				totalMap.put(map.getKey(), total);
+			}
+
+		}
+		model.addAttribute("mobilePhone", mobilePhone);
+		model.addAttribute("type", type);
+		model.addAttribute("mapList", mapList);
+		model.addAttribute("totalMap", totalMap);
+		return "house_budget_info";
+	}
 }

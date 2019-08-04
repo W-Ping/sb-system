@@ -48,6 +48,8 @@
         <input type="hidden" id="houseBudgetCode" th:value="${vo?.houseBudgetCode}">
         <input type="hidden" id="houseDetailCode" th:value="${vo?.houseDetailCode}">
         <div class="content">
+            <div class="content-block-title"
+                 th:text="${vo!=null and vo.budgetCode!=null and vo.budgetCode!=''?'仓库材料':'自建材料'}"></div>
             <div class="list-block">
                 <ul>
                     <li>
@@ -56,7 +58,7 @@
                                 <div class="item-title label">材料名称</div>
                                 <div class="item-input">
                                     <input type="text" id="budgetName"
-                                           th:disabled="${vo!=null and vo.budgetCode!=null and vo.budgetCode!=''?'true':'false'}"
+                                           th:readonly="${vo!=null and vo.budgetCode!=null and vo.budgetCode!=''?'true':'false'}"
                                            th:value="${vo?.budgetName}"
                                            th:placeholder="材料名称">
                                 </div>
@@ -69,7 +71,7 @@
                                 <div class="item-title label">材料金额</div>
                                 <div class="item-input">
                                     <input type="text" id="budgetAmount"
-                                           th:disabled="${vo!=null and vo.budgetCode!=null and vo.budgetCode!=''?'true':'false'}"
+                                           th:readonly="${vo!=null and vo.budgetCode!=null and vo.budgetCode!=''?'true':'false'}"
                                            th:value="${vo?.budgetAmount}"
                                            th:placeholder="材料金额">
                                 </div>

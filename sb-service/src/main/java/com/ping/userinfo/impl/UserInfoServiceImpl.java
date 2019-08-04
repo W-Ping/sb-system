@@ -14,7 +14,6 @@ import com.ping.userinfo.IUserInfoService;
 import com.ping.utils.BeanMapperUtil;
 import com.ping.utils.DigestUtil;
 import com.ping.vo.UserInfoVo;
-import org.apache.catalina.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
