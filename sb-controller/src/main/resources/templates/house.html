@@ -321,11 +321,11 @@
                 <a class="searchbar-cancel">取消</a>
                 <div class="search-input">
                     <label class="icon icon-search" for="search"></label>
-                    <input type="search" id='search' placeholder='输入关键字...'/>
+                    <input type="search" id='search1' placeholder='输入关键字...'/>
                 </div>
             </div>
         </div>
-        <div class="content  infinite-scroll infinite-scroll-bottom" style="top: 1.7rem">
+        <div class="content  infinite-scroll infinite-scroll-bottom" style="top: 1.7rem;bottom: 2.4rem;">
             <dive th:each="vo,stat:${list}">
                 <div class="card">
                     <h3>
@@ -408,11 +408,11 @@
                     </div>
                 </div>
             </dive>
-            <div class="content-block">
-                <p style="width: 60%;margin: auto;">
-                    <a href="javascript:;" class="button button-big button-fill button-round create-popup">添加</a>
-                </p>
-            </div>
+        </div>
+        <div class="content-block" style="position: fixed;bottom: 2.6rem;z-index: 10;right: 0.2rem;opacity: 0.8;">
+            <!--                <p style="width: 60%;margin: auto;">-->
+            <a href="javascript:;" class="button button-big button-fill button-round create-popup">添加</a>
+            <!--                </p>-->
         </div>
     </div>
 </div>
@@ -479,7 +479,7 @@
         for (let i = 0; i < data.length; i++) {
             let dataName = data[i]['name'];
             let dataValue = data[i]['value'];
-            if (!dataValue && dataName != 'actualCost') {
+            if (!dataValue && dataName != 'actualCost' && dataName != 'remark') {
                 let dd = $('input[name=' + dataName + ']').attr("placeholder");
                 $.toast(dd + "值不能为空！");
                 return;
