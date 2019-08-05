@@ -7,7 +7,35 @@
 
 // jshint ignore: start
 +function ($) {
-
+    var initData = function (callback) {
+        $.ajax({
+            type: 'GET',
+            url: '/budget/classify/get',
+            success: function (result) {
+                if (result.code == 200) {
+                    var data = result.obj;
+                    if (data) {
+                        var dataRaw = [];
+                        $.each(data, function (i, item) {
+                            var data_item = {};
+                            data_item['name'] = item['name'];
+                            var subArr = [];
+                            $.each(item['sub'], function (ii, sub_item) {
+                                subArr.push({
+                                    'name': sub_item
+                                })
+                            })
+                            data_item['sub'] = subArr;
+                            data_item['type'] = 0;
+                            dataRaw.push(data_item)
+                        })
+                        callback(dataRaw);
+                    }
+                }
+            }
+        })
+    }
+    console.log("initdata", initData)
     $.smConfig.rawCitiesData = [
         {
             "name": "材料",

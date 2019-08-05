@@ -15,53 +15,53 @@ import java.util.Map;
 public interface IBudgetInfoService {
 
 
-    /**
-     * @param classifyCode
-     * @return
-     */
-    List<BudgetClassifyInfoVo> getBudgetClassifyInfo(BudgetClassifyInfoVo budgetClassifyInfoVo);
+	/**
+	 * @param budgetClassifyInfoVo
+	 * @return
+	 */
+	List<BudgetClassifyInfoVo> getBudgetClassifyInfo(BudgetClassifyInfoVo budgetClassifyInfoVo);
 
-    /**
-     * @return
-     */
-    List<Map<String, List<String>>> getBudgetClassifyInfoListMap(String mobilePhone);
-
-
-    /**
-     * @param budgetInfoVo
-     * @return
-     */
-    boolean saveBudgetInfo(BudgetInfoVo budgetInfoVo);
-
-    /**
-     * @param budgetInfoVo
-     * @return
-     */
-    boolean saveCopyBudget(BudgetInfoVo budgetInfoVo);
-
-    /**
-     * @param id
-     * @return
-     */
-    boolean deleteBudgetInfoById(Long id);
-
-    /**
-     * @param budgetInfoCo
-     * @return
-     */
-    List<BudgetInfoVo> queryBudgetInfoList(BudgetInfoCo budgetInfoCo);
+	/**
+	 * @return
+	 */
+	List<Map<String, Object>>  getBudgetClassifyInfoListMap();
 
 
-    /**
-     * @param budgetCodes
-     * @return
-     */
-    List<BudgetInfoVo> queryBudgetInfosByCodes(List<String> budgetCodes);
+	/**
+	 * @param budgetInfoVo
+	 * @return
+	 */
+	boolean saveBudgetInfo(BudgetInfoVo budgetInfoVo);
+
+	/**
+	 * @param budgetInfoVo
+	 * @return
+	 */
+	boolean saveCopyBudget(BudgetInfoVo budgetInfoVo);
+
+	/**
+	 * @param id
+	 * @return
+	 */
+	boolean deleteBudgetInfoById(Long id);
+
+	/**
+	 * @param budgetInfoCo
+	 * @return
+	 */
+	List<BudgetInfoVo> queryBudgetInfoList(BudgetInfoCo budgetInfoCo);
 
 
-    /**
-     * @param houseDetailCode
-     * @return
-     */
-    List<BudgetInfoVo> searchByKeyword(SearchCo searchCo);
+	/**
+	 * @param budgetCodes
+	 * @return
+	 */
+	List<BudgetInfoVo> queryBudgetInfosByCodes(List<String> budgetCodes);
+
+
+	/**
+	 * @param houseDetailCode
+	 * @return
+	 */
+	List<BudgetInfoVo> searchByKeyword(SearchCo searchCo);
 }
