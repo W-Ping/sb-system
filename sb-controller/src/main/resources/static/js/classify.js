@@ -100,6 +100,8 @@
         rotateEffect: false,  //为了性能
 
         onChange: function (picker, values, displayValues) {
+            console.log(values)
+            console.log(displayValues)
             var newProvince = picker.cols[0].value;
             var newCity;
             if (newProvince !== currentProvince) {
