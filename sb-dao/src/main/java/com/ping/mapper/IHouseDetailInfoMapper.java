@@ -1,9 +1,12 @@
 package com.ping.mapper;
 
 import com.ping.BaseMapper;
+import com.ping.co.SearchCo;
 import com.ping.po.house.HouseDetailInfoPo;
 import com.ping.vo.hosue.HouseDetailInfoVo;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author lwp
@@ -11,9 +14,15 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface IHouseDetailInfoMapper extends BaseMapper<HouseDetailInfoPo> {
-	/**
-	 * @param houseDetailInfoVo
-	 * @return
-	 */
-	int replaceHouseDetailInfo(HouseDetailInfoVo houseDetailInfoVo);
+    /**
+     * @param houseDetailInfoVo
+     * @return
+     */
+    int replaceHouseDetailInfo(HouseDetailInfoVo houseDetailInfoVo);
+
+    /**
+     * @param searchCo
+     * @return
+     */
+    List<HouseDetailInfoVo> searchByKeyword(SearchCo searchCo);
 }

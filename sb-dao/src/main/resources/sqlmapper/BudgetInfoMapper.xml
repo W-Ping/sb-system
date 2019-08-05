@@ -16,5 +16,8 @@
         <result property="updateTime" column="update_time"/>
         <result property="createTime" column="create_time"/>
     </resultMap>
+    <select id="searchByKeyword" resultMap="BaseResultMap" parameterType="com.ping.co.SearchCo">
+            select * from sbdb.budget_info
+    </select>
 
 </mapper>

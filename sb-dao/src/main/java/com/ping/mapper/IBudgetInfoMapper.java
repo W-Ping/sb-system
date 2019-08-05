@@ -1,8 +1,11 @@
 package com.ping.mapper;
 
 import com.ping.BaseMapper;
+import com.ping.co.SearchCo;
 import com.ping.po.house.BudgetInfoPo;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author lwp
@@ -10,4 +13,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface IBudgetInfoMapper extends BaseMapper<BudgetInfoPo> {
+
+    /**
+     * @param budgetInfoCo
+     * @return
+     */
+    List<BudgetInfoPo> searchByKeyword(SearchCo budgetInfoCo);
 }

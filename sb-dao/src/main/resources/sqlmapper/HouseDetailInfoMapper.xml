@@ -3,7 +3,7 @@
 
 <mapper namespace="com.ping.mapper.IHouseDetailInfoMapper">
 
-    <resultMap type="com.ping.po.house.HouseDetailInfoPo" id="BaseResultMap">
+    <resultMap type="com.ping.vo.hosue.HouseDetailInfoVo" id="BaseResultMap">
         <result property="id" column="id"/>
         <result property="houseCode" column="house_code"/>
         <result property="houseDetailCode" column="house_detail_code"/>
@@ -17,6 +17,23 @@
         <result property="version" column="version"/>
         <result property="updateTime" column="update_time"/>
         <result property="createTime" column="create_time"/>
+        <collection property="houseBudgetInfoVos" ofType="com.ping.vo.hosue.HouseBudgetInfoVo"
+                    resultMap="houseBudgetResultMap">
+        </collection>
+    </resultMap>
+    <resultMap id="houseBudgetResultMap" type="com.ping.vo.hosue.HouseBudgetInfoVo">
+        <result property="id" column="hb_id"/>
+        <result property="houseCode" column="hb_house_code"/>
+        <result property="houseDetailCode" column="hb_house_detail_code"/>
+        <result property="budgetCode" column="budget_code"/>
+        <result property="budgetName" column="budget_name"/>
+        <result property="budgetAmount" column="budget_amount"/>
+        <result property="budgetCount" column="budget_count"/>
+        <result property="status" column="hb_status"/>
+        <result property="remark" column="hb_remark"/>
+        <result property="version" column="hb_version"/>
+        <result property="updateTime" column="hb_update_time"/>
+        <result property="createTime" column="hb_create_time"/>
     </resultMap>
     <insert id="replaceHouseDetailInfo" parameterType="com.ping.vo.hosue.HouseDetailInfoVo">
         INSERT INTO `sbdb`.`house_detail_info` (
@@ -57,4 +74,30 @@
         remark=values(remark),
         version=values(version);
     </insert>
+    <select id="searchByKeyword" parameterType="com.ping.co.SearchCo" resultMap="BaseResultMap">
+        SELECT
+        t1.*,
+        t3.`id` as hb_id,
+        t3.`house_code` as hb_house_code,
+        t3.`house_detail_code` as hbt_house_detail_code,
+        t3.`house_budget_code`,
+        t3.`budget_code`,
+        t3.`budget_name`,
+        t3.`budget_amount`,
+        t3.`budget_count`,
+        t3.`status` as hb_status,
+        t3.`remark` as hb_remark,
+        t3.`version` as hb_version,
+        t3.`update_time` as hb_update_time,
+        t3.`create_time` as hb_create_time
+        FROM
+        sbdb.house_detail_info AS t1
+        INNER JOIN sbdb.house_info AS t2 ON t1.house_code = t2.house_code
+        INNER JOIN sbdb.house_budget_info AS t3 ON t1.house_detail_code=t3.house_detail_code
+        <if test="keyword!=null and keyword!=''">
+            AND ( t3.budget_name LIKE CONCAT('%', #{keyword}, '%')
+            OR t1.house_detail_name LIKE CONCAT('%', #{keyword}, '%')
+            OR t1.room_nick_name LIKE CONCAT('%', #{keyword}, '%') )
+        </if>
+    </select>
 </mapper>

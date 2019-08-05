@@ -1,6 +1,7 @@
 package com.ping.houseinfo;
 
 import com.ping.co.HouseInfoCo;
+import com.ping.co.SearchCo;
 import com.ping.vo.hosue.HouseBudgetInfoVo;
 import com.ping.vo.hosue.HouseDetailInfoVo;
 import com.ping.vo.hosue.HouseInfoVo;
@@ -109,4 +110,10 @@ public interface IHouseInfoService {
 	 * @return
 	 */
 	List<HouseBudgetInfoVo> queryHouseBudgetInfoByHouseDetailCode(String houseDetailCode);
+
+	/**
+	 * @param houseDetailCode
+	 * @return
+	 */
+	List<HouseDetailInfoVo> searchByKeyword(SearchCo searchCo);
 }

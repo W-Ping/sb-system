@@ -248,16 +248,7 @@
 
     </div>
     <div th:if="${type==1}">
-        <div class="bar bar-header-secondary" style="top: 0.1rem;">
-            <div class="searchbar">
-                <a class="searchbar-cancel">取消</a>
-                <div class="search-input">
-                    <label class="icon icon-search" for="search"></label>
-                    <input type="search" id='search' placeholder='输入关键字...'/>
-                </div>
-            </div>
-        </div>
-        <div class="content" style="top: 1.7rem;bottom: 2.4rem;">
+        <div class="content" style="top: 0rem;bottom: 2.4rem;">
             <div class="content-block" th:if="${#lists.isEmpty(roomVos)}">
                 <div class="content-padded to-page-link">
                     <div class="row" style="margin: 0 auto; width: 60%;">
@@ -302,9 +293,7 @@
                            class="link" style="font-size: 16px;">选择材料</a>
                         <label style="font-size: 16px;"
                                th:text="'合计：'+${vo!=null and vo.totalBudgetAmount!=null ?vo.totalBudgetAmount:0}+' 元'"></label>
-                        <!--                    <a href="#" th:attr="data-houseDetailCode=${vo?.houseDetailCode}" th:onclick="calculate(this)"-->
-                        <!--                       class="link"-->
-                        <!--                    >计算成本</a>-->
+
                     </div>
                 </div>
 
@@ -315,103 +304,102 @@
         </div>
     </div>
     <div th:if="${type==2}">
-
         <div class="bar bar-header-secondary" style="top: 0.1rem;">
             <div class="searchbar">
                 <a class="searchbar-cancel">取消</a>
                 <div class="search-input">
-                    <label class="icon icon-search" for="search"></label>
-                    <input type="search" id='search1' placeholder='输入关键字...'/>
+                    <label class="icon icon-search" for="cl-search"></label>
+                    <input type="search" id='cl-search' placeholder='输入关键字...'/>
                 </div>
             </div>
         </div>
-        <div class="content  infinite-scroll infinite-scroll-bottom" style="top: 1.7rem;bottom: 2.4rem;">
-            <dive th:each="vo,stat:${list}">
-                <div class="card">
-                    <h3>
-                        <div class="card-header" th:text="${vo?.budgetName}"></div>
-                    </h3>
-                    <div class="card-content">
-                        <div class="list-block inset">
-                            <ul>
-                                <li>
-                                    <a class="item-content item-link"
-                                       th:href="@{'/house/page/budget/0/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.budgetName}}">
-                                        <!--                                    <div class="item-media"><i class="icon icon-f71"></i></div>-->
-                                        <div class="item-inner">
-                                            <div class="item-title">材料名称</div>
-                                            <div class="item-after" th:text="${vo?.budgetName}"></div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="item-content item-link"
-                                       th:href="@{'/house/page/budget/3/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.maxCost}}">
-                                        <!--                                    <div class="item-media"><i class="icon icon-f71"></i></div>-->
-                                        <div class="item-inner">
-                                            <div class="item-title">最高成本</div>
-                                            <div class="item-after" th:text="${vo?.maxCost}"></div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="item-content item-link"
-                                       th:href="@{'/house/page/budget/4/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.minCost}}">
-                                        <!--                                    <div class="item-media"><i class="icon icon-f71"></i></div>-->
-                                        <div class="item-inner">
-                                            <div class="item-title">最低成本</div>
-                                            <div class="item-after" th:text="${vo?.minCost}"></div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="item-content item-link"
-                                       th:href="@{'/house/page/budget/5/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.actualCost}}">
-                                        <!--                                    <div class="item-media"><i class="icon icon-f71"></i></div>-->
-                                        <div class="item-inner">
-                                            <div class="item-title">实际成本</div>
-                                            <div class="item-after" th:text="${vo?.actualCost}"></div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="item-content item-link"
-                                       th:href="@{'/house/page/budget/2/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.budgetAmount}}">
-                                        <!--                                    <div class="item-media"><i class="icon icon-f7"></i></div>-->
-                                        <div class="item-inner">
-                                            <div class="item-title">预算金额</div>
-                                            <div class="item-after" th:text="${vo?.budgetAmount}"></div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="item-content item-link"
-                                       th:href="@{'/house/page/budget/-1/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.remark}}">
-                                        <!--                                    <div class="item-media"><i class="icon icon-f7"></i></div>-->
-                                        <div class="item-inner">
-                                            <div class="item-title">备注</div>
-                                            <div class="item-after"
-                                                 th:text="${vo?.remark!=null?#strings.length(vo?.remark):0} le 10 ? ${vo?.remark}:${#strings.append(#strings.substring(vo.remark,0,10),'...')}"></div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" style="font-size: 16px;"
-                           th:attr="date-budgetName=${vo?.budgetName},date-budgetCode=${vo?.budgetCode}"
-                           class="prompt-title-ok">快速复制</a>
-                        <a href="#" style="font-size: 16px; color: red;"
-                           th:onclick="'javascript:deleteBudget(\''+${vo.id}+'\')'"
-                           class="link">删除</a>
+        <div id="cl-content" class="content  infinite-scroll infinite-scroll-bottom"
+             style="top: 1.7rem;bottom: 2.4rem;">
+            <div class="card" th:each="vo,stat:${list}">
+                <h3>
+                    <div class="card-header" th:text="${vo?.budgetName}"></div>
+                </h3>
+                <div class="card-content">
+                    <div class="list-block inset">
+                        <ul>
+                            <li>
+                                <a class="item-content item-link"
+                                   th:href="@{'/house/page/budget/0/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.budgetName}}">
+                                    <!--                                    <div class="item-media"><i class="icon icon-f71"></i></div>-->
+                                    <div class="item-inner">
+                                        <div class="item-title">材料名称</div>
+                                        <div class="item-after" th:text="${vo?.budgetName}"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="item-content item-link"
+                                   th:href="@{'/house/page/budget/3/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.maxCost}}">
+                                    <!--                                    <div class="item-media"><i class="icon icon-f71"></i></div>-->
+                                    <div class="item-inner">
+                                        <div class="item-title">最高成本</div>
+                                        <div class="item-after" th:text="${vo?.maxCost}"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="item-content item-link"
+                                   th:href="@{'/house/page/budget/4/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.minCost}}">
+                                    <!--                                    <div class="item-media"><i class="icon icon-f71"></i></div>-->
+                                    <div class="item-inner">
+                                        <div class="item-title">最低成本</div>
+                                        <div class="item-after" th:text="${vo?.minCost}"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="item-content item-link"
+                                   th:href="@{'/house/page/budget/5/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.actualCost}}">
+                                    <!--                                    <div class="item-media"><i class="icon icon-f71"></i></div>-->
+                                    <div class="item-inner">
+                                        <div class="item-title">实际成本</div>
+                                        <div class="item-after" th:text="${vo?.actualCost}"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="item-content item-link"
+                                   th:href="@{'/house/page/budget/2/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.budgetAmount}}">
+                                    <!--                                    <div class="item-media"><i class="icon icon-f7"></i></div>-->
+                                    <div class="item-inner">
+                                        <div class="item-title">预算金额</div>
+                                        <div class="item-after" th:text="${vo?.budgetAmount}"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="item-content item-link"
+                                   th:href="@{'/house/page/budget/-1/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.remark}}">
+                                    <!--                                    <div class="item-media"><i class="icon icon-f7"></i></div>-->
+                                    <div class="item-inner">
+                                        <div class="item-title">备注</div>
+                                        <div class="item-after"
+                                             th:text="${vo?.remark!=null?#strings.length(vo?.remark):0} le 10 ? ${vo?.remark}:${#strings.append(#strings.substring(vo.remark,0,10),'...')}"></div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-            </dive>
+                <div class="card-footer">
+                    <a href="#" style="font-size: 16px;"
+                       th:attr="date-budgetName=${vo?.budgetName},date-budgetCode=${vo?.budgetCode}"
+                       class="prompt-title-ok">快速复制</a>
+                    <a href="#" style="font-size: 16px; color: red;"
+                       th:onclick="'javascript:deleteBudget(\''+${vo.id}+'\')'"
+                       class="link">删除</a>
+                </div>
+            </div>
         </div>
-        <div class="content-block" style="position: fixed;bottom: 2.6rem;z-index: 10;right: 0.2rem;opacity: 0.8;">
+        <div class="content-block"
+             style="display: flex;justify-content: center;position: fixed;bottom: 2.8rem;z-index: 10;right:50%; left: 50%; opacity: 0.8; margin: 0 auto; padding: 0px;">
             <!--                <p style="width: 60%;margin: auto;">-->
-            <a href="javascript:;" class="button button-big button-fill button-round create-popup">添加</a>
+            <a th:href="@{'/budget/page/add/'+${mobilePhone}}" class="button button-big button-fill button-round">添加</a>
             <!--                </p>-->
         </div>
     </div>
@@ -419,17 +407,46 @@
 <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+
 <script>
     function toHouse(e) {
         let mobilePhone = $(e).attr("data-mobilePhone");
         window.location.href = '/house/page/info/' + mobilePhone;
     }
 
-    //
-    // function zan(budgetCode) {
-    //     $.toast(budgetCode);
-    // }
+    $("#cl-search").bind("input propertychange", function () {
+        let keyword = $(this).val();
+        search(keyword);
+    })
 
+    function search(keyword, type) {
+        $("#cl-content").html('');
+        let url = '/budget/search/keyword'
+        let param = {};
+        param.keyword = keyword;
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: url,
+            data: JSON.stringify(param),
+            success: function (result) {
+                console.log("result", result)
+                let html = '';
+                if (result.code == 200) {
+                    let data = result.data;
+                    $.each(data, function (i, val) {
+                        html += val[''];
+                    })
+                    $("#zx-content").html(html);
+                } else {
+                    $.toast(result.message);
+                }
+            },
+            error: function (result, type, err) {
+                $.toast(err);
+            }
+        });
+    }
 
     function deleteBudget(id) {
         if (!id) {
@@ -651,7 +668,6 @@
             '</li>' +
             '<li class="align-top">' +
             '<div class="item-content">' +
-            // '<div class="item-media"><i class="icon icon-form-name"></i></div>' +
             '<div class="item-inner">' +
             '<div class="item-title label">备注</div>' +
             '<div class="item-input">' +

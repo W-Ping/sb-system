@@ -3,6 +3,7 @@ package com.ping.houseinfo;
 import com.ping.Result;
 import com.ping.budgetinfo.IBudgetInfoService;
 import com.ping.co.BudgetInfoCo;
+import com.ping.co.SearchCo;
 import com.ping.constant.BudgetEnum;
 import com.ping.userinfo.IUserInfoService;
 import com.ping.vo.UserInfoVo;
@@ -29,72 +30,83 @@ import java.util.Map;
 @RestController
 @RequestMapping("/house")
 public class HouseController {
-	@Autowired
-	private IHouseInfoService iHouseInfoService;
+    @Autowired
+    private IHouseInfoService iHouseInfoService;
 
 
-	/**
-	 * @param houseInfoVo
-	 * @return
-	 */
-	@PostMapping(value = "/save")
-	public Result<HouseInfoVo> submitHouseInfo(@RequestBody HouseInfoVo houseInfoVo) {
-		boolean b = iHouseInfoService.saveHouseInfo(houseInfoVo);
-		return Result.successOrFail(b);
-	}
+    /**
+     * @param houseInfoVo
+     * @return
+     */
+    @PostMapping(value = "/save")
+    public Result<HouseInfoVo> submitHouseInfo(@RequestBody HouseInfoVo houseInfoVo) {
+        boolean b = iHouseInfoService.saveHouseInfo(houseInfoVo);
+        return Result.successOrFail(b);
+    }
 
-	@PostMapping(value = "/save_room")
-	public Result<HouseDetailInfoVo> submitHouseRoomInfo(@RequestBody HouseDetailInfoVo houseDetailInfoVo) {
-		boolean b = iHouseInfoService.saveHouseRoomInfo(houseDetailInfoVo);
-		return Result.successOrFail(b, houseDetailInfoVo);
-	}
-
-
-	/**
-	 * @param roomType
-	 * @param index
-	 * @param mobilePhone
-	 * @return
-	 */
-	@GetMapping(value = "/detail/{roomType}/{index}")
-	public Result<HouseDetailInfoVo> getHouseDetail(@PathVariable("roomType") Integer roomType,
-	                                                @PathVariable("index") Integer index,
-	                                                @RequestParam("mobile_phone") String mobilePhone) {
-		HouseDetailInfoVo houseDetailInfo = iHouseInfoService.getHouseDetailInfo(mobilePhone, roomType, index);
-		return Result.success(houseDetailInfo);
-	}
+    @PostMapping(value = "/save_room")
+    public Result<HouseDetailInfoVo> submitHouseRoomInfo(@RequestBody HouseDetailInfoVo houseDetailInfoVo) {
+        boolean b = iHouseInfoService.saveHouseRoomInfo(houseDetailInfoVo);
+        return Result.successOrFail(b, houseDetailInfoVo);
+    }
 
 
-	/**
-	 * @param houseBudgetInfoVo
-	 * @return
-	 */
-	@PostMapping(value = "/detail/decorate/save")
-	public Result<HouseBudgetInfoVo> saveHouseBudgetInfo(@RequestBody HouseBudgetInfoVo houseBudgetInfoVo) {
-		boolean b = iHouseInfoService.saveHouseBudgetInfo(houseBudgetInfoVo);
-		return Result.successOrFail(b, houseBudgetInfoVo);
-	}
+    /**
+     * @param roomType
+     * @param index
+     * @param mobilePhone
+     * @return
+     */
+    @GetMapping(value = "/detail/{roomType}/{index}")
+    public Result<HouseDetailInfoVo> getHouseDetail(@PathVariable("roomType") Integer roomType,
+                                                    @PathVariable("index") Integer index,
+                                                    @RequestParam("mobile_phone") String mobilePhone) {
+        HouseDetailInfoVo houseDetailInfo = iHouseInfoService.getHouseDetailInfo(mobilePhone, roomType, index);
+        return Result.success(houseDetailInfo);
+    }
 
-	/**
-	 * @param houseBudgetCode
-	 * @return
-	 */
-	@DeleteMapping(value = "/detail/decorate/delete/{houseBudgetCode}")
-	public Result<Boolean> deleteHouseBudgetInfo(@PathVariable("houseBudgetCode") String houseBudgetCode) {
-		boolean b = iHouseInfoService.deleteHouseBudgetInfo(houseBudgetCode);
-		return Result.successOrFail(b);
-	}
 
-	/**
-	 * @param houseDetailCode
-	 * @param budgetCodes
-	 * @return
-	 */
-	@PostMapping(value = "/detail/decorate/{houseDetailCode}/save")
-	public Result<Boolean> saveHouseBudgetInfo(@PathVariable("houseDetailCode") String houseDetailCode,
-	                                           @RequestBody List<String> budgetCodes) {
-		boolean b = iHouseInfoService.saveHouseBudgetInfo(houseDetailCode, budgetCodes);
-		return Result.successOrFail(b);
-	}
+    /**
+     * @param houseBudgetInfoVo
+     * @return
+     */
+    @PostMapping(value = "/detail/decorate/save")
+    public Result<HouseBudgetInfoVo> saveHouseBudgetInfo(@RequestBody HouseBudgetInfoVo houseBudgetInfoVo) {
+        boolean b = iHouseInfoService.saveHouseBudgetInfo(houseBudgetInfoVo);
+        return Result.successOrFail(b, houseBudgetInfoVo);
+    }
 
+    /**
+     * @param houseBudgetCode
+     * @return
+     */
+    @DeleteMapping(value = "/detail/decorate/delete/{houseBudgetCode}")
+    public Result<Boolean> deleteHouseBudgetInfo(@PathVariable("houseBudgetCode") String houseBudgetCode) {
+        boolean b = iHouseInfoService.deleteHouseBudgetInfo(houseBudgetCode);
+        return Result.successOrFail(b);
+    }
+
+    /**
+     * @param houseDetailCode
+     * @param budgetCodes
+     * @return
+     */
+    @PostMapping(value = "/detail/decorate/{houseDetailCode}/save")
+    public Result<Boolean> saveHouseBudgetInfo(@PathVariable("houseDetailCode") String houseDetailCode,
+                                               @RequestBody List<String> budgetCodes) {
+        boolean b = iHouseInfoService.saveHouseBudgetInfo(houseDetailCode, budgetCodes);
+        return Result.successOrFail(b);
+    }
+
+    /**
+     * 装修房间-关键字查询
+     *
+     * @param searchCo
+     * @return
+     */
+    @PostMapping(value = "/search/keyword")
+    public Result<List<HouseDetailInfoVo>> searchByKeyword(@RequestBody SearchCo searchCo) {
+        List<HouseDetailInfoVo> houseDetailInfoVos = iHouseInfoService.searchByKeyword(searchCo);
+        return Result.success(houseDetailInfoVos);
+    }
 }
