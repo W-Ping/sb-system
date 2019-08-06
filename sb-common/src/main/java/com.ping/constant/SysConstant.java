@@ -17,6 +17,7 @@ public class SysConstant {
     public static final int STATUS_0 = 0;
     public static final int STATUS_1 = 1;
     public static final String ADMIN_POST_TYPE = "admin";
+    public static final String ORDINARY_POST_TYPE = "ordinary";
     public static final String FATHER_CLASSIFY_CODE = "0";
 
 }

@@ -165,7 +165,7 @@
                                                    class="button button-big button-fill button-danger close-popup">取消</a>
                             </div>
                             <div class="col-50"><a href="#" onclick="submitRoom()"
-                                                   class="button button-big button-fill button-success">提交</a></div>
+                                                   class="button button-big button-fill button-success">保存</a></div>
                         </div>
                     </div>
                 </div>
@@ -211,7 +211,7 @@
             success: function (result) {
                 console.log("数据%o", result);
                 if (result.code == 200) {
-                    $.toast('提交成功！');
+                    $.toast('保存成功！');
                     $(".modal-overlay").remove('modal-overlay-visible');
                     $.closeModal();
                 } else {
@@ -219,7 +219,7 @@
                 }
             },
             error: function (result, type, err) {
-                $.toast("提交失败!");
+                $.toast("保存失败!");
             }
         });
     }
