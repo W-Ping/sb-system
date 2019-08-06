@@ -8,7 +8,7 @@ import java.util.Optional;
  * @create 2019/07/14 18:47
  */
 public enum BudgetEnum {
-	budget_name(0, "budgetName", "预算名称"),
+	budget_name(0, "budgetName", "装修名称"),
 	max_budget_amount(1, "maxBudgetAmount", "最高金额"),
 	min_budget_amount(2, "minBudgetAmount", "最低金额"),
 	max_cost(3, "maxCost", "最高成本"),

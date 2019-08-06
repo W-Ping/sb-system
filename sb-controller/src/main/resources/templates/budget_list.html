@@ -66,7 +66,7 @@
             <dive th:unless="${#lists.isEmpty(list)}" th:each="vo,stat:${list}">
                 <div class="card">
                     <h3>
-                        <div class="card-header" th:text="${vo?.budgetName}"></div>
+                        <div class="card-header" th:text="${vo?.budgetName+'【'+vo?.classifyName+'】'}"></div>
                     </h3>
                     <div class="card-content">
                         <div class="list-block ">

@@ -8,7 +8,8 @@
     <link rel="shortcut icon" href="/static/favicon.ico">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.css">
+    <!--    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">-->
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
     <link rel="stylesheet" type="text/css" media="all" href="/static/css/icon.css"
           th:href="@{/static/css/icon.css}"/>
@@ -69,7 +70,7 @@
             position: relative;
             overflow: hidden;
             padding-top: 1rem;
-            z-index: 1;
+            z-index: 10;
         }
 
         .list-block .item-inner {
@@ -92,6 +93,33 @@
             -webkit-box-align: center;
             -webkit-align-items: center;
             align-items: center;
+        }
+
+        .search-page {
+            margin-bottom: -3rem;
+            width: 100%;
+            float: bottom;
+            height: 100%;
+            /*line-height: 1.4rem;*/
+            /*text-align: center;*/
+            display: flex;
+            position: absolute;
+            background: white;
+            -webkit-transition: all .3s;
+            transition: all .3s;
+            opacity: 0;
+            overflow: hidden;
+            z-index: -10;
+            margin-bottom: 2.4rem;
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+
+        .search-page-active {
+            margin-bottom: 2.4rem;
+            margin-top: 1.8rem;
+            opacity: 1;
+            z-index: 10;
         }
     </style>
 </head>
@@ -313,7 +341,7 @@
              style="top: 1.7rem;bottom: 2.4rem;">
             <div class="card" th:each="vo,stat:${list}">
                 <h3>
-                    <div class="card-header" th:text="${vo?.budgetName}"></div>
+                    <div class="card-header" th:text="${vo?.budgetName+'【'+vo?.classifyName+'】'}"></div>
                 </h3>
                 <div class="card-content">
                     <div class="list-block inset">
@@ -323,7 +351,7 @@
                                    th:href="@{'/house/page/budget/0/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.budgetName}}">
                                     <!--                                    <div class="item-media"><i class="icon icon-f71"></i></div>-->
                                     <div class="item-inner">
-                                        <div class="item-title">材料名称</div>
+                                        <div class="item-title">装修名称</div>
                                         <div class="item-after" th:text="${vo?.budgetName}"></div>
                                     </div>
                                 </a>
@@ -399,6 +427,9 @@
             <!--                </p>-->
         </div>
     </div>
+<!--    <div class="content search-page">-->
+<!--        <div>查询条件页面</div>-->
+<!--    </div>-->
 </div>
 <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
@@ -430,10 +461,12 @@
                 let html = '';
                 if (result.code == 200) {
                     let data = result.data;
-                    $.each(data, function (i, val) {
-                        html += val[''];
-                    })
-                    $("#zx-content").html(html);
+                    if (data && data.length > 0) {
+                        $.each(data, function (i, val) {
+                            html += val[''];
+                        })
+                        $("#zx-content").html(html);
+                    }
                 } else {
                     $.toast(result.message);
                 }
@@ -475,6 +508,21 @@
         window.location.href = "/house/page/budgetInfo/detail/" + type + "/" + mobilePhone;
     }
 
+    $(document).on("focus", ".searchbar input", function (e) {
+        var $input = $(e.target);
+        $(".search-page").addClass("search-page-active");
+    });
+    $(document).on("click", ".searchbar-cancel", function (e) {
+        var $btn = $(e.target);
+        $btn.parents(".searchbar").removeClass("searchbar-active");
+        $(".search-page").removeClass("search-page-active");
+    });
+    $(document).on("blur", ".searchbar input", function (e) {
+        var $input = $(e.target);
+        // $(".search-page").addClass("search-page-active");
+        // $input.parents(".searchbar").removeClass("searchbar-active");
+        // $(".search-page").removeClass("search-page-active");
+    });
     $(document).on('click', '.prompt-title-ok', function () {
         let budgetName = $(this).attr("date-budgetName");
         let budgetCode = $(this).attr("date-budgetCode");
