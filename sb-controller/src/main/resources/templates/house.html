@@ -415,7 +415,7 @@
         search(keyword);
     })
 
-    function search(keyword, type) {
+    function search(keyword) {
         $("#cl-content").html('');
         let url = '/budget/search/keyword'
         let param = {};
@@ -475,96 +475,6 @@
         window.location.href = "/house/page/budgetInfo/detail/" + type + "/" + mobilePhone;
     }
 
-    function submitBudget() {
-        let data = $('#budgetForm').serializeArray();
-        let url = '/budget/save';
-        let param = {};
-        param['mobilePhone'] = $('#mobilePhone').val();
-        let maxCost = $("input[name=maxCost]").val();
-        let minCost = $("input[name=minCost]").val();
-        console.log(maxCost + ":" + minCost)
-        if (maxCost && minCost) {
-            if (parseFloat(minCost) > parseFloat(maxCost)) {
-                $.toast("最低成本值不能大于最高成本！");
-                return;
-            }
-        }
-        for (let i = 0; i < data.length; i++) {
-            let dataName = data[i]['name'];
-            let dataValue = data[i]['value'];
-            if (!dataValue && dataName != 'actualCost' && dataName != 'remark') {
-                let dd = $('input[name=' + dataName + ']').attr("placeholder");
-                $.toast(dd + "值不能为空！");
-                return;
-            }
-            param[dataName] = dataValue;
-        }
-        console.log("请求路径%o", url);
-        console.log("请求参数%o", param);
-        $.ajax({
-            type: 'POST',
-            contentType: 'application/json',
-            url: url,
-            data: JSON.stringify(param),
-            success: function (result) {
-                console.log("数据%o", result);
-                if (result.code == 200) {
-                    $.toast('提交成功！');
-                    $.closeModal()
-                    $(".popup-overlay").remove('modal-overlay-visible');
-                    window.location.reload();
-                } else {
-                    $.toast(result.message);
-                }
-            },
-            error: function (result, type, err) {
-                $.toast(err);
-            }
-        });
-    }
-
-    $(document).on('click', '.create-room', function (e) {
-        let roomType = $(this).attr("data-roomType");
-        let roomIndex = $(this).attr("data-index");
-        let mobilePhone = $("#mobilePhone").val();
-        let title = $(this).text();
-        $("#room-title").text(title);
-        $("#room-detailName").val(title);
-        $("#room-type").val(roomType)
-        $("#room-index").val(roomIndex)
-        $("input[name='roomNickName']").val("");
-        $("input[name='floorAreaSize']").val("");
-        $("input[name='wallAreaSize']").val("");
-        $("input[name='ceilAreaSize']").val("");
-        $("textarea[name='remark']").val("");
-        let url = '/house/detail/' + roomType + "/" + roomIndex + "?mobile_phone=" + mobilePhone
-        $.ajax({
-            type: 'GET',
-            url: url,
-            success: function (result) {
-                if (result.code == 200) {
-                    console.log("detial数据%o", result);
-                    let objVal = result.obj;
-                    if (objVal) {
-                        $("input[name='roomNickName']").val(objVal['roomNickName']);
-                        $("input[name='floorAreaSize']").val(objVal['floorAreaSize']);
-                        $("input[name='wallAreaSize']").val(objVal['wallAreaSize']);
-                        $("input[name='ceilAreaSize']").val(objVal['ceilAreaSize']);
-                        $("textarea[name='remark']").val(objVal['remark']);
-                        $("#houseDetailCode").val(objVal['houseDetailCode']);
-                    }
-                    $.popup(".room-popup");
-                    $(".popup-overlay").removeClass("modal-overlay-visible")
-                } else {
-                    $.toast(result.message);
-                }
-            },
-            error: function (result, type, err) {
-                $.toast(err);
-            }
-        })
-
-    })
     $(document).on('click', '.prompt-title-ok', function () {
         let budgetName = $(this).attr("date-budgetName");
         let budgetCode = $(this).attr("date-budgetCode");
@@ -598,91 +508,6 @@
                 }
             });
         });
-    });
-    $(document).on('click', '.create-popup', function () {
-        let popupHTML = '<div class="popup">' +
-            '<header class="bar bar-nav">' +
-            '<h1 class="title">新增</h1>' +
-            '</header>' +
-            '<form id="budgetForm">' +
-            '<div class="list-block" >' +
-            '<ul>' +
-            '<li>' +
-            '<div class="item-content">' +
-            // '<div class="item-media"><i class="icon icon-form-name"></i></div>' +
-            '<div class="item-inner">' +
-            '<div class="item-title label">材料名称</div>' +
-            '<div class="item-input">' +
-            '<input type="text" name="budgetName" placeholder="材料名称">' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '</li>' +
-            '<li>' +
-            '<div class="item-content">' +
-            // '<div class="item-media"><i class="icon icon-form-name"></i></div>' +
-            '<div class="item-inner">' +
-            '<div class="item-title label">最高成本</div>' +
-            '<div class="item-input">' +
-            '<input type="number" name="maxCost" placeholder="最高成本">' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '</li>' +
-            '<li>' +
-            '<div class="item-content">' +
-            // '<div class="item-media"><i class="icon icon-form-name"></i></div>' +
-            '<div class="item-inner">' +
-            '<div class="item-title label">最低成本</div>' +
-            '<div class="item-input">' +
-            '<input type="number" name="minCost" placeholder="最低成本">' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '</li>' +
-            '<li>' +
-            '<div class="item-content">' +
-            // '<div class="item-media"><i class="icon icon-form-name"></i></div>' +
-            '<div class="item-inner">' +
-            '<div class="item-title label">实际成本</div>' +
-            '<div class="item-input">' +
-            '<input type="number" name="actualCost" placeholder="实际成本">' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '</li>' +
-            '<li>' +
-            '<div class="item-content">' +
-            // '<div class="item-media"><i class="icon icon-form-name"></i></div>' +
-            '<div class="item-inner">' +
-            '<div class="item-title label">预算金额</div>' +
-            '<div class="item-input">' +
-            '<input type="number" name="budgetAmount" placeholder="金额">' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '</li>' +
-            '<li class="align-top">' +
-            '<div class="item-content">' +
-            '<div class="item-inner">' +
-            '<div class="item-title label">备注</div>' +
-            '<div class="item-input">' +
-            '<textarea name="remark" placeholder="备注"></textarea>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '</li>' +
-            '</ul>' +
-            '</div>' +
-            '</form>' +
-            '<div class="content-block">' +
-            '<div class="row">' +
-            '<div class="col-50"><a href="javascript:;"   class="button button-big button-fill button-danger close-popup">取消</a></div>' +
-            '<div class="col-50"><a href="javascript:;" onclick="submitBudget()" id="submitBudget" class="button button-big button-fill button-success ">提交</a></div>' +
-            '</div> </div>' +
-            '</div>'
-
-        $.popup(popupHTML);
     });
     $.init();
 </script>

@@ -221,7 +221,8 @@ public class BudgetInfoServiceImpl extends BaseService implements IBudgetInfoSer
      * @param classifyName
      * @return
      */
-    private BudgetClassifyInfoVo getBudgetClassifyInfoByName(String classifyName) {
+    @Override
+    public BudgetClassifyInfoVo getBudgetClassifyInfoByName(String classifyName) {
         if (StringUtils.isBlank(classifyName)) {
             throw new ValidateException(ResultEnum.REQ_PARAMETER_ERROR, "类型不能为空");
         }
@@ -231,6 +232,23 @@ public class BudgetInfoServiceImpl extends BaseService implements IBudgetInfoSer
         BudgetClassifyInfoPo budgetClassifyInfoPo = iBudgetClassifyMapper.selectOneByExample(example);
         if (budgetClassifyInfoPo == null) {
             throw new OptionsException(ResultEnum.DATA_NOT_EXISTS, classifyName + "类型不存在");
+        }
+        BudgetClassifyInfoVo budgetClassifyInfoVo = BeanMapperUtil.map(budgetClassifyInfoPo, BudgetClassifyInfoVo.class);
+        return budgetClassifyInfoVo;
+    }
+
+    /**
+     * @param classifyName
+     * @return
+     */
+    @Override
+    public BudgetClassifyInfoVo getFatherClassifyInfoByName(String classifyName) {
+        if (StringUtils.isBlank(classifyName)) {
+            throw new ValidateException(ResultEnum.REQ_PARAMETER_ERROR, "类型不能为空");
+        }
+        BudgetClassifyInfoPo budgetClassifyInfoPo = iBudgetClassifyMapper.getFatherClassifyInfoByName(classifyName);
+        if (budgetClassifyInfoPo == null) {
+            throw new OptionsException(ResultEnum.DATA_NOT_EXISTS, classifyName + "类型为空");
         }
         BudgetClassifyInfoVo budgetClassifyInfoVo = BeanMapperUtil.map(budgetClassifyInfoPo, BudgetClassifyInfoVo.class);
         return budgetClassifyInfoVo;

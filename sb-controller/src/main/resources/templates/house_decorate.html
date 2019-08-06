@@ -55,12 +55,21 @@
                     <li>
                         <div class="item-content">
                             <div class="item-inner">
-                                <div class="item-title label">材料名称</div>
-                                <div class="item-input">
-                                    <input type="text" id="budgetName"
+                                <div class="item-title label">类型</div>
+
+                                <div class="item-input"
+                                     th:if="${vo!=null and vo.budgetCode!=null and vo.budgetCode!=''}">
+                                    <input type="text"
+                                           readonly
+                                           th:value="${vo?.classifyName!=null? (vo?.fatherClassifyName+' '+vo?.classifyName):''}"
+                                           name="classifyName" placeholder="选择类型">
+                                </div>
+                                <div class="item-input"
+                                     th:unless="${vo!=null and vo.budgetCode!=null and vo.budgetCode!=''}">
+                                    <input type="text"
                                            th:readonly="${vo!=null and vo.budgetCode!=null and vo.budgetCode!=''?'true':'false'}"
-                                           th:value="${vo?.budgetName}"
-                                           th:placeholder="材料名称">
+                                           th:value="${vo?.classifyName!=null? (vo?.fatherClassifyName+' '+vo?.classifyName):''}"
+                                           name="classifyName" id='picker-classifyName' placeholder="选择类型">
                                 </div>
                             </div>
                         </div>
@@ -68,12 +77,25 @@
                     <li>
                         <div class="item-content">
                             <div class="item-inner">
-                                <div class="item-title label">材料金额</div>
+                                <div class="item-title label">名称</div>
+                                <div class="item-input">
+                                    <input type="text" id="budgetName"
+                                           th:readonly="${vo!=null and vo.budgetCode!=null and vo.budgetCode!=''?'true':'false'}"
+                                           th:value="${vo?.budgetName}"
+                                           th:placeholder="名称">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">预算金额</div>
                                 <div class="item-input">
                                     <input type="text" id="budgetAmount"
                                            th:readonly="${vo!=null and vo.budgetCode!=null and vo.budgetCode!=''?'true':'false'}"
                                            th:value="${vo?.budgetAmount}"
-                                           th:placeholder="材料金额">
+                                           th:placeholder="预算金额">
                                 </div>
                             </div>
                         </div>
@@ -115,18 +137,26 @@
 <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+<script type='text/javascript' th:src="@{/static/js/classify.js}" src='/static/js/classify.js'
+        charset='utf-8'></script>
 <script>
     function submitDecorate() {
         let url = '/house/detail/decorate/save';
         let budgetName = $("#budgetName").val();
         let budgetAmount = $("#budgetAmount").val();
         let budgetCount = $("#budgetCount").val();
+        let classifyName = $("input[name=classifyName]").val();
+        classifyName = classifyName.split(' ')[1];
+        if (!classifyName) {
+            $.toast("请选择类型！");
+            return;
+        }
         if (!budgetName) {
-            $.toast("材料名称不能为空！");
+            $.toast("请输入名称！");
             return;
         }
         if (!budgetAmount) {
-            $.toast("材料金额不能为空！");
+            $.toast("请输入预算名称！");
             return;
         }
         if (!budgetCount) {
@@ -144,6 +174,7 @@
         param['budgetAmount'] = budgetAmount;
         param['budgetCount'] = budgetCount;
         param['budgetCount'] = budgetCount;
+        param['classifyName'] = classifyName;
         $.ajax({
             type: 'POST',
             contentType: 'application/json',
@@ -192,18 +223,20 @@
     $('#budgetAmount').on("input propertychange", function () {
         let budgetAmount = $(this).val() || 0;
         let budgetCount = $("#budgetCount").val() || 0;
-        console.log(budgetAmount);
-        console.log(budgetCount);
         $("#totalAmount").text((budgetAmount * budgetCount).toFixed(2) + " 元");
     });
     $('#budgetCount').on("input propertychange", function () {
         let budgetCount = $(this).val() || 0
         let budgetAmount = $("#budgetAmount").val() || 0;
-        console.log(budgetAmount);
-        console.log(budgetCount);
         $("#totalAmount").text((budgetAmount * budgetCount).toFixed(2) + " 元");
     });
-
+    $("#picker-classifyName").classifyPicker({
+        toolbarTemplate: '<header class="bar bar-nav">\
+    <button class="button button-link pull-right close-picker">确定</button>\
+    <h1 class="title">选择类型</h1>\
+    </header>'
+    });
+    $.init();
 </script>
 </body>
 </html>

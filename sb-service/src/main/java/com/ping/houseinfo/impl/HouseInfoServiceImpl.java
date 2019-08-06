@@ -16,10 +16,7 @@ import com.ping.po.house.HouseBudgetInfoPo;
 import com.ping.po.house.HouseDetailInfoPo;
 import com.ping.po.house.HouseInfoPo;
 import com.ping.utils.BeanMapperUtil;
-import com.ping.vo.hosue.BudgetInfoVo;
-import com.ping.vo.hosue.HouseBudgetInfoVo;
-import com.ping.vo.hosue.HouseDetailInfoVo;
-import com.ping.vo.hosue.HouseInfoVo;
+import com.ping.vo.hosue.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -218,6 +215,8 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
         HouseBudgetInfoPo houseBudgetInfoPo = iHouseBudgetInfoMapper.selectOneByExample(example);
         HouseBudgetInfoVo houseBudgetInfoVo = BeanMapperUtil.map(houseBudgetInfoPo, HouseBudgetInfoVo.class);
         if (houseBudgetInfoVo != null) {
+            BudgetClassifyInfoVo fatherClassifyInfo = iBudgetInfoService.getFatherClassifyInfoByName(houseBudgetInfoVo.getClassifyName());
+            houseBudgetInfoVo.setFatherClassifyName(fatherClassifyInfo.getClassifyName());
             HouseDetailInfoVo houseDetailInfo = this.getHouseDetailInfo(houseBudgetInfoVo.getHouseDetailCode());
             if (houseDetailInfo != null) {
                 houseBudgetInfoVo.setHouseDetailName(houseDetailInfo.getHouseDetailName());
@@ -288,6 +287,9 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
         if (houseDetailInfo == null) {
             throw new ValidateException(ResultEnum.DATA_NOT_EXISTS, "房屋信息不存在");
         }
+        BudgetClassifyInfoVo budgetClassifyInfo = iBudgetInfoService.getBudgetClassifyInfoByName(houseBudgetInfoVo.getClassifyName());
+        houseBudgetInfoVo.setClassifyCode(budgetClassifyInfo.getClassifyCode());
+        budgetClassifyInfo.setClassifyName(budgetClassifyInfo.getClassifyName());
         houseBudgetInfoVo.setHouseCode(houseDetailInfo.getHouseCode());
         HouseBudgetInfoPo houseBudgetInfoPo = BeanMapperUtil.map(houseBudgetInfoVo, HouseBudgetInfoPo.class);
         if (StringUtils.isNotBlank(houseBudgetCode)) {
@@ -337,6 +339,8 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
             po.setBudgetName(budgetInfoVo.getBudgetName());
             po.setBudgetAmount(budgetInfoVo.getBudgetAmount());
             po.setBudgetCount(1);
+            po.setClassifyCode(budgetInfoVo.getClassifyCode());
+            po.setClassifyName(budgetInfoVo.getClassifyName());
             if (iHouseBudgetInfoMapper.insertSelective(po) != 1) {
                 throw new OptionsException(ResultEnum.SAVE_BUDGETINFO_FAILED);
             }

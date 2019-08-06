@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ping.mapper.IBudgetClassifyMapper">
+    <resultMap type="com.ping.po.house.BudgetClassifyInfoPo" id="BaseResultMap">
+        <result property="id" column="id"/>
+        <result property="fatherClassifyCode" column="father_classify_code"/>
+        <result property="classifyName" column="classify_name"/>
+        <result property="classifyCode" column="classify_code"/>
+        <result property="status" column="status"/>
+        <result property="remark" column="remark"/>
+        <result property="version" column="version"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+    <select id="getFatherClassifyInfoByName" resultMap="BaseResultMap" parameterType="string">
+      SELECT
+            t1.*
+        FROM
+            sbdb.budget_classify_info AS t1
+        INNER JOIN sbdb.budget_classify_info AS t2 ON t2.father_classify_code = t1.classify_code
+        WHERE
+            t1.`status` = 0
+        AND t2.classify_name = #{classifyName}
+    </select>
+
+</mapper>

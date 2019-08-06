@@ -7,6 +7,10 @@
         <result property="budgetName" column="budget_name"/>
         <result property="budgetCode" column="budget_code"/>
         <result property="budgetAmount" column="budget_amount"/>
+        <result property="budgetAmount" column="budget_amount"/>
+        <result property="budgetAmount" column="budget_amount"/>
+        <result property="classifyName" column="classify_name"/>
+        <result property="classifyCode" column="classify_code"/>
         <result property="minCost" column="min_cost"/>
         <result property="maxCost" column="max_cost"/>
         <result property="actualCost" column="actual_cost"/>
@@ -17,7 +21,13 @@
         <result property="createTime" column="create_time"/>
     </resultMap>
     <select id="searchByKeyword" resultMap="BaseResultMap" parameterType="com.ping.co.SearchCo">
-            select * from sbdb.budget_info
+  SELECT
+	*
+FROM
+	sbdb.budget_info
+WHERE
+	`status` = 0
+AND (budget_name LIKE CONCAT('%','二','%') OR classify_name LIKE CONCAT('%','二','%') OR remark LIKE CONCAT('%','二','%'))
     </select>
 
 </mapper>

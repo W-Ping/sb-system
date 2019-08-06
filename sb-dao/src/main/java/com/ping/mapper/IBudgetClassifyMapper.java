@@ -2,6 +2,7 @@ package com.ping.mapper;
 
 import com.ping.BaseMapper;
 import com.ping.po.house.BudgetClassifyInfoPo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,4 +12,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface IBudgetClassifyMapper extends BaseMapper<BudgetClassifyInfoPo> {
+
+    /**
+     * @param classifyName
+     * @return
+     */
+    BudgetClassifyInfoPo getFatherClassifyInfoByName(@Param("classifyName") String classifyName);
 }

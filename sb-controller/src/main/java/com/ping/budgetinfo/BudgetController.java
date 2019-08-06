@@ -126,8 +126,8 @@ public class BudgetController {
      * @return
      */
     @ResponseBody
-    @GetMapping(value = "/classify/sub/{fatherClassifyCode}/get")
-    public Result<List<BudgetClassifyInfoVo>> getBudgetClassifyInfo(@PathParam("fatherClassifyCode") String fatherClassifyCode) {
+    @GetMapping(value = "/classify/sub/{fcCode}/get")
+    public Result<List<BudgetClassifyInfoVo>> getBudgetClassifyInfo(@PathParam("fcCode") String fatherClassifyCode) {
         BudgetClassifyInfoVo budgetClassifyInfoVo = new BudgetClassifyInfoVo();
         budgetClassifyInfoVo.setFatherClassifyCode(fatherClassifyCode);
         List<BudgetClassifyInfoVo> budgetClassifyInfoVos = iBudgetInfoService.getBudgetClassifyInfo(budgetClassifyInfoVo);

@@ -11,124 +11,162 @@ import java.math.BigDecimal;
  */
 public class HouseBudgetInfoVo extends BaseVo {
 
-	/**
-	 *
-	 */
-	private String houseCode;
-	/**
-	 *
-	 */
-	private String houseDetailCode;
-	/**
-	 *
-	 */
-	private String houseDetailName;
-	/**
-	 *
-	 */
-	private String roomNickName;
-	/**
-	 *
-	 */
-	private Integer roomType;
-	/**
-	 *
-	 */
-	private String houseBudgetCode;
-	/**
-	 *
-	 */
-	private String budgetCode;
-	/**
-	 *
-	 */
-	private String budgetName;
-	/**
-	 *
-	 */
-	private BigDecimal budgetAmount;
-	/**
-	 *
-	 */
-	private Integer budgetCount;
+    /**
+     *
+     */
+    private String houseCode;
+    /**
+     *
+     */
+    private String houseDetailCode;
+    /**
+     *
+     */
+    private String houseDetailName;
+    /**
+     *
+     */
+    private String roomNickName;
+    /**
+     *
+     */
+    private Integer roomType;
+    /**
+     *
+     */
+    private String houseBudgetCode;
+    /**
+     *
+     */
+    private String budgetCode;
+    /**
+     *
+     */
+    private String budgetName;
+    /**
+     *
+     */
+    private BigDecimal budgetAmount;
+    /**
+     *
+     */
+    private Integer budgetCount;
 
-	public String getHouseCode() {
-		return houseCode;
-	}
+    /**
+     *
+     */
+    private String classifyCode;
+    /**
+     *
+     */
+    private String classifyName;
+    /**
+     *
+     */
+    private String fatherClassifyName;
 
-	public void setHouseCode(final String houseCode) {
-		this.houseCode = houseCode;
-	}
 
-	public String getHouseDetailCode() {
-		return houseDetailCode;
-	}
+    public String getFatherClassifyName() {
+        return fatherClassifyName;
+    }
 
-	public void setHouseDetailCode(final String houseDetailCode) {
-		this.houseDetailCode = houseDetailCode;
-	}
+    public void setFatherClassifyName(String fatherClassifyName) {
+        this.fatherClassifyName = fatherClassifyName;
+    }
 
-	public String getBudgetCode() {
-		return budgetCode;
-	}
+    public String getClassifyCode() {
+        return classifyCode;
+    }
 
-	public void setBudgetCode(final String budgetCode) {
-		this.budgetCode = budgetCode;
-	}
+    public void setClassifyCode(String classifyCode) {
+        this.classifyCode = classifyCode;
+    }
 
-	public String getBudgetName() {
-		return budgetName;
-	}
+    public String getClassifyName() {
+        return classifyName;
+    }
 
-	public void setBudgetName(final String budgetName) {
-		this.budgetName = budgetName;
-	}
+    public void setClassifyName(String classifyName) {
+        this.classifyName = classifyName;
+    }
 
-	public BigDecimal getBudgetAmount() {
-		return budgetAmount;
-	}
+    public String getHouseCode() {
+        return houseCode;
+    }
 
-	public void setBudgetAmount(final BigDecimal budgetAmount) {
-		this.budgetAmount = budgetAmount;
-	}
+    public void setHouseCode(final String houseCode) {
+        this.houseCode = houseCode;
+    }
 
-	public String getHouseDetailName() {
-		return houseDetailName;
-	}
+    public String getHouseDetailCode() {
+        return houseDetailCode;
+    }
 
-	public void setHouseDetailName(final String houseDetailName) {
-		this.houseDetailName = houseDetailName;
-	}
+    public void setHouseDetailCode(final String houseDetailCode) {
+        this.houseDetailCode = houseDetailCode;
+    }
 
-	public String getRoomNickName() {
-		return roomNickName;
-	}
+    public String getBudgetCode() {
+        return budgetCode;
+    }
 
-	public void setRoomNickName(final String roomNickName) {
-		this.roomNickName = roomNickName;
-	}
+    public void setBudgetCode(final String budgetCode) {
+        this.budgetCode = budgetCode;
+    }
 
-	public Integer getBudgetCount() {
-		return budgetCount;
-	}
+    public String getBudgetName() {
+        return budgetName;
+    }
 
-	public void setBudgetCount(final Integer budgetCount) {
-		this.budgetCount = budgetCount;
-	}
+    public void setBudgetName(final String budgetName) {
+        this.budgetName = budgetName;
+    }
 
-	public String getHouseBudgetCode() {
-		return houseBudgetCode;
-	}
+    public BigDecimal getBudgetAmount() {
+        return budgetAmount;
+    }
 
-	public void setHouseBudgetCode(final String houseBudgetCode) {
-		this.houseBudgetCode = houseBudgetCode;
-	}
+    public void setBudgetAmount(final BigDecimal budgetAmount) {
+        this.budgetAmount = budgetAmount;
+    }
 
-	public Integer getRoomType() {
-		return roomType;
-	}
+    public String getHouseDetailName() {
+        return houseDetailName;
+    }
 
-	public void setRoomType(final Integer roomType) {
-		this.roomType = roomType;
-	}
+    public void setHouseDetailName(final String houseDetailName) {
+        this.houseDetailName = houseDetailName;
+    }
+
+    public String getRoomNickName() {
+        return roomNickName;
+    }
+
+    public void setRoomNickName(final String roomNickName) {
+        this.roomNickName = roomNickName;
+    }
+
+    public Integer getBudgetCount() {
+        return budgetCount;
+    }
+
+    public void setBudgetCount(final Integer budgetCount) {
+        this.budgetCount = budgetCount;
+    }
+
+    public String getHouseBudgetCode() {
+        return houseBudgetCode;
+    }
+
+    public void setHouseBudgetCode(final String houseBudgetCode) {
+        this.houseBudgetCode = houseBudgetCode;
+    }
+
+    public Integer getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(final Integer roomType) {
+        this.roomType = roomType;
+    }
 }

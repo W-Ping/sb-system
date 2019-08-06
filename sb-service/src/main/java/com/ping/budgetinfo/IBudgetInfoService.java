@@ -70,4 +70,16 @@ public interface IBudgetInfoService {
      * @return
      */
     List<BudgetInfoVo> searchByKeyword(SearchCo searchCo);
+
+    /**
+     * @param searchCo
+     * @return
+     */
+    BudgetClassifyInfoVo getBudgetClassifyInfoByName(String classifyName);
+
+    /**
+     * @param classifyName
+     * @return
+     */
+    BudgetClassifyInfoVo getFatherClassifyInfoByName(String classifyName);
 }
