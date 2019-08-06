@@ -12,35 +12,35 @@ import java.util.List;
  * @see
  */
 public interface IUserInfoService {
-	/**
-	 * @return
-	 */
-	List<UserInfoVo> queryUserInfoList(UserInfoCo userInfoPo);
+    /**
+     * @return
+     */
+    List<UserInfoVo> queryUserInfoList(UserInfoCo userInfoPo);
 
-	/**
-	 * @param userInfoCo
-	 * @return
-	 */
-	boolean saveUserInfo(UserInfoCo userInfoCo);
+    /**
+     * @param userInfoCo
+     * @return
+     */
+    boolean saveUserInfo(UserInfoCo userInfoCo);
 
-	/**
-	 * @param userInfoCo
-	 * @return
-	 */
-	UserInfoVo getUserInfo(UserInfoCo userInfoCo);
+    /**
+     * @param userInfoCo
+     * @return
+     */
+    UserInfoVo getUserInfo(UserInfoCo userInfoCo);
 
-	/**
-	 * @param mobilePhone
-	 * @return
-	 */
-	UserInfoVo getUserInfoByMobilePhone(String mobilePhone);
+    /**
+     * @param mobilePhone
+     * @return
+     */
+    UserInfoVo getUserInfoByMobilePhone(String mobilePhone);
 
-	/**
-	 * @param mobilePhone
-	 * @param password
-	 * @return
-	 */
-	UserInfoVo checkUser(String mobilePhone, String password);
+    /**
+     * @param mobilePhone
+     * @param password
+     * @return
+     */
+    UserInfoVo checkUser(String mobilePhone, String password, String postType);
 
 
 }

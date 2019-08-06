@@ -10,92 +10,95 @@ import javax.persistence.Table;
 @Table(name = "user_info")
 public class UserInfoPo extends BasePo {
 
-	/**
-	 *
-	 */
-	@Column(name = "user_name")
-	private String userName;
-	/**
-	 *
-	 */
-	@Column(name = "user_code")
-	private String userCode;
-	/**
-	 *
-	 */
-	@Column(name = "mobile_phone")
-	private String mobilePhone;
-	/**
-	 *
-	 */
-	private Integer gender;
-	/**
-	 *
-	 */
-	private String email;
+    /**
+     *
+     */
+    @Column(name = "user_name")
+    private String userName;
+    /**
+     *
+     */
+    @Column(name = "user_code")
+    private String userCode;
+    /**
+     *
+     */
+    @Column(name = "mobile_phone")
+    private String mobilePhone;
 
-	/**
-	 *
-	 */
-	private String password;
-	/**
-	 * 状态【0：有效；1：无效】
-	 */
-	private Integer status;
+    /**
+     *
+     */
+    @Column(name = "post_type")
+    private String postType;
+    /**
+     *
+     */
+    private Integer gender;
+    /**
+     *
+     */
+    private String email;
 
-	public String getUserName() {
-		return userName;
-	}
+    /**
+     *
+     */
+    private String password;
 
-	public void setUserName(final String userName) {
-		this.userName = userName;
-	}
 
-	public String getUserCode() {
-		return userCode;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public void setUserCode(final String userCode) {
-		this.userCode = userCode;
-	}
+    public void setUserName(final String userName) {
+        this.userName = userName;
+    }
 
-	public String getMobilePhone() {
-		return mobilePhone;
-	}
+    public String getUserCode() {
+        return userCode;
+    }
 
-	public void setMobilePhone(final String mobilePhone) {
-		this.mobilePhone = mobilePhone;
-	}
+    public void setUserCode(final String userCode) {
+        this.userCode = userCode;
+    }
 
-	public Integer getGender() {
-		return gender;
-	}
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
 
-	public void setGender(final Integer gender) {
-		this.gender = gender;
-	}
+    public void setMobilePhone(final String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public Integer getGender() {
+        return gender;
+    }
 
-	public void setEmail(final String email) {
-		this.email = email;
-	}
+    public void setGender(final Integer gender) {
+        this.gender = gender;
+    }
 
-	public Integer getStatus() {
-		return status;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setStatus(final Integer status) {
-		this.status = status;
-	}
+    public void setEmail(final String email) {
+        this.email = email;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(final String password) {
-		this.password = password;
-	}
+    public void setPassword(final String password) {
+        this.password = password;
+    }
+
+    public String getPostType() {
+        return postType;
+    }
+
+    public void setPostType(String postType) {
+        this.postType = postType;
+    }
 }

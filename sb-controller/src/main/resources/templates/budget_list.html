@@ -177,7 +177,8 @@
                     }
                 },
                 error: function (result, type, err) {
-                    $.toast("提交失败!");
+                    console.log(err);
+                    $.toast("保存失败!");
                 }
             });
         });

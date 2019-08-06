@@ -45,6 +45,7 @@
         <h1 class='title' th:text="新增"></h1>
     </header>
     <div class="content">
+        <input hidden id="mobilePhone" th:value="${mobilePhone}">
         <form id="budgetForm">
             <div class="list-block">
                 <ul>
@@ -53,7 +54,7 @@
                             <div class="item-inner">
                                 <div class="item-title label">名称</div>
                                 <div class="item-input">
-                                    <input type="text" placeholder="材料名称">
+                                    <input type="text" name="budgetName" placeholder="名称">
                                 </div>
                             </div>
                         </div>
@@ -63,7 +64,7 @@
                             <div class="item-inner">
                                 <div class="item-title label">类型</div>
                                 <div class="item-input">
-                                    <input type="text" name="apartment" id='picker-name' placeholder="选择类型">
+                                    <input type="text" name="classifyName" id='picker-name' placeholder="选择类型">
                                 </div>
                             </div>
                         </div>
@@ -73,7 +74,7 @@
                             <div class="item-inner">
                                 <div class="item-title label">最高成本</div>
                                 <div class="item-input">
-                                    <input type="text" placeholder="最高成本">
+                                    <input type="text" name="maxCost" placeholder="最高成本">
                                 </div>
                             </div>
                         </div>
@@ -83,7 +84,7 @@
                             <div class="item-inner">
                                 <div class="item-title label">最低成本</div>
                                 <div class="item-input">
-                                    <input type="text" placeholder="最低成本">
+                                    <input type="text" name="minCost" placeholder="最低成本">
                                 </div>
                             </div>
                         </div>
@@ -93,7 +94,7 @@
                             <div class="item-inner">
                                 <div class="item-title label">实际成本</div>
                                 <div class="item-input">
-                                    <input type="text" placeholder="实际成本">
+                                    <input type="text" name="actualCost" placeholder="实际成本">
                                 </div>
                             </div>
                         </div>
@@ -103,7 +104,7 @@
                             <div class="item-inner">
                                 <div class="item-title label">预算金额</div>
                                 <div class="item-input">
-                                    <input type="text" placeholder="预算金额">
+                                    <input type="text" name="budgetAmount" placeholder="预算金额">
                                 </div>
                             </div>
                         </div>
@@ -113,7 +114,7 @@
                             <div class="item-inner">
                                 <div class="item-title label">备注</div>
                                 <div class="item-input">
-                                    <textarea></textarea>
+                                    <textarea name="remark"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -123,8 +124,9 @@
         </form>
         <div class="content-block">
             <div class="row">
-                <div class="col-50"><a href="#" class="button button-big button-fill button-danger">取消</a></div>
-                <div class="col-50"><a href="#" class="button button-big button-fill button-success">提交</a></div>
+                <div class="col-50"><a href="#" class="button button-big button-fill button-danger back">取消</a></div>
+                <div class="col-50"><a href="#" onclick="submitBudget()"
+                                       class="button button-big button-fill button-success">保存</a></div>
             </div>
         </div>
     </div>
@@ -132,8 +134,13 @@
 
 <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<!--<script type='text/javascript' th:src="@{/static/js/sm.js}" src='/static/js/sm.js'-->
+<!--charset='utf-8'></script>-->
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
-<script type='text/javascript' th:src="@{/static/js/classify.js}" src='/static/js/classify.js' charset='utf-8'></script>
+<!--<script type='text/javascript' th:src="@{/static/js/classify.js}" src='/static/js/classify.js' charset='utf-8'></script>-->
+
+<script type='text/javascript' th:src="@{/static/js/classify.js}" src='/static/js/classify.js'
+        charset='utf-8'></script>
 <script>
     function submitBudget() {
         let data = $('#budgetForm').serializeArray();
@@ -157,7 +164,11 @@
                 $.toast(dd + "值不能为空！");
                 return;
             }
-            param[dataName] = dataValue;
+            if (dataName == 'classifyName') {
+                param[dataName] = dataValue.split(' ')[1];
+            } else {
+                param[dataName] = dataValue;
+            }
         }
         console.log("请求路径%o", url);
         console.log("请求参数%o", param);
@@ -169,10 +180,8 @@
             success: function (result) {
                 console.log("数据%o", result);
                 if (result.code == 200) {
-                    $.toast('提交成功！');
-                    $.closeModal()
-                    $(".popup-overlay").remove('modal-overlay-visible');
-                    window.location.reload();
+                    $.toast('保存成功！');
+                    window.location.href = document.referrer;
                 } else {
                     $.toast(result.message);
                 }
@@ -183,40 +192,10 @@
         });
     }
 
-    let raw = [
-        {
-            "name": "材料PP",
-            "sub": [
-                {
-                    "name": "瓷砖2"
-                },
-                {
-                    "name": "水泥"
-                },
-            ],
-            "type": 0
-        },
-        {
-            "name": "人工OO",
-            "sub": [
-                {
-                    "name": "电工1"
-                },
-                {
-                    "name": "水泥工"
-                },
-                {
-                    "name": "安装工"
-                },
-            ],
-            "type": 0
-        }
-    ];
-    $("#picker-name").picker("setValue", ["2012", "12", "12"]);
-    $("#picker-name").cityPicker({
+    $("#picker-name").classifyPicker({
         toolbarTemplate: '<header class="bar bar-nav">\
     <button class="button button-link pull-right close-picker">确定</button>\
-    <h1 class="title">选择收货地址</h1>\
+    <h1 class="title">选择类型</h1>\
     </header>'
     });
     $.init();

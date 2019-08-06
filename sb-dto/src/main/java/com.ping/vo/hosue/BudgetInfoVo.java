@@ -40,7 +40,14 @@ public class BudgetInfoVo extends BaseVo {
 	 * 实际成本
 	 */
 	private BigDecimal actualCost;
-
+	/**
+	 *
+	 */
+	private String classifyCode;
+	/**
+	 *
+	 */
+	private String classifyName;
 	public String getBudgetName() {
 		return budgetName;
 	}
@@ -95,5 +102,21 @@ public class BudgetInfoVo extends BaseVo {
 
 	public void setMobilePhone(final String mobilePhone) {
 		this.mobilePhone = mobilePhone;
+	}
+
+	public String getClassifyCode() {
+		return classifyCode;
+	}
+
+	public void setClassifyCode(String classifyCode) {
+		this.classifyCode = classifyCode;
+	}
+
+	public String getClassifyName() {
+		return classifyName;
+	}
+
+	public void setClassifyName(String classifyName) {
+		this.classifyName = classifyName;
 	}
 }

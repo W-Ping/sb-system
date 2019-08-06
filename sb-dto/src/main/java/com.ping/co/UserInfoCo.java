@@ -5,89 +5,99 @@ package com.ping.co;
  * @create 2019/07/13 15:26
  */
 public class UserInfoCo extends BaseCo {
-	/**
-	 *
-	 */
-	private String userName;
-	/**
-	 *
-	 */
-	private String userCode;
-	/**
-	 *
-	 */
-	private String mobilePhone;
-	/**
-	 *
-	 */
-	private Integer gender;
-	/**
-	 *
-	 */
-	private String email;
+    /**
+     *
+     */
+    private String userName;
+    /**
+     *
+     */
+    private String userCode;
+    /**
+     *
+     */
+    private String mobilePhone;
+    /**
+     *
+     */
+    private Integer gender;
+    /**
+     *
+     */
+    private String email;
 
-	/**
-	 *
-	 */
-	private String password;
-	/**
-	 * 状态【0：有效；1：无效】
-	 */
-	private Integer status;
+    /**
+     *
+     */
+    private String password;
+    /**
+     * 状态【0：有效；1：无效】
+     */
+    private Integer status;
 
-	public String getUserName() {
-		return userName;
-	}
+    private String postType;
 
-	public void setUserName(final String userName) {
-		this.userName = userName;
-	}
+    public String getPostType() {
+        return postType;
+    }
 
-	public String getUserCode() {
-		return userCode;
-	}
+    public void setPostType(String postType) {
+        this.postType = postType;
+    }
 
-	public void setUserCode(final String userCode) {
-		this.userCode = userCode;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public String getMobilePhone() {
-		return mobilePhone;
-	}
+    public void setUserName(final String userName) {
+        this.userName = userName;
+    }
 
-	public void setMobilePhone(final String mobilePhone) {
-		this.mobilePhone = mobilePhone;
-	}
+    public String getUserCode() {
+        return userCode;
+    }
 
-	public Integer getGender() {
-		return gender;
-	}
+    public void setUserCode(final String userCode) {
+        this.userCode = userCode;
+    }
 
-	public void setGender(final Integer gender) {
-		this.gender = gender;
-	}
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setMobilePhone(final String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+    }
 
-	public void setEmail(final String email) {
-		this.email = email;
-	}
+    public Integer getGender() {
+        return gender;
+    }
 
-	public Integer getStatus() {
-		return status;
-	}
+    public void setGender(final Integer gender) {
+        this.gender = gender;
+    }
 
-	public void setStatus(final Integer status) {
-		this.status = status;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setEmail(final String email) {
+        this.email = email;
+    }
 
-	public void setPassword(final String password) {
-		this.password = password;
-	}
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(final Integer status) {
+        this.status = status;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(final String password) {
+        this.password = password;
+    }
 }

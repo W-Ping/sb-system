@@ -9,9 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
-    <!--    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.css">-->
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
-    <!--    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.css">-->
     <link rel="stylesheet" type="text/css" media="all" href="/static/css/icon.css"
           th:href="@{/static/css/icon.css}"/>
 </head>
@@ -45,6 +43,19 @@
                             </div>
                         </div>
                     </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="icon icon-form-gender"></i></div>
+                            <div class="item-inner">
+                                <div class="item-input">
+                                    <select id="postType">
+                                        <option selected value="general">普通用户</option>
+                                        <option value="admin">管理员</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
                 </ul>
             </div>
             <div class="content-block">
@@ -64,6 +75,7 @@
     $("#loginBtn").on('click', function () {
         let mobilePhone = $("#mobilePhone").val();
         let password = $("#password").val();
+        let postType = $("#postType").val();
         if (!mobilePhone) {
             $.toast("请输入手机号码");
             return;
@@ -75,6 +87,7 @@
         let params = {};
         params['mobilePhone'] = mobilePhone;
         params['password'] = password
+        params['postType'] = postType
         $.ajax({
             type: "POST",
             contentType: 'application/json',
@@ -82,8 +95,9 @@
             data: JSON.stringify(params),
             success: function (result) {
                 if (result.code == 200) {
-                    $.toast("登录成功", 3000);
-                    let url = '/house/page/0?mobile_phone=' + result['obj']['mobilePhone'];
+                    $.toast("登录成功", 2500);
+                    let url = '/house/page/index?mobile_phone=' + result['obj']['mobilePhone'];
+                    // let url = '/house/page/0?mobile_phone=' + result['obj']['mobilePhone'];
                     window.location.href = url;
                 } else {
                     $.toast(result.message, 3000);

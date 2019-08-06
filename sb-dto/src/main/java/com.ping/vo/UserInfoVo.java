@@ -4,66 +4,90 @@ package com.ping.vo;
  * @author lwp
  */
 public class UserInfoVo extends BaseVo {
-	/**
-	 *
-	 */
-	private String userName;
-	/**
-	 *
-	 */
-	private String userCode;
-	/**
-	 *
-	 */
-	private String mobilePhone;
-	/**
-	 *
-	 */
-	private Integer gender;
-	/**
-	 *
-	 */
-	private String email;
+    /**
+     *
+     */
+    private String userName;
+    /**
+     *
+     */
+    private String userCode;
+    /**
+     *
+     */
+    private String mobilePhone;
+    /**
+     *
+     */
+    private Integer gender;
+    /**
+     *
+     */
+    private String email;
 
+    /**
+     *
+     */
+    private String postType;
 
-	public String getUserName() {
-		return userName;
-	}
+    /**
+     * 用户登录岗位
+     */
+    private String loginPostType;
 
-	public void setUserName(final String userName) {
-		this.userName = userName;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public String getUserCode() {
-		return userCode;
-	}
+    public void setUserName(final String userName) {
+        this.userName = userName;
+    }
 
-	public void setUserCode(final String userCode) {
-		this.userCode = userCode;
-	}
+    public String getUserCode() {
+        return userCode;
+    }
 
-	public String getMobilePhone() {
-		return mobilePhone;
-	}
+    public void setUserCode(final String userCode) {
+        this.userCode = userCode;
+    }
 
-	public void setMobilePhone(final String mobilePhone) {
-		this.mobilePhone = mobilePhone;
-	}
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
 
-	public Integer getGender() {
-		return gender;
-	}
+    public void setMobilePhone(final String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+    }
 
-	public void setGender(final Integer gender) {
-		this.gender = gender;
-	}
+    public Integer getGender() {
+        return gender;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setGender(final Integer gender) {
+        this.gender = gender;
+    }
 
-	public void setEmail(final String email) {
-		this.email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(final String email) {
+        this.email = email;
+    }
+
+    public String getPostType() {
+        return postType;
+    }
+
+    public String getLoginPostType() {
+        return loginPostType;
+    }
+
+    public void setLoginPostType(String loginPostType) {
+        this.loginPostType = loginPostType;
+    }
+
+    public void setPostType(String postType) {
+        this.postType = postType;
+    }
 }

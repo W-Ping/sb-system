@@ -9,6 +9,7 @@ import com.ping.vo.BaseVo;
  */
 public class BudgetClassifyInfoVo extends BaseVo {
     private String fatherClassifyCode;
+    private String fatherClassifyName;
     private String classifyCode;
     private String classifyName;
 
@@ -30,6 +31,14 @@ public class BudgetClassifyInfoVo extends BaseVo {
 
     public String getFatherClassifyCode() {
         return fatherClassifyCode;
+    }
+
+    public String getFatherClassifyName() {
+        return fatherClassifyName;
+    }
+
+    public void setFatherClassifyName(String fatherClassifyName) {
+        this.fatherClassifyName = fatherClassifyName;
     }
 
     public void setFatherClassifyCode(String fatherClassifyCode) {

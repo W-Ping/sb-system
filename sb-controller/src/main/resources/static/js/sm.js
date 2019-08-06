@@ -4,7 +4,8 @@
  *
  * =====================================================
  */
-;$.smVersion = "0.6.2";+function ($) {
+;$.smVersion = "0.6.2";
++function ($) {
     "use strict";
 
     //全局配置
@@ -20,14 +21,14 @@
 
 }(Zepto);
 
-+ function($) {
++function ($) {
     "use strict";
 
     //比较一个字符串版本号
     //a > b === 1
     //a = b === 0
     //a < b === -1
-    $.compareVersion = function(a, b) {
+    $.compareVersion = function (a, b) {
         var as = a.split('.');
         var bs = b.split('.');
         if (a === b) return 0;
@@ -42,7 +43,7 @@
         return -1;
     };
 
-    $.getCurrentPage = function() {
+    $.getCurrentPage = function () {
         return $(".page-current")[0] || $(".page")[0] || document.body;
     };
 
@@ -50,13 +51,13 @@
 
 /* global WebKitCSSMatrix:true */
 
-(function($) {
+(function ($) {
     "use strict";
-    ['width', 'height'].forEach(function(dimension) {
-        var  Dimension = dimension.replace(/./, function(m) {
+    ['width', 'height'].forEach(function (dimension) {
+        var Dimension = dimension.replace(/./, function (m) {
             return m[0].toUpperCase();
         });
-        $.fn['outer' + Dimension] = function(margin) {
+        $.fn['outer' + Dimension] = function (margin) {
             var elem = this;
             if (elem) {
                 var size = elem[dimension]();
@@ -64,7 +65,7 @@
                     'width': ['left', 'right'],
                     'height': ['top', 'bottom']
                 };
-                sides[dimension].forEach(function(side) {
+                sides[dimension].forEach(function (side) {
                     if (margin) size += parseInt(elem.css('margin-' + side), 10);
                 });
                 return size;
@@ -75,7 +76,7 @@
     });
 
     //support
-    $.support = (function() {
+    $.support = (function () {
         var support = {
             touch: !!(('ontouchstart' in window) || window.DocumentTouch && document instanceof window.DocumentTouch)
         };
@@ -151,7 +152,7 @@
     };
     /* jshint ignore:end */
 
-    $.fn.dataset = function() {
+    $.fn.dataset = function () {
         var dataset = {},
             ds = this[0].dataset;
         for (var key in ds) { // jshint ignore:line
@@ -163,7 +164,7 @@
         // mixin dataset and __eleData
         return $.extend({}, dataset, this[0].__eleData);
     };
-    $.fn.data = function(key, value) {
+    $.fn.data = function (key, value) {
         var tmpData = $(this).dataset();
         if (!key) {
             return tmpData;
@@ -194,6 +195,7 @@
             return this;
         }
     };
+
     function __dealCssEvent(eventNameArr, callback) {
         var events = eventNameArr,
             i, dom = this;// jshint ignore:line
@@ -206,21 +208,23 @@
                 dom.off(events[i], fireCallBack);
             }
         }
+
         if (callback) {
             for (i = 0; i < events.length; i++) {
                 dom.on(events[i], fireCallBack);
             }
         }
     }
-    $.fn.animationEnd = function(callback) {
+
+    $.fn.animationEnd = function (callback) {
         __dealCssEvent.call(this, ['webkitAnimationEnd', 'animationend'], callback);
         return this;
     };
-    $.fn.transitionEnd = function(callback) {
+    $.fn.transitionEnd = function (callback) {
         __dealCssEvent.call(this, ['webkitTransitionEnd', 'transitionend'], callback);
         return this;
     };
-    $.fn.transition = function(duration) {
+    $.fn.transition = function (duration) {
         if (typeof duration !== 'string') {
             duration = duration + 'ms';
         }
@@ -230,7 +234,7 @@
         }
         return this;
     };
-    $.fn.transform = function(transform) {
+    $.fn.transform = function (transform) {
         for (var i = 0; i < this.length; i++) {
             var elStyle = this[i].style;
             elStyle.webkitTransform = elStyle.MozTransform = elStyle.transform = transform;
@@ -244,7 +248,7 @@
         while (el.previousElementSibling) {
             var prev = el.previousElementSibling;
             if (selector) {
-                if($(prev).is(selector)) prevEls.push(prev);
+                if ($(prev).is(selector)) prevEls.push(prev);
             }
             else prevEls.push(prev);
             el = prev;
@@ -258,7 +262,7 @@
         while (el.nextElementSibling) {
             var next = el.nextElementSibling;
             if (selector) {
-                if($(next).is(selector)) nextEls.push(next);
+                if ($(next).is(selector)) nextEls.push(next);
             }
             else nextEls.push(next);
             el = next;
@@ -267,8 +271,9 @@
     };
 
     //重置zepto的show方法，防止有些人引用的版本中 show 方法操作 opacity 属性影响动画执行
-    $.fn.show = function(){
+    $.fn.show = function () {
         var elementDisplay = {};
+
         function defaultDisplay(nodeName) {
             var element, display;
             if (!elementDisplay[nodeName]) {
@@ -282,9 +287,9 @@
             return elementDisplay[nodeName];
         }
 
-        return this.each(function(){
+        return this.each(function () {
             this.style.display === "none" && (this.style.display = '');
-            if (getComputedStyle(this, '').getPropertyValue("display") === "none");
+            if (getComputedStyle(this, '').getPropertyValue("display") === "none") ;
             this.style.display = defaultDisplay(this.nodeName);
         });
     };
@@ -409,6 +414,7 @@ Device/OS Detection
      */
 
     /*jslint browser:true, node:true, elision:true*/
+
     /*global Event, Node*/
 
 
@@ -507,7 +513,9 @@ Device/OS Detection
 
         // Some old versions of Android don't have Function.prototype.bind
         function bind(method, context) {
-            return function() { return method.apply(context, arguments); };
+            return function () {
+                return method.apply(context, arguments);
+            };
         }
 
 
@@ -534,7 +542,7 @@ Device/OS Detection
         // which is how FastClick normally stops click events bubbling to callbacks registered on the FastClick
         // layer when they are cancelled.
         if (!Event.prototype.stopImmediatePropagation) {
-            layer.removeEventListener = function(type, callback, capture) {
+            layer.removeEventListener = function (type, callback, capture) {
                 var rmv = Node.prototype.removeEventListener;
                 if (type === 'click') {
                     rmv.call(layer, type, callback.hijacked || callback, capture);
@@ -543,10 +551,10 @@ Device/OS Detection
                 }
             };
 
-            layer.addEventListener = function(type, callback, capture) {
+            layer.addEventListener = function (type, callback, capture) {
                 var adv = Node.prototype.addEventListener;
                 if (type === 'click') {
-                    adv.call(layer, type, callback.hijacked || (callback.hijacked = function(event) {
+                    adv.call(layer, type, callback.hijacked || (callback.hijacked = function (event) {
                         if (!event.propagationStopped) {
                             callback(event);
                         }
@@ -565,7 +573,7 @@ Device/OS Detection
             // Android browser on at least 3.2 requires a new reference to the function in layer.onclick
             // - the old one won't work if passed to addEventListener directly.
             oldOnClick = layer.onclick;
-            layer.addEventListener('click', function(event) {
+            layer.addEventListener('click', function (event) {
                 oldOnClick(event);
             }, false);
             layer.onclick = null;
@@ -629,12 +637,12 @@ Device/OS Detection
      * @param {EventTarget|Element} target Target DOM element
      * @returns {boolean} Returns true if the element needs a native click
      */
-    FastClick.prototype.needsClick = function(target) {
+    FastClick.prototype.needsClick = function (target) {
 
         // 修复bug: 如果父元素中有 label
         // 如果label上有needsclick这个类，则用原生的点击，否则，用模拟点击
         var parent = target;
-        while(parent && (parent.tagName.toUpperCase() !== "BODY")) {
+        while (parent && (parent.tagName.toUpperCase() !== "BODY")) {
             if (parent.tagName.toUpperCase() === "LABEL") {
                 isCompositeLabel = true;
                 if ((/\bneedsclick\b/).test(parent.className)) return true;
@@ -677,7 +685,7 @@ Device/OS Detection
      * @param {EventTarget|Element} target Target DOM element
      * @returns {boolean} Returns true if the element requires a call to focus to simulate native click.
      */
-    FastClick.prototype.needsFocus = function(target) {
+    FastClick.prototype.needsFocus = function (target) {
         switch (target.nodeName.toLowerCase()) {
             case 'textarea':
                 return true;
@@ -708,7 +716,7 @@ Device/OS Detection
      * @param {EventTarget|Element} targetElement
      * @param {Event} event
      */
-    FastClick.prototype.sendClick = function(targetElement, event) {
+    FastClick.prototype.sendClick = function (targetElement, event) {
         var clickEvent, touch;
 
         // On some Android devices activeElement needs to be blurred otherwise the synthetic click will have no effect (#24)
@@ -725,7 +733,7 @@ Device/OS Detection
         targetElement.dispatchEvent(clickEvent);
     };
 
-    FastClick.prototype.determineEventType = function(targetElement) {
+    FastClick.prototype.determineEventType = function (targetElement) {
 
         //Issue #159: Android Chrome Select Box does not open with a synthetic click event
         if (deviceIsAndroid && targetElement.tagName.toLowerCase() === 'select') {
@@ -739,7 +747,7 @@ Device/OS Detection
     /**
      * @param {EventTarget|Element} targetElement
      */
-    FastClick.prototype.focus = function(targetElement) {
+    FastClick.prototype.focus = function (targetElement) {
         var length;
 
         // Issue #160: on iOS 7, some input elements (e.g. date datetime month) throw a vague TypeError on setSelectionRange. These elements don't have an integer value for the selectionStart and selectionEnd properties, but unfortunately that can't be used for detection because accessing the properties also throws a TypeError. Just check the type instead. Filed as Apple bug #15122724.
@@ -758,7 +766,7 @@ Device/OS Detection
      *
      * @param {EventTarget|Element} targetElement
      */
-    FastClick.prototype.updateScrollParent = function(targetElement) {
+    FastClick.prototype.updateScrollParent = function (targetElement) {
         var scrollParent, parentElement;
 
         scrollParent = targetElement.fastClickScrollParent;
@@ -789,7 +797,7 @@ Device/OS Detection
      * @param {EventTarget} targetElement
      * @returns {Element|EventTarget}
      */
-    FastClick.prototype.getTargetElementFromEventTarget = function(eventTarget) {
+    FastClick.prototype.getTargetElementFromEventTarget = function (eventTarget) {
 
         // On some older browsers (notably Safari on iOS 4.1 - see issue #56) the event target may be a text node.
         if (eventTarget.nodeType === Node.TEXT_NODE) {
@@ -806,7 +814,7 @@ Device/OS Detection
      * @param {Event} event
      * @returns {boolean}
      */
-    FastClick.prototype.onTouchStart = function(event) {
+    FastClick.prototype.onTouchStart = function (event) {
         var targetElement, touch, selection;
 
         // Ignore multiple touches, otherwise pinch-to-zoom is prevented if both fingers are on the FastClick element (issue #111).
@@ -874,7 +882,7 @@ Device/OS Detection
      * @param {Event} event
      * @returns {boolean}
      */
-    FastClick.prototype.touchHasMoved = function(event) {
+    FastClick.prototype.touchHasMoved = function (event) {
         var touch = event.changedTouches[0], boundary = this.touchBoundary;
 
         if (Math.abs(touch.pageX - this.touchStartX) > boundary || Math.abs(touch.pageY - this.touchStartY) > boundary) {
@@ -891,7 +899,7 @@ Device/OS Detection
      * @param {Event} event
      * @returns {boolean}
      */
-    FastClick.prototype.onTouchMove = function(event) {
+    FastClick.prototype.onTouchMove = function (event) {
         if (!this.trackingClick) {
             return true;
         }
@@ -912,7 +920,7 @@ Device/OS Detection
      * @param {EventTarget|HTMLLabelElement} labelElement
      * @returns {Element|null}
      */
-    FastClick.prototype.findControl = function(labelElement) {
+    FastClick.prototype.findControl = function (labelElement) {
 
         // Fast path for newer browsers supporting the HTML5 control attribute
         if (labelElement.control !== undefined) {
@@ -936,7 +944,7 @@ Device/OS Detection
      * @param {Event} event
      * @returns {boolean}
      */
-    FastClick.prototype.onTouchEnd = function(event) {
+    FastClick.prototype.onTouchEnd = function (event) {
         var forElement, trackingClickStart, targetTagName, scrollParent, touch, targetElement = this.targetElement;
 
         if (!this.trackingClick) {
@@ -954,7 +962,7 @@ Device/OS Detection
         }
         //修复安卓微信下，input type="date" 的bug，经测试date,time,month已没问题
         var unsupportedType = ['date', 'time', 'month'];
-        if(unsupportedType.indexOf(event.target.type) !== -1){
+        if (unsupportedType.indexOf(event.target.type) !== -1) {
             return false;
         }
         // Reset to prevent wrong click cancel on input (issue #156).
@@ -1037,7 +1045,7 @@ Device/OS Detection
      *
      * @returns {void}
      */
-    FastClick.prototype.onTouchCancel = function() {
+    FastClick.prototype.onTouchCancel = function () {
         this.trackingClick = false;
         this.targetElement = null;
     };
@@ -1049,7 +1057,7 @@ Device/OS Detection
      * @param {Event} event
      * @returns {boolean}
      */
-    FastClick.prototype.onMouse = function(event) {
+    FastClick.prototype.onMouse = function (event) {
 
         // If a target element was never set (because a touch event was never fired) allow the event
         if (!this.targetElement) {
@@ -1102,7 +1110,7 @@ Device/OS Detection
      * @param {Event} event
      * @returns {boolean}
      */
-    FastClick.prototype.onClick = function(event) {
+    FastClick.prototype.onClick = function (event) {
         var permitted;
 
         // It's possible for another FastClick-like library delivered with third-party code to fire a click event before FastClick does (issue #44). In that case, set the click-tracking flag back to false and return early. This will cause onTouchEnd to return early.
@@ -1134,7 +1142,7 @@ Device/OS Detection
      *
      * @returns {void}
      */
-    FastClick.prototype.destroy = function() {
+    FastClick.prototype.destroy = function () {
         var layer = this.layer;
 
         if (deviceIsAndroid) {
@@ -1156,7 +1164,7 @@ Device/OS Detection
      *
      * @param {Element} layer The layer to listen on
      */
-    FastClick.notNeeded = function(layer) {
+    FastClick.notNeeded = function (layer) {
         var metaViewport;
         var chromeVersion;
         var blackberryVersion;
@@ -1168,7 +1176,7 @@ Device/OS Detection
         }
 
         // Chrome version - zero for other browsers
-        chromeVersion = +(/Chrome\/([0-9]+)/.exec(navigator.userAgent) || [,0])[1];
+        chromeVersion = +(/Chrome\/([0-9]+)/.exec(navigator.userAgent) || [, 0])[1];
 
         if (chromeVersion) {
 
@@ -1219,7 +1227,7 @@ Device/OS Detection
         }
 
         // Firefox version - zero for other browsers
-        firefoxVersion = +(/Firefox\/([0-9]+)/.exec(navigator.userAgent) || [,0])[1];
+        firefoxVersion = +(/Firefox\/([0-9]+)/.exec(navigator.userAgent) || [, 0])[1];
 
         if (firefoxVersion >= 27) {
             // Firefox 27+ does not have tap delay if the content is not zoomable - https://bugzilla.mozilla.org/show_bug.cgi?id=922896
@@ -1246,7 +1254,7 @@ Device/OS Detection
      * @param {Element} layer The layer to listen on
      * @param {Object} [options={}] The options to override the defaults
      */
-    FastClick.attach = function(layer, options) {
+    FastClick.attach = function (layer, options) {
         return new FastClick(layer, options);
     };
 
@@ -1310,7 +1318,7 @@ Device/OS Detection
         return $.modal({
             text: text || '',
             title: typeof title === 'undefined' ? defaults.modalTitle : title,
-            buttons: [ {text: defaults.modalButtonOk, bold: true, onClick: callbackOk} ]
+            buttons: [{text: defaults.modalButtonOk, bold: true, onClick: callbackOk}]
         });
     };
     $.confirm = function (text, title, callbackOk, callbackCancel) {
@@ -1527,10 +1535,10 @@ Device/OS Detection
         return modal[0];
     };
     //显示一个消息，会在2秒钟后自动消失
-    $.toast = function(msg, duration, extraclass) {
+    $.toast = function (msg, duration, extraclass) {
         var $toast = $('<div class="modal toast ' + (extraclass || '') + '">' + msg + '</div>').appendTo(document.body);
-        $.openModal($toast, function(){
-            setTimeout(function() {
+        $.openModal($toast, function () {
+            setTimeout(function () {
                 $.closeModal($toast);
             }, duration || 2000);
         });
@@ -1552,12 +1560,12 @@ Device/OS Detection
         if (isModal) {
             modal.show();
             modal.css({
-                marginTop: - Math.round(modal.outerHeight() / 2) + 'px'
+                marginTop: -Math.round(modal.outerHeight() / 2) + 'px'
             });
         }
         if (isToast) {
             modal.css({
-                marginLeft: - Math.round(modal.outerWidth() / 2 / 1.185) + 'px' //1.185 是初始化时候的放大效果
+                marginLeft: -Math.round(modal.outerWidth() / 2 / 1.185) + 'px' //1.185 是初始化时候的放大效果
             });
         }
 
@@ -1607,7 +1615,7 @@ Device/OS Detection
             isPickerModal = modal.hasClass('picker-modal'),
             removeOnClose = modal.hasClass('remove-on-close'),
             overlay = isPopup ? $('.popup-overlay') : $('.modal-overlay');
-        if (isPopup){
+        if (isPopup) {
             if (modal.length === $('.popup.modal-in').length) {
                 overlay.removeClass('modal-overlay-visible');
             }
@@ -1641,12 +1649,13 @@ Device/OS Detection
                 modal.remove();
             }
         });
-        if (isModal &&  defaults.modalStack ) {
+        if (isModal && defaults.modalStack) {
             $.modalStackClearQueue();
         }
 
         return true;
     };
+
     function handleClicks(e) {
         /*jshint validthis:true */
         var clicked = $(this);
@@ -1687,16 +1696,15 @@ Device/OS Detection
         }
 
 
-
-
     }
+
     $(document).on('click', ' .modal-overlay, .popup-overlay, .close-popup, .open-popup, .close-picker', handleClicks);
-    var defaults =  $.modal.prototype.defaults  = {
+    var defaults = $.modal.prototype.defaults = {
         modalStack: true,
         modalButtonOk: '确定',
         modalButtonCancel: '取消',
         modalPreloaderTitle: '加载中',
-        modalContainer : document.body
+        modalContainer: document.body
     };
 }(Zepto);
 
@@ -1710,8 +1718,8 @@ Device/OS Detection
     var Calendar = function (params) {
         var p = this;
         var defaults = {
-            monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月' , '九月' , '十月', '十一月', '十二月'],
-            monthNamesShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月' , '九月' , '十月', '十一月', '十二月'],
+            monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            monthNamesShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
             dayNames: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
             dayNamesShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
             firstDay: 1, // First day of the week, Monday
@@ -1860,8 +1868,11 @@ Device/OS Detection
         p.initCalendarEvents = function () {
             var col;
             var allowItemClick = true;
-            var isTouched, isMoved, touchStartX, touchStartY, touchCurrentX, touchCurrentY, touchStartTime, touchEndTime, startTranslate, currentTranslate, wrapperWidth, wrapperHeight, percentage, touchesDiff, isScrolling;
-            function handleTouchStart (e) {
+            var isTouched, isMoved, touchStartX, touchStartY, touchCurrentX, touchCurrentY, touchStartTime,
+                touchEndTime, startTranslate, currentTranslate, wrapperWidth, wrapperHeight, percentage, touchesDiff,
+                isScrolling;
+
+            function handleTouchStart(e) {
                 if (isMoved || isTouched) return;
                 // e.preventDefault();
                 isTouched = true;
@@ -1873,7 +1884,8 @@ Device/OS Detection
                 isScrolling = undefined;
                 startTranslate = currentTranslate = p.monthsTranslate;
             }
-            function handleTouchMove (e) {
+
+            function handleTouchMove(e) {
                 if (!isTouched) return;
 
                 touchCurrentX = e.type === 'touchmove' ? e.targetTouches[0].pageX : e.pageX;
@@ -1901,14 +1913,15 @@ Device/OS Detection
                 e.preventDefault();
 
                 touchesDiff = p.isH ? touchCurrentX - touchStartX : touchCurrentY - touchStartY;
-                percentage = touchesDiff/(p.isH ? wrapperWidth : wrapperHeight);
+                percentage = touchesDiff / (p.isH ? wrapperWidth : wrapperHeight);
                 currentTranslate = (p.monthsTranslate * inverter + percentage) * 100;
 
                 // Transform wrapper
                 p.wrapper.transform('translate3d(' + (p.isH ? currentTranslate : 0) + '%, ' + (p.isH ? 0 : currentTranslate) + '%, 0)');
 
             }
-            function handleTouchEnd (e) {
+
+            function handleTouchEnd(e) {
                 if (!isTouched || !isMoved) {
                     isTouched = isMoved = false;
                     return;
@@ -2031,13 +2044,13 @@ Device/OS Detection
                 rows = 6, cols = 7,
                 monthHTML = '',
                 dayIndex = 0 + (p.params.firstDay - 1),
-                today = new Date().setHours(0,0,0,0),
+                today = new Date().setHours(0, 0, 0, 0),
                 minDate = p.params.minDate ? new Date(p.params.minDate).getTime() : null,
                 maxDate = p.params.maxDate ? new Date(p.params.maxDate).getTime() : null;
 
             if (p.value && p.value.length) {
                 for (i = 0; i < p.value.length; i++) {
-                    currentValues.push(new Date(p.value[i]).setHours(0,0,0,0));
+                    currentValues.push(new Date(p.value[i]).setHours(0, 0, 0, 0));
                 }
             }
 
@@ -2046,7 +2059,7 @@ Device/OS Detection
                 var row = i;
                 for (j = 1; j <= cols; j++) {
                     var col = j;
-                    dayIndex ++;
+                    dayIndex++;
                     var dayNumber = dayIndex - firstDayOfMonthIndex;
                     var addClass = '';
                     if (dayNumber < 0) {
@@ -2081,7 +2094,7 @@ Device/OS Detection
                     dayDate = new Date(dayDate);
                     var dayYear = dayDate.getFullYear();
                     var dayMonth = dayDate.getMonth();
-                    rowHTML += '<div data-year="' + dayYear + '" data-month="' + dayMonth + '" data-day="' + dayNumber + '" class="picker-calendar-day' + (addClass) + '" data-date="' + (dayYear + '-' + dayMonth + '-' + dayNumber) + '"><span>'+dayNumber+'</span></div>';
+                    rowHTML += '<div data-year="' + dayYear + '" data-month="' + dayMonth + '" data-day="' + dayNumber + '" class="picker-calendar-day' + (addClass) + '" data-date="' + (dayYear + '-' + dayMonth + '-' + dayNumber) + '"><span>' + dayNumber + '</span></div>';
                 }
                 monthHTML += '<div class="picker-calendar-row">' + rowHTML + '</div>';
             }
@@ -2172,7 +2185,7 @@ Device/OS Detection
                     return p.resetMonth();
                 }
             }
-            p.monthsTranslate --;
+            p.monthsTranslate--;
             if (nextMonth === p.currentMonth) {
                 var nextMonthTranslate = -(p.monthsTranslate) * 100 * inverter;
                 var nextMonthHTML = $(p.monthHTML(nextDateTime, 'next')).transform('translate3d(' + (p.isH ? nextMonthTranslate : 0) + '%, ' + (p.isH ? 0 : nextMonthTranslate) + '%, 0)').addClass('picker-calendar-month-next');
@@ -2211,7 +2224,7 @@ Device/OS Detection
                     return p.resetMonth();
                 }
             }
-            p.monthsTranslate ++;
+            p.monthsTranslate++;
             if (prevMonth === p.currentMonth) {
                 var prevMonthTranslate = -(p.monthsTranslate) * 100 * inverter;
                 var prevMonthHTML = $(p.monthHTML(prevDateTime, 'prev')).transform('translate3d(' + (p.isH ? prevMonthTranslate : 0) + '%, ' + (p.isH ? 0 : prevMonthTranslate) + '%, 0)').addClass('picker-calendar-month-prev');
@@ -2268,7 +2281,7 @@ Device/OS Detection
             var transitionEndCallback = p.animating ? false : true;
             if (targetDate > currentDate) {
                 // To next
-                p.monthsTranslate --;
+                p.monthsTranslate--;
                 if (!p.animating) p.months.eq(p.months.length - 1).remove();
                 p.wrapper.append(newMonthHTML);
                 p.months = p.wrapper.find('.picker-calendar-month');
@@ -2277,7 +2290,7 @@ Device/OS Detection
             }
             else {
                 // To prev
-                p.monthsTranslate ++;
+                p.monthsTranslate++;
                 if (!p.animating) p.months.eq(0).remove();
                 p.wrapper.prepend(newMonthHTML);
                 p.months = p.wrapper.find('.picker-calendar-month');
@@ -2314,7 +2327,7 @@ Device/OS Detection
             var pickerClass = '';
             var i;
 
-            var layoutDate = p.value && p.value.length ? p.value[0] : new Date().setHours(0,0,0,0);
+            var layoutDate = p.value && p.value.length ? p.value[0] : new Date().setHours(0, 0, 0, 0);
             var prevMonthHTML = p.monthHTML(layoutDate, 'prev');
             var currentMonthHTML = p.monthHTML(layoutDate);
             var nextMonthHTML = p.monthHTML(layoutDate, 'next');
@@ -2387,6 +2400,7 @@ Device/OS Detection
                 }
             }
         }
+
         function closeOnHTMLClick(e) {
             if (p.input && p.input.length > 0) {
                 if (e.target !== p.input[0] && $(e.target).parents('.picker-modal').length === 0) p.close();
@@ -2504,11 +2518,11 @@ Device/OS Detection
         return p;
     };
     $.fn.calendar = function (params) {
-        return this.each(function() {
+        return this.each(function () {
             var $this = $(this);
-            if(!$this[0]) return;
+            if (!$this[0]) return;
             var p = {};
-            if($this[0].tagName.toUpperCase() === "INPUT") {
+            if ($this[0].tagName.toUpperCase() === "INPUT") {
                 p.input = $this;
             } else {
                 p.container = $this;
@@ -2517,9 +2531,9 @@ Device/OS Detection
         });
     };
 
-    $.initCalendar = function(content) {
+    $.initCalendar = function (content) {
         var $content = content ? $(content) : $(document.body);
-        $content.find("[data-toggle='date']").each(function() {
+        $content.find("[data-toggle='date']").each(function () {
             $(this).calendar();
         });
     };
@@ -2530,7 +2544,7 @@ Device/OS Detection
 ======================================================*/
 /* jshint unused:false */
 /* jshint multistr:true */
-+ function($) {
++function ($) {
     "use strict";
     var Picker = function (params) {
         var p = this;
@@ -2603,6 +2617,7 @@ Device/OS Detection
         p.initPickerCol = function (colElement, updateItems) {
             var colContainer = $(colElement);
             var colIndex = colContainer.index();
+            console.log("PPPPPPP", p);
             var col = p.cols[colIndex];
             if (col.divider) return;
             col.container = colContainer;
@@ -2625,7 +2640,7 @@ Device/OS Detection
             col.calcSize = function () {
                 if (p.params.rotateEffect) {
                     col.container.removeClass('picker-items-col-absolute');
-                    if (!col.width) col.container.css({width:''});
+                    if (!col.width) col.container.css({width: ''});
                 }
                 var colWidth, colHeight;
                 colWidth = 0;
@@ -2644,9 +2659,9 @@ Device/OS Detection
                     if (!col.width) {
                         col.items.each(function () {
                             var item = $(this);
-                            item.css({width:'auto'});
+                            item.css({width: 'auto'});
                             colWidth = Math.max(colWidth, item[0].offsetWidth);
-                            item.css({width:''});
+                            item.css({width: ''});
                         });
                         col.container.css({width: (colWidth + 2) + 'px'});
                     }
@@ -2665,7 +2680,7 @@ Device/OS Detection
             col.setValue = function (newValue, transition, valueCallbacks) {
                 if (typeof transition === 'undefined') transition = '';
                 var newActiveIndex = col.wrapper.find('.picker-item[data-picker-value="' + newValue + '"]').index();
-                if(typeof newActiveIndex === 'undefined' || newActiveIndex === -1) {
+                if (typeof newActiveIndex === 'undefined' || newActiveIndex === -1) {
                     return;
                 }
                 var newTranslate = -newActiveIndex * itemHeight + maxTranslate;
@@ -2674,9 +2689,9 @@ Device/OS Detection
                 col.wrapper.transform('translate3d(0,' + (newTranslate) + 'px,0)');
 
                 // Watch items
-                if (p.params.updateValuesOnMomentum && col.activeIndex && col.activeIndex !== newActiveIndex ) {
+                if (p.params.updateValuesOnMomentum && col.activeIndex && col.activeIndex !== newActiveIndex) {
                     $.cancelAnimationFrame(animationFrameId);
-                    col.wrapper.transitionEnd(function(){
+                    col.wrapper.transitionEnd(function () {
                         $.cancelAnimationFrame(animationFrameId);
                     });
                     updateDuringScroll();
@@ -2690,7 +2705,7 @@ Device/OS Detection
                 if (typeof translate === 'undefined') {
                     translate = $.getTranslate(col.wrapper[0], 'y');
                 }
-                if(typeof activeIndex === 'undefined') activeIndex = -Math.round((translate - maxTranslate)/itemHeight);
+                if (typeof activeIndex === 'undefined') activeIndex = -Math.round((translate - maxTranslate) / itemHeight);
                 if (activeIndex < 0) activeIndex = 0;
                 if (activeIndex >= col.items.length) activeIndex = col.items.length - 1;
                 var previousActiveIndex = col.activeIndex;
@@ -2727,7 +2742,7 @@ Device/OS Detection
                 if (!p.params.rotateEffect) {
                     return;
                 }
-                var percentage = (translate - (Math.floor((translate - maxTranslate)/itemHeight) * itemHeight + maxTranslate)) / itemHeight;
+                var percentage = (translate - (Math.floor((translate - maxTranslate) / itemHeight) * itemHeight + maxTranslate)) / itemHeight;
 
                 col.items.each(function () {
                     var item = $(this);
@@ -2738,7 +2753,7 @@ Device/OS Detection
 
                     var itemsFit = Math.ceil(col.height / itemHeight / 2) + 1;
 
-                    var angle = (-18*percentage);
+                    var angle = (-18 * percentage);
                     if (angle > 180) angle = 180;
                     if (angle < -180) angle = -180;
                     // Far class
@@ -2760,8 +2775,10 @@ Device/OS Detection
             if (updateItems) col.updateItems(0, maxTranslate, 0);
 
             var allowItemClick = true;
-            var isTouched, isMoved, touchStartY, touchCurrentY, touchStartTime, touchEndTime, startTranslate, returnTo, currentTranslate, prevTranslate, velocityTranslate, velocityTime;
-            function handleTouchStart (e) {
+            var isTouched, isMoved, touchStartY, touchCurrentY, touchStartTime, touchEndTime, startTranslate, returnTo,
+                currentTranslate, prevTranslate, velocityTranslate, velocityTime;
+
+            function handleTouchStart(e) {
                 if (isMoved || isTouched) return;
                 e.preventDefault();
                 isTouched = true;
@@ -2771,7 +2788,8 @@ Device/OS Detection
                 allowItemClick = true;
                 startTranslate = currentTranslate = $.getTranslate(col.wrapper[0], 'y');
             }
-            function handleTouchMove (e) {
+
+            function handleTouchMove(e) {
                 if (!isTouched) return;
                 e.preventDefault();
                 allowItemClick = false;
@@ -2809,7 +2827,8 @@ Device/OS Detection
                 velocityTime = (new Date()).getTime();
                 prevTranslate = currentTranslate;
             }
-            function handleTouchEnd (e) {
+
+            function handleTouchEnd(e) {
                 if (!isTouched || !isMoved) {
                     isTouched = isMoved = false;
                     return;
@@ -2835,13 +2854,13 @@ Device/OS Detection
                 newTranslate = Math.max(Math.min(newTranslate, maxTranslate), minTranslate);
 
                 // Active Index
-                var activeIndex = -Math.floor((newTranslate - maxTranslate)/itemHeight);
+                var activeIndex = -Math.floor((newTranslate - maxTranslate) / itemHeight);
 
                 // Normalize translate
                 if (!p.params.freeMode) newTranslate = -activeIndex * itemHeight + maxTranslate;
 
                 // Transform wrapper
-                col.wrapper.transform('translate3d(0,' + (parseInt(newTranslate,10)) + 'px,0)');
+                col.wrapper.transform('translate3d(0,' + (parseInt(newTranslate, 10)) + 'px,0)');
 
                 // Update items
                 col.updateItems(activeIndex, newTranslate, '', true);
@@ -2849,7 +2868,7 @@ Device/OS Detection
                 // Watch items
                 if (p.params.updateValuesOnMomentum) {
                     updateDuringScroll();
-                    col.wrapper.transitionEnd(function(){
+                    col.wrapper.transitionEnd(function () {
                         $.cancelAnimationFrame(animationFrameId);
                     });
                 }
@@ -2890,6 +2909,7 @@ Device/OS Detection
             colContainer = $(colContainer);
             if ('f7DestroyPickerCol' in colContainer[0]) colContainer[0].f7DestroyPickerCol();
         };
+
         // Resize cols
         function resizeCols() {
             if (!p.opened) return;
@@ -2900,6 +2920,7 @@ Device/OS Detection
                 }
             }
         }
+
         $(window).on('resize', resizeCols);
 
         // HTML Layout
@@ -2910,7 +2931,9 @@ Device/OS Detection
                 columnHTML += '<div class="picker-items-col picker-items-col-divider ' + (col.textAlign ? 'picker-items-col-' + col.textAlign : '') + ' ' + (col.cssClass || '') + '">' + col.content + '</div>';
             }
             else {
-                for (var j = 0; j < col.values.length; j++) {
+                var vs = col.values || [];
+                console.log(vs);
+                for (var j = 0; j < vs.length; j++) {
                     columnItemsHTML += '<div class="picker-item" data-picker-value="' + col.values[j] + '">' + (col.displayValues ? col.displayValues[j] : col.values[j]) + '</div>';
                 }
 
@@ -2976,6 +2999,7 @@ Device/OS Detection
                 }
             }
         }
+
         function closeOnHTMLClick(e) {
             if (!p.opened) return;
             if (p.input && p.input.length > 0) {
@@ -3027,7 +3051,7 @@ Device/OS Detection
                 else {
                     p.container = $($.pickerModal(p.pickerHTML));
                     $(p.container)
-                        .one('opened', function() {
+                        .one('opened', function () {
                             p.opened = true;
                         })
                         .on('close', function () {
@@ -3086,19 +3110,19 @@ Device/OS Detection
         return p;
     };
 
-    $(document).on("click", ".close-picker", function() {
+    $(document).on("click", ".close-picker", function () {
         var pickerToClose = $('.picker-modal.modal-in');
         $.closeModal(pickerToClose);
     });
 
-    $.fn.picker = function(params) {
+    $.fn.picker = function (params) {
         var args = arguments;
-        return this.each(function() {
-            if(!this) return;
+        return this.each(function () {
+            if (!this) return;
             var $this = $(this);
 
             var picker = $this.data("picker");
-            if(!picker) {
+            if (!picker) {
                 var p = $.extend({
                     input: this,
                     value: $this.val() ? $this.val().split(' ') : ''
@@ -3106,7 +3130,7 @@ Device/OS Detection
                 picker = new Picker(p);
                 $this.data("picker", picker);
             }
-            if(typeof params === typeof "a") {
+            if (typeof params === typeof "a") {
                 picker[params].apply(picker, Array.prototype.slice.call(args, 1));
             }
         });
@@ -3115,21 +3139,21 @@ Device/OS Detection
 
 /* jshint unused:false*/
 
-+ function($) {
++function ($) {
     "use strict";
 
     var today = new Date();
 
-    var getDays = function(max) {
+    var getDays = function (max) {
         var days = [];
-        for(var i=1; i<= (max||31);i++) {
-            days.push(i < 10 ? "0"+i : i);
+        for (var i = 1; i <= (max || 31); i++) {
+            days.push(i < 10 ? "0" + i : i);
         }
         return days;
     };
 
-    var getDaysByMonthAndYear = function(month, year) {
-        var int_d = new Date(year, parseInt(month)+1-1, 1);
+    var getDaysByMonthAndYear = function (month, year) {
+        var int_d = new Date(year, parseInt(month) + 1 - 1, 1);
         var d = new Date(int_d - 1);
         return getDays(d.getDate());
     };
@@ -3142,7 +3166,9 @@ Device/OS Detection
 
     var initYears = (function () {
         var arr = [];
-        for (var i = 1950; i <= 2050; i++) { arr.push(i); }
+        for (var i = 1950; i <= 2050; i++) {
+            arr.push(i);
+        }
         return arr;
     })();
 
@@ -3151,12 +3177,12 @@ Device/OS Detection
 
         rotateEffect: false,  //为了性能
 
-        value: [today.getFullYear(), formatNumber(today.getMonth()+1), formatNumber(today.getDate()), today.getHours(), formatNumber(today.getMinutes())],
+        value: [today.getFullYear(), formatNumber(today.getMonth() + 1), formatNumber(today.getDate()), today.getHours(), formatNumber(today.getMinutes())],
 
         onChange: function (picker, values, displayValues) {
             var days = getDaysByMonthAndYear(picker.cols[1].value, picker.cols[0].value);
             var currentValue = picker.cols[2].value;
-            if(currentValue > days.length) currentValue = days.length;
+            if (currentValue > days.length) currentValue = days.length;
             picker.cols[2].setValue(currentValue);
         },
 
@@ -3187,7 +3213,9 @@ Device/OS Detection
             {
                 values: (function () {
                     var arr = [];
-                    for (var i = 0; i <= 23; i++) { arr.push(i); }
+                    for (var i = 0; i <= 23; i++) {
+                        arr.push(i);
+                    }
                     return arr;
                 })(),
             },
@@ -3200,16 +3228,18 @@ Device/OS Detection
             {
                 values: (function () {
                     var arr = [];
-                    for (var i = 0; i <= 59; i++) { arr.push(i < 10 ? '0' + i : i); }
+                    for (var i = 0; i <= 59; i++) {
+                        arr.push(i < 10 ? '0' + i : i);
+                    }
                     return arr;
                 })(),
             }
         ]
     };
 
-    $.fn.datetimePicker = function(params) {
-        return this.each(function() {
-            if(!this) return;
+    $.fn.datetimePicker = function (params) {
+        return this.each(function () {
+            if (!this) return;
             var p = $.extend(defaults, params);
             $(this).picker(p);
             if (params.value) $(this).val(p.formatValue(p, p.value, p.value));
@@ -3218,7 +3248,7 @@ Device/OS Detection
 
 }(Zepto);
 
-+ function(window) {
++function (window) {
 
     "use strict";
 
@@ -3227,7 +3257,7 @@ Device/OS Detection
         window.mozRequestAnimationFrame ||
         window.oRequestAnimationFrame ||
         window.msRequestAnimationFrame ||
-        function(callback) {
+        function (callback) {
             window.setTimeout(callback, 1000 / 60);
         };
     /*var cRAF = window.cancelRequestAnimationFrame ||
@@ -3236,11 +3266,11 @@ Device/OS Detection
         window.oCancelRequestAnimationFrame ||
         window.msCancelRequestAnimationFrame;*/
 
-    var utils = (function() {
+    var utils = (function () {
         var me = {};
 
         var _elementStyle = document.createElement('div').style;
-        var _vendor = (function() {
+        var _vendor = (function () {
             var vendors = ['t', 'webkitT', 'MozT', 'msT', 'OT'],
                 transform,
                 i = 0,
@@ -3264,27 +3294,27 @@ Device/OS Detection
             return new Date().getTime();
         };
 
-        me.extend = function(target, obj) {
+        me.extend = function (target, obj) {
             for (var i in obj) {  // jshint ignore:line
                 target[i] = obj[i];
             }
         };
 
-        me.addEvent = function(el, type, fn, capture) {
+        me.addEvent = function (el, type, fn, capture) {
             el.addEventListener(type, fn, !!capture);
         };
 
-        me.removeEvent = function(el, type, fn, capture) {
+        me.removeEvent = function (el, type, fn, capture) {
             el.removeEventListener(type, fn, !!capture);
         };
 
-        me.prefixPointerEvent = function(pointerEvent) {
+        me.prefixPointerEvent = function (pointerEvent) {
             return window.MSPointerEvent ?
                 'MSPointer' + pointerEvent.charAt(9).toUpperCase() + pointerEvent.substr(10) :
                 pointerEvent;
         };
 
-        me.momentum = function(current, start, time, lowerMargin, wrapperSize, deceleration, self) {
+        me.momentum = function (current, start, time, lowerMargin, wrapperSize, deceleration, self) {
             var distance = current - start,
                 speed = Math.abs(distance) / time,
                 destination,
@@ -3321,6 +3351,7 @@ Device/OS Detection
                     rAF(eventTrigger);
                 }
             }
+
             rAF(eventTrigger);
 
             return {
@@ -3350,12 +3381,12 @@ Device/OS Detection
             transformOrigin: _prefixStyle('transformOrigin')
         });
 
-        me.hasClass = function(e, c) {
+        me.hasClass = function (e, c) {
             var re = new RegExp('(^|\\s)' + c + '(\\s|$)');
             return re.test(e.className);
         };
 
-        me.addClass = function(e, c) {
+        me.addClass = function (e, c) {
             if (me.hasClass(e, c)) {
                 return;
             }
@@ -3365,7 +3396,7 @@ Device/OS Detection
             e.className = newclass.join(' ');
         };
 
-        me.removeClass = function(e, c) {
+        me.removeClass = function (e, c) {
             if (!me.hasClass(e, c)) {
                 return;
             }
@@ -3374,7 +3405,7 @@ Device/OS Detection
             e.className = e.className.replace(re, ' ');
         };
 
-        me.offset = function(el) {
+        me.offset = function (el) {
             var left = -el.offsetLeft,
                 top = -el.offsetTop;
 
@@ -3391,7 +3422,7 @@ Device/OS Detection
             };
         };
 
-        me.preventDefaultException = function(el, exceptions) {
+        me.preventDefaultException = function (el, exceptions) {
             for (var i in exceptions) {
                 if (exceptions[i].test(el[i])) {
                     return true;
@@ -3422,26 +3453,26 @@ Device/OS Detection
         me.extend(me.ease = {}, {
             quadratic: {
                 style: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                fn: function(k) {
+                fn: function (k) {
                     return k * (2 - k);
                 }
             },
             circular: {
                 style: 'cubic-bezier(0.1, 0.57, 0.1, 1)', // Not properly 'circular' but this looks better, it should be (0.075, 0.82, 0.165, 1)
-                fn: function(k) {
+                fn: function (k) {
                     return Math.sqrt(1 - (--k * k));
                 }
             },
             back: {
                 style: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                fn: function(k) {
+                fn: function (k) {
                     var b = 4;
                     return (k = k - 1) * k * ((b + 1) * k + b) + 1;
                 }
             },
             bounce: {
                 style: '',
-                fn: function(k) {
+                fn: function (k) {
                     if ((k /= 1) < (1 / 2.75)) {
                         return 7.5625 * k * k;
                     } else if (k < (2 / 2.75)) {
@@ -3455,7 +3486,7 @@ Device/OS Detection
             },
             elastic: {
                 style: '',
-                fn: function(k) {
+                fn: function (k) {
                     var f = 0.22,
                         e = 0.4;
 
@@ -3471,7 +3502,7 @@ Device/OS Detection
             }
         });
 
-        me.tap = function(e, eventName) {
+        me.tap = function (e, eventName) {
             var ev = document.createEvent('Event');
             ev.initEvent(eventName, true, true);
             ev.pageX = e.pageX;
@@ -3479,7 +3510,7 @@ Device/OS Detection
             e.target.dispatchEvent(ev);
         };
 
-        me.click = function(e) {
+        me.click = function (e) {
             var target = e.target,
                 ev;
 
@@ -3503,7 +3534,7 @@ Device/OS Detection
         this.scroller = $(this.wrapper).find('.content-inner')[0]; // jshint ignore:line
 
 
-        this.scrollerStyle = this.scroller&&this.scroller.style; // cache style for better performance
+        this.scrollerStyle = this.scroller && this.scroller.style; // cache style for better performance
 
         this.options = {
 
@@ -3598,7 +3629,7 @@ Device/OS Detection
     IScroll.prototype = {
         version: '5.1.3',
 
-        _init: function() {
+        _init: function () {
             this._initEvents();
 
             if (this.options.scrollbars || this.options.indicators) {
@@ -3621,13 +3652,13 @@ Device/OS Detection
 
         },
 
-        destroy: function() {
+        destroy: function () {
             this._initEvents(true);
 
             this._execEvent('destroy');
         },
 
-        _transitionEnd: function(e) {
+        _transitionEnd: function (e) {
             if (e.target !== this.scroller || !this.isInTransition) {
                 return;
             }
@@ -3639,7 +3670,7 @@ Device/OS Detection
             }
         },
 
-        _start: function(e) {
+        _start: function (e) {
             // React to left mouse button only
             if (utils.eventType[e.type] !== 1) {
                 if (e.button !== 0) {
@@ -3690,7 +3721,7 @@ Device/OS Detection
             this._execEvent('beforeScrollStart');
         },
 
-        _move: function(e) {
+        _move: function (e) {
             if (!this.enabled || utils.eventType[e.type] !== this.initiated) {
                 return;
             }
@@ -3793,7 +3824,7 @@ Device/OS Detection
 
         },
 
-        _end: function(e) {
+        _end: function (e) {
             if (!this.enabled || utils.eventType[e.type] !== this.initiated) {
                 return;
             }
@@ -3891,17 +3922,17 @@ Device/OS Detection
             this._execEvent('scrollEnd');
         },
 
-        _resize: function() {
+        _resize: function () {
             var that = this;
 
             clearTimeout(this.resizeTimeout);
 
-            this.resizeTimeout = setTimeout(function() {
+            this.resizeTimeout = setTimeout(function () {
                 that.refresh();
             }, this.options.resizePolling);
         },
 
-        resetPosition: function(time) {
+        resetPosition: function (time) {
             var x = this.x,
                 y = this.y;
 
@@ -3930,7 +3961,7 @@ Device/OS Detection
                 // 防止返回的过程中再次触发了 ptr ，导致被定位到 44px（因为可能done事件触发很快，在返回到44px以前就触发done
                 this.ptrLock = true;
                 var self = this;
-                setTimeout(function() {
+                setTimeout(function () {
                     self.ptrLock = false;
                 }, 500);
             }
@@ -3940,15 +3971,15 @@ Device/OS Detection
             return true;
         },
 
-        disable: function() {
+        disable: function () {
             this.enabled = false;
         },
 
-        enable: function() {
+        enable: function () {
             this.enabled = true;
         },
 
-        refresh: function() {
+        refresh: function () {
             // var rf = this.wrapper.offsetHeight; // Force reflow
 
             this.wrapperWidth = this.wrapper.clientWidth;
@@ -3991,7 +4022,7 @@ Device/OS Detection
 
         },
 
-        on: function(type, fn) {
+        on: function (type, fn) {
             if (!this._events[type]) {
                 this._events[type] = [];
             }
@@ -3999,7 +4030,7 @@ Device/OS Detection
             this._events[type].push(fn);
         },
 
-        off: function(type, fn) {
+        off: function (type, fn) {
             if (!this._events[type]) {
                 return;
             }
@@ -4011,7 +4042,7 @@ Device/OS Detection
             }
         },
 
-        _execEvent: function(type) {
+        _execEvent: function (type) {
             if (!this._events[type]) {
                 return;
             }
@@ -4028,7 +4059,7 @@ Device/OS Detection
             }
         },
 
-        scrollBy: function(x, y, time, easing) {
+        scrollBy: function (x, y, time, easing) {
             x = this.x + x;
             y = this.y + y;
             time = time || 0;
@@ -4036,7 +4067,7 @@ Device/OS Detection
             this.scrollTo(x, y, time, easing);
         },
 
-        scrollTo: function(x, y, time, easing) {
+        scrollTo: function (x, y, time, easing) {
             easing = easing || utils.ease.circular;
 
             this.isInTransition = this.options.useTransition && time > 0;
@@ -4050,7 +4081,7 @@ Device/OS Detection
             }
         },
 
-        scrollToElement: function(el, time, offsetX, offsetY, easing) {
+        scrollToElement: function (el, time, offsetX, offsetY, easing) {
             el = el.nodeType ? el : this.scroller.querySelector(el);
 
             if (!el) {
@@ -4081,7 +4112,7 @@ Device/OS Detection
             this.scrollTo(pos.left, pos.top, time, easing);
         },
 
-        _transitionTime: function(time) {
+        _transitionTime: function (time) {
             time = time || 0;
 
             this.scrollerStyle[utils.style.transitionDuration] = time + 'ms';
@@ -4102,7 +4133,7 @@ Device/OS Detection
 
         },
 
-        _transitionTimingFunction: function(easing) {
+        _transitionTimingFunction: function (easing) {
             this.scrollerStyle[utils.style.transitionTimingFunction] = easing;
 
 
@@ -4117,7 +4148,7 @@ Device/OS Detection
 
         },
 
-        _translate: function(x, y) {
+        _translate: function (x, y) {
             if (this.options.useTransform) {
 
                 /* REPLACE START: _translate */
@@ -4148,7 +4179,7 @@ Device/OS Detection
 
         },
 
-        _initEvents: function(remove) {
+        _initEvents: function (remove) {
             var eventType = remove ? utils.removeEvent : utils.addEvent,
                 target = this.options.bindToWrapper ? this.wrapper : window;
 
@@ -4186,7 +4217,7 @@ Device/OS Detection
             eventType(this.scroller, 'MSTransitionEnd', this);
         },
 
-        getComputedPosition: function() {
+        getComputedPosition: function () {
             var matrix = window.getComputedStyle(this.scroller, null),
                 x, y;
 
@@ -4205,7 +4236,7 @@ Device/OS Detection
             };
         },
 
-        _initIndicators: function() {
+        _initIndicators: function () {
             var interactive = this.options.interactiveScrollbars,
                 customStyle = typeof this.options.scrollbars !== 'string',
                 indicators = [],
@@ -4268,40 +4299,40 @@ Device/OS Detection
             }
 
             if (this.options.fadeScrollbars) {
-                this.on('scrollEnd', function() {
-                    _indicatorsMap(function() {
+                this.on('scrollEnd', function () {
+                    _indicatorsMap(function () {
                         this.fade();
                     });
                 });
 
-                this.on('scrollCancel', function() {
-                    _indicatorsMap(function() {
+                this.on('scrollCancel', function () {
+                    _indicatorsMap(function () {
                         this.fade();
                     });
                 });
 
-                this.on('scrollStart', function() {
-                    _indicatorsMap(function() {
+                this.on('scrollStart', function () {
+                    _indicatorsMap(function () {
                         this.fade(1);
                     });
                 });
 
-                this.on('beforeScrollStart', function() {
-                    _indicatorsMap(function() {
+                this.on('beforeScrollStart', function () {
+                    _indicatorsMap(function () {
                         this.fade(1, true);
                     });
                 });
             }
 
 
-            this.on('refresh', function() {
-                _indicatorsMap(function() {
+            this.on('refresh', function () {
+                _indicatorsMap(function () {
                     this.refresh();
                 });
             });
 
-            this.on('destroy', function() {
-                _indicatorsMap(function() {
+            this.on('destroy', function () {
+                _indicatorsMap(function () {
                     this.destroy();
                 });
 
@@ -4309,19 +4340,19 @@ Device/OS Detection
             });
         },
 
-        _initWheel: function() {
+        _initWheel: function () {
             utils.addEvent(this.wrapper, 'wheel', this);
             utils.addEvent(this.wrapper, 'mousewheel', this);
             utils.addEvent(this.wrapper, 'DOMMouseScroll', this);
 
-            this.on('destroy', function() {
+            this.on('destroy', function () {
                 utils.removeEvent(this.wrapper, 'wheel', this);
                 utils.removeEvent(this.wrapper, 'mousewheel', this);
                 utils.removeEvent(this.wrapper, 'DOMMouseScroll', this);
             });
         },
 
-        _wheel: function(e) {
+        _wheel: function (e) {
             if (!this.enabled) {
                 return;
             }
@@ -4339,7 +4370,7 @@ Device/OS Detection
 
             // Execute the scrollEnd event after 400ms the wheel stopped scrolling
             clearTimeout(this.wheelTimeout);
-            this.wheelTimeout = setTimeout(function() {
+            this.wheelTimeout = setTimeout(function () {
                 that._execEvent('scrollEnd');
                 that.wheelTimeout = undefined;
             }, 400);
@@ -4414,14 +4445,14 @@ Device/OS Detection
             // INSERT POINT: _wheel
         },
 
-        _initSnap: function() {
+        _initSnap: function () {
             this.currentPage = {};
 
             if (typeof this.options.snap === 'string') {
                 this.options.snap = this.scroller.querySelectorAll(this.options.snap);
             }
 
-            this.on('refresh', function() {
+            this.on('refresh', function () {
                 var i = 0,
                     l,
                     m = 0,
@@ -4512,7 +4543,7 @@ Device/OS Detection
                 }
             });
 
-            this.on('flick', function() {
+            this.on('flick', function () {
                 var time = this.options.snapSpeed || Math.max(
                     Math.max(
                         Math.min(Math.abs(this.x - this.startX), 1000),
@@ -4527,7 +4558,7 @@ Device/OS Detection
             });
         },
 
-        _nearestSnap: function(x, y) {
+        _nearestSnap: function (x, y) {
             if (!this.pages.length) {
                 return {
                     x: 0,
@@ -4607,7 +4638,7 @@ Device/OS Detection
             };
         },
 
-        goToPage: function(x, y, time, easing) {
+        goToPage: function (x, y, time, easing) {
             easing = easing || this.options.bounceEasing;
 
             if (x >= this.pages.length) {
@@ -4641,7 +4672,7 @@ Device/OS Detection
             this.scrollTo(posX, posY, time, easing);
         },
 
-        next: function(time, easing) {
+        next: function (time, easing) {
             var x = this.currentPage.pageX,
                 y = this.currentPage.pageY;
 
@@ -4655,7 +4686,7 @@ Device/OS Detection
             this.goToPage(x, y, time, easing);
         },
 
-        prev: function(time, easing) {
+        prev: function (time, easing) {
             var x = this.currentPage.pageX,
                 y = this.currentPage.pageY;
 
@@ -4669,7 +4700,7 @@ Device/OS Detection
             this.goToPage(x, y, time, easing);
         },
 
-        _initKeys: function() {
+        _initKeys: function () {
             // default key bindings
             var keys = {
                 pageUp: 33,
@@ -4700,12 +4731,12 @@ Device/OS Detection
 
             utils.addEvent(window, 'keydown', this);
 
-            this.on('destroy', function() {
+            this.on('destroy', function () {
                 utils.removeEvent(window, 'keydown', this);
             });
         },
 
-        _key: function(e) {
+        _key: function (e) {
             if (!this.enabled) {
                 return;
             }
@@ -4792,7 +4823,7 @@ Device/OS Detection
             this.keyTime = now;
         },
 
-        _animate: function(destX, destY, duration, easingFn) {
+        _animate: function (destX, destY, duration, easingFn) {
             var that = this,
                 startX = this.x,
                 startY = this.y,
@@ -4834,7 +4865,7 @@ Device/OS Detection
             step();
         },
 
-        handleEvent: function(e) {
+        handleEvent: function (e) {
             switch (e.type) {
                 case 'touchstart':
                 case 'pointerdown':
@@ -4974,7 +5005,7 @@ Device/OS Detection
     }
 
     Indicator.prototype = {
-        handleEvent: function(e) {
+        handleEvent: function (e) {
             switch (e.type) {
                 case 'touchstart':
                 case 'pointerdown':
@@ -5001,7 +5032,7 @@ Device/OS Detection
             }
         },
 
-        destroy: function() {
+        destroy: function () {
             if (this.options.interactive) {
                 utils.removeEvent(this.indicator, 'touchstart', this);
                 utils.removeEvent(this.indicator, utils.prefixPointerEvent('pointerdown'), this);
@@ -5021,7 +5052,7 @@ Device/OS Detection
             }
         },
 
-        _start: function(e) {
+        _start: function (e) {
             var point = e.touches ? e.touches[0] : e;
 
             e.preventDefault();
@@ -5049,7 +5080,7 @@ Device/OS Detection
             this.scroller._execEvent('beforeScrollStart');
         },
 
-        _move: function(e) {
+        _move: function (e) {
             var point = e.touches ? e.touches[0] : e,
                 deltaX, deltaY,
                 newX, newY,
@@ -5087,7 +5118,7 @@ Device/OS Detection
             e.stopPropagation();
         },
 
-        _end: function(e) {
+        _end: function (e) {
             if (!this.initiated) {
                 return;
             }
@@ -5123,7 +5154,7 @@ Device/OS Detection
             }
         },
 
-        transitionTime: function(time) {
+        transitionTime: function (time) {
             time = time || 0;
             this.indicatorStyle[utils.style.transitionDuration] = time + 'ms';
 
@@ -5132,11 +5163,11 @@ Device/OS Detection
             }
         },
 
-        transitionTimingFunction: function(easing) {
+        transitionTimingFunction: function (easing) {
             this.indicatorStyle[utils.style.transitionTimingFunction] = easing;
         },
 
-        refresh: function() {
+        refresh: function () {
             this.transitionTime();
 
             if (this.options.listenX && !this.options.listenY) {
@@ -5221,7 +5252,7 @@ Device/OS Detection
             this.updatePosition();
         },
 
-        updatePosition: function() {
+        updatePosition: function () {
             var x = this.options.listenX && Math.round(this.sizeRatioX * this.scroller.x) || 0,
                 y = this.options.listenY && Math.round(this.sizeRatioY * this.scroller.y) || 0;
 
@@ -5276,7 +5307,7 @@ Device/OS Detection
             }
         },
 
-        _pos: function(x, y) {
+        _pos: function (x, y) {
             if (x < 0) {
                 x = 0;
             } else if (x > this.maxPosX) {
@@ -5295,7 +5326,7 @@ Device/OS Detection
             this.scroller.scrollTo(x, y);
         },
 
-        fade: function(val, hold) {
+        fade: function (val, hold) {
             if (hold && !this.visible) {
                 return;
             }
@@ -5310,7 +5341,7 @@ Device/OS Detection
 
             this.wrapperStyle[utils.style.transitionDuration] = time + 'ms';
 
-            this.fadeTimeout = setTimeout((function(val) {
+            this.fadeTimeout = setTimeout((function (val) {
                 this.wrapperStyle.opacity = val;
                 this.visible = +val;
             }).bind(this, val), delay);
@@ -5325,7 +5356,7 @@ Device/OS Detection
 /* ===============================================================================
 ************   scroller   ************
 =============================================================================== */
-+ function($) {
++function ($) {
     "use strict";
     //重置zepto自带的滚动条
     var _zeptoMethodCache = {
@@ -5333,9 +5364,9 @@ Device/OS Detection
         "scrollLeft": $.fn.scrollLeft
     };
     //重置scrollLeft和scrollRight
-    (function() {
+    (function () {
         $.extend($.fn, {
-            scrollTop: function(top, dur) {
+            scrollTop: function (top, dur) {
                 if (!this.length) return;
                 var scroller = this.data('scroller');
                 if (scroller && scroller.scroller) { //js滚动
@@ -5346,7 +5377,7 @@ Device/OS Detection
             }
         });
         $.extend($.fn, {
-            scrollLeft: function(left, dur) {
+            scrollLeft: function (left, dur) {
                 if (!this.length) return;
                 var scroller = this.data('scroller');
                 if (scroller && scroller.scroller) { //js滚动
@@ -5359,9 +5390,8 @@ Device/OS Detection
     })();
 
 
-
     //自定义的滚动条
-    var Scroller = function(pageContent, _options) {
+    var Scroller = function (pageContent, _options) {
         var $pageContent = this.$pageContent = $(pageContent);
 
         this.options = $.extend({}, this._defaults, _options);
@@ -5429,7 +5459,7 @@ Device/OS Detection
 
             //如果页面本身已经进行了原生滚动，那么把这个滚动换成JS的滚动
             var nativeScrollTop = this.$pageContent[0].scrollTop;
-            if(nativeScrollTop) {
+            if (nativeScrollTop) {
                 this.$pageContent[0].scrollTop = 0;
                 this.scrollTop(nativeScrollTop);
             }
@@ -5441,26 +5471,26 @@ Device/OS Detection
         _defaults: {
             type: 'native',
         },
-        _bindEventToDomWhenJs: function() {
+        _bindEventToDomWhenJs: function () {
             //"scrollStart", //the scroll started.
             //"scroll", //the content is scrolling. Available only in scroll-probe.js edition. See onScroll event.
             //"scrollEnd", //content stopped scrolling.
             if (this.scroller) {
                 var self = this;
-                this.scroller.on('scrollStart', function() {
+                this.scroller.on('scrollStart', function () {
                     self.$pageContent.trigger('scrollstart');
                 });
-                this.scroller.on('scroll', function() {
+                this.scroller.on('scroll', function () {
                     self.$pageContent.trigger('scroll');
                 });
-                this.scroller.on('scrollEnd', function() {
+                this.scroller.on('scrollEnd', function () {
                     self.$pageContent.trigger('scrollend');
                 });
             } else {
                 //TODO: 实现native的scrollStart和scrollEnd
             }
         },
-        scrollTop: function(top, dur) {
+        scrollTop: function (top, dur) {
             if (this.scroller) {
                 if (top !== undefined) {
                     this.scroller.scrollTo(0, -1 * top, dur);
@@ -5472,7 +5502,7 @@ Device/OS Detection
             }
             return this;
         },
-        scrollLeft: function(left, dur) {
+        scrollLeft: function (left, dur) {
             if (this.scroller) {
                 if (left !== undefined) {
                     this.scroller.scrollTo(-1 * left, 0);
@@ -5484,9 +5514,9 @@ Device/OS Detection
             }
             return this;
         },
-        on: function(event, callback) {
+        on: function (event, callback) {
             if (this.scroller) {
-                this.scroller.on(event, function() {
+                this.scroller.on(event, function () {
                     callback.call(this.wrapper);
                 });
             } else {
@@ -5494,7 +5524,7 @@ Device/OS Detection
             }
             return this;
         },
-        off: function(event, callback) {
+        off: function (event, callback) {
             if (this.scroller) {
                 this.scroller.off(event, callback);
             } else {
@@ -5502,11 +5532,11 @@ Device/OS Detection
             }
             return this;
         },
-        refresh: function() {
+        refresh: function () {
             if (this.scroller) this.scroller.refresh();
             return this;
         },
-        scrollHeight: function() {
+        scrollHeight: function () {
             if (this.scroller) {
                 return this.scroller.scrollerHeight;
             } else {
@@ -5524,7 +5554,7 @@ Device/OS Detection
         args.shift();
         var internal_return;
 
-        this.each(function() {
+        this.each(function () {
 
             var $this = $(this);
 
@@ -5561,33 +5591,33 @@ Device/OS Detection
     // Scroll NO CONFLICT
     // =================
 
-    $.fn.scroller.noConflict = function() {
+    $.fn.scroller.noConflict = function () {
         $.fn.scroller = old;
         return this;
     };
     //添加data-api
-    $(function() {
+    $(function () {
         $('[data-toggle="scroller"]').scroller();
     });
 
     //统一的接口,带有 .javascript-scroll 的content 进行刷新
-    $.refreshScroller = function(content) {
+    $.refreshScroller = function (content) {
         if (content) {
             $(content).scroller('refresh');
         } else {
-            $('.javascript-scroll').each(function() {
+            $('.javascript-scroll').each(function () {
                 $(this).scroller('refresh');
             });
         }
 
     };
     //全局初始化方法，会对页面上的 [data-toggle="scroller"]，.content. 进行滚动条初始化
-    $.initScroller = function(option) {
+    $.initScroller = function (option) {
         this.options = $.extend({}, typeof option === 'object' && option);
         $('[data-toggle="scroller"],.content').scroller(option);
     };
     //获取scroller对象
-    $.getScroller = function(content) {
+    $.getScroller = function (content) {
         //以前默认只能有一个无限滚动，因此infinitescroll都是加在content上，现在允许里面有多个，因此要判断父元素是否有content
         content = content.hasClass('content') ? content : content.parents('.content');
         if (content) {
@@ -5599,7 +5629,7 @@ Device/OS Detection
     //检测滚动类型,
     //‘js’: javascript 滚动条
     //‘native’: 原生滚动条
-    $.detectScrollerType = function(content) {
+    $.detectScrollerType = function (content) {
         if (content) {
             if ($(content).data('scroller') && $(content).data('scroller').scroller) {
                 return 'js';
@@ -5701,7 +5731,7 @@ Device/OS Detection
         return this;
     };
     //a标签上的click事件，在iscroll下响应有问题
-    $(document).on("click", ".tab-link", function(e) {
+    $(document).on("click", ".tab-link", function (e) {
         e.preventDefault();
         var clicked = $(this);
         showTab(clicked.data("tab") || clicked.attr('href'), clicked);
@@ -5715,12 +5745,12 @@ Device/OS Detection
 =============================================================================== */
 +function ($) {
     "use strict";
-    $.initFixedTab = function(){
+    $.initFixedTab = function () {
         var $fixedTab = $('.fixed-tab');
         if ($fixedTab.length === 0) return;
         $('.fixed-tab').fixedTab();//默认{offset: 0}
     };
-    var FixedTab = function(pageContent, _options) {
+    var FixedTab = function (pageContent, _options) {
         var $pageContent = this.$pageContent = $(pageContent);
         var shadow = $pageContent.clone();
         var fixedTop = $pageContent[0].getBoundingClientRect().top;
@@ -5739,11 +5769,11 @@ Device/OS Detection
         _defaults: {
             offset: 0,
         },
-        _bindEvents: function() {
+        _bindEvents: function () {
             this.$pageContent.parents('.content').on('scroll', this._scrollHandler.bind(this));
             this.$pageContent.on('active', '.tab-link', this._tabLinkHandler.bind(this));
         },
-        _tabLinkHandler: function(ev) {
+        _tabLinkHandler: function (ev) {
             var isFixed = $(ev.target).parents('.buttons-fixed').length > 0;
             var fixedTop = this.options.fixedTop;
             var offset = this.options.offset;
@@ -5752,7 +5782,7 @@ Device/OS Detection
             this.$pageContent.parents('.content').scrollTop(fixedTop - offset);
         },
         // 滚动核心代码
-        _scrollHandler: function(ev) {
+        _scrollHandler: function (ev) {
             var $scroller = $(ev.target);
             var $pageContent = this.$pageContent;
             var shadow = this.options.shadow;
@@ -5776,7 +5806,7 @@ Device/OS Detection
     function Plugin(option) {
         var args = Array.apply(null, arguments);
         args.shift();
-        this.each(function() {
+        this.each(function () {
             var $this = $(this);
             var options = $.extend({}, $this.dataset(), typeof option === 'object' && option);
             var data = $this.data('fixedtab');
@@ -5787,22 +5817,22 @@ Device/OS Detection
         });
 
     }
+
     $.fn.fixedTab = Plugin;
     $.fn.fixedTab.Constructor = FixedTab;
-    $(document).on('pageInit',function(){
+    $(document).on('pageInit', function () {
         $.initFixedTab();
     });
 
 
-
 }(Zepto);
 
-+ function($) {
++function ($) {
     "use strict";
     //这里实在js滚动时使用的下拉刷新代码。
 
     var refreshTime = 0;
-    var initPullToRefreshJS = function(pageContainer) {
+    var initPullToRefreshJS = function (pageContainer) {
         var eventsTarget = $(pageContainer);
         if (!eventsTarget.hasClass('pull-to-refresh-content')) {
             eventsTarget = eventsTarget.find('.pull-to-refresh-content');
@@ -5811,7 +5841,7 @@ Device/OS Detection
 
         var page = eventsTarget.hasClass('content') ? eventsTarget : eventsTarget.parents('.content');
         var scroller = $.getScroller(page[0]);
-        if(!scroller) return;
+        if (!scroller) return;
 
 
         var container = eventsTarget;
@@ -5832,6 +5862,7 @@ Device/OS Detection
             container.trigger('refresh');
             refreshTime = +new Date();
         }
+
         scroller.on('scroll', handleScroll);
         scroller.scroller.on('ptr', handleRefresh);
 
@@ -5840,26 +5871,27 @@ Device/OS Detection
             scroller.off('scroll', handleScroll);
             scroller.scroller.off('ptr', handleRefresh);
         }
+
         eventsTarget[0].destroyPullToRefresh = destroyPullToRefresh;
 
     };
 
-    var pullToRefreshDoneJS = function(container) {
+    var pullToRefreshDoneJS = function (container) {
         container = $(container);
         if (container.length === 0) container = $('.pull-to-refresh-content.refreshing');
         if (container.length === 0) return;
         var interval = (+new Date()) - refreshTime;
         var timeOut = interval > 1000 ? 0 : 1000 - interval; //long than bounce time
         var scroller = $.getScroller(container);
-        setTimeout(function() {
+        setTimeout(function () {
             scroller.refresh();
             container.removeClass('refreshing');
-            container.transitionEnd(function() {
+            container.transitionEnd(function () {
                 container.removeClass("transitioning");
             });
         }, timeOut);
     };
-    var pullToRefreshTriggerJS = function(container) {
+    var pullToRefreshTriggerJS = function (container) {
         container = $(container);
         if (container.length === 0) container = $('.pull-to-refresh-content');
         if (container.hasClass('refreshing')) return;
@@ -5869,7 +5901,7 @@ Device/OS Detection
         container.trigger('refresh');
     };
 
-    var destroyPullToRefreshJS = function(pageContainer) {
+    var destroyPullToRefreshJS = function (pageContainer) {
         pageContainer = $(pageContainer);
         var pullToRefreshContent = pageContainer.hasClass('pull-to-refresh-content') ? pageContainer : pageContainer.find('.pull-to-refresh-content');
         if (pullToRefreshContent.length === 0) return;
@@ -5884,9 +5916,9 @@ Device/OS Detection
     };
 }(Zepto); // jshint ignore:line
 
-+ function($) {
++function ($) {
     'use strict';
-    $.initPullToRefresh = function(pageContainer) {
+    $.initPullToRefresh = function (pageContainer) {
         var eventsTarget = $(pageContainer);
         if (!eventsTarget.hasClass('pull-to-refresh-content')) {
             eventsTarget = eventsTarget.find('.pull-to-refresh-content');
@@ -5970,7 +6002,8 @@ Device/OS Detection
                     e.preventDefault();
                     translate = (Math.pow(touchesDiff, 0.85) + startTranslate);
                     container.transform('translate3d(0,' + translate + 'px,0)');
-                } else {}
+                } else {
+                }
                 if ((useTranslate && Math.pow(touchesDiff, 0.85) > triggerDistance) || (!useTranslate && touchesDiff >= triggerDistance * 2)) {
                     refresh = true;
                     container.addClass('pull-up').removeClass('pull-down');
@@ -5999,7 +6032,7 @@ Device/OS Detection
             container.transform('');
             if (refresh) {
                 //防止二次触发
-                if(container.hasClass('refreshing')) return;
+                if (container.hasClass('refreshing')) return;
                 container.addClass('refreshing');
                 container.trigger('refresh');
             } else {
@@ -6020,19 +6053,20 @@ Device/OS Detection
             eventsTarget.off($.touchEvents.move, handleTouchMove);
             eventsTarget.off($.touchEvents.end, handleTouchEnd);
         }
+
         eventsTarget[0].destroyPullToRefresh = destroyPullToRefresh;
 
     };
-    $.pullToRefreshDone = function(container) {
+    $.pullToRefreshDone = function (container) {
         $(window).scrollTop(0);//解决微信下拉刷新顶部消失的问题
         container = $(container);
         if (container.length === 0) container = $('.pull-to-refresh-content.refreshing');
         container.removeClass('refreshing').addClass('transitioning');
-        container.transitionEnd(function() {
+        container.transitionEnd(function () {
             container.removeClass('transitioning pull-up pull-down');
         });
     };
-    $.pullToRefreshTrigger = function(container) {
+    $.pullToRefreshTrigger = function (container) {
         container = $(container);
         if (container.length === 0) container = $('.pull-to-refresh-content');
         if (container.hasClass('refreshing')) return;
@@ -6040,7 +6074,7 @@ Device/OS Detection
         container.trigger('refresh');
     };
 
-    $.destroyPullToRefresh = function(pageContainer) {
+    $.destroyPullToRefresh = function (pageContainer) {
         pageContainer = $(pageContainer);
         var pullToRefreshContent = pageContainer.hasClass('pull-to-refresh-content') ? pageContainer : pageContainer.find('.pull-to-refresh-content');
         if (pullToRefreshContent.length === 0) return;
@@ -6097,7 +6131,7 @@ Device/OS Detection
 
 }(Zepto); //jshint ignore:line
 
-+ function($) {
++function ($) {
     'use strict';
 
     function handleInfiniteScroll() {
@@ -6131,45 +6165,48 @@ Device/OS Detection
         }
 
     }
-    $.attachInfiniteScroll = function(infiniteContent) {
+
+    $.attachInfiniteScroll = function (infiniteContent) {
         $.getScroller(infiniteContent).on('scroll', handleInfiniteScroll);
     };
-    $.detachInfiniteScroll = function(infiniteContent) {
+    $.detachInfiniteScroll = function (infiniteContent) {
         $.getScroller(infiniteContent).off('scroll', handleInfiniteScroll);
     };
 
-    $.initInfiniteScroll = function(pageContainer) {
+    $.initInfiniteScroll = function (pageContainer) {
         pageContainer = $(pageContainer);
-        var infiniteContent = pageContainer.hasClass('infinite-scroll')?pageContainer:pageContainer.find('.infinite-scroll');
+        var infiniteContent = pageContainer.hasClass('infinite-scroll') ? pageContainer : pageContainer.find('.infinite-scroll');
         if (infiniteContent.length === 0) return;
         $.attachInfiniteScroll(infiniteContent);
         //如果是顶部无限刷新，要将滚动条初始化于最下端
-        pageContainer.forEach(function(v){
-            if($(v).hasClass('infinite-scroll-top')){
+        pageContainer.forEach(function (v) {
+            if ($(v).hasClass('infinite-scroll-top')) {
                 var height = v.scrollHeight - v.clientHeight;
                 $(v).scrollTop(height);
             }
         });
+
         function detachEvents() {
             $.detachInfiniteScroll(infiniteContent);
             pageContainer.off('pageBeforeRemove', detachEvents);
         }
+
         pageContainer.on('pageBeforeRemove', detachEvents);
     };
 }(Zepto);
 
 +function ($) {
     "use strict";
-    $(function() {
-        $(document).on("focus", ".searchbar input", function(e) {
+    $(function () {
+        $(document).on("focus", ".searchbar input", function (e) {
             var $input = $(e.target);
             $input.parents(".searchbar").addClass("searchbar-active");
         });
-        $(document).on("click", ".searchbar-cancel", function(e) {
+        $(document).on("click", ".searchbar-cancel", function (e) {
             var $btn = $(e.target);
             $btn.parents(".searchbar").removeClass("searchbar-active");
         });
-        $(document).on("blur", ".searchbar input", function(e) {
+        $(document).on("blur", ".searchbar input", function (e) {
             var $input = $(e.target);
             $input.parents(".searchbar").removeClass("searchbar-active");
         });
@@ -6185,7 +6222,7 @@ Device/OS Detection
     $.allowPanelOpen = true;
     $.openPanel = function (panel) {
         if (!$.allowPanelOpen) return false;
-        if(panel === 'left' || panel === 'right') panel = ".panel-" + panel;  //可以传入一个方向
+        if (panel === 'left' || panel === 'right') panel = ".panel-" + panel;  //可以传入一个方向
         panel = panel ? $(panel) : $(".panel").eq(0);
         var direction = panel.hasClass("panel-right") ? "right" : "left";
         if (panel.length === 0 || panel.hasClass('active')) return false;
@@ -6216,6 +6253,7 @@ Device/OS Detection
                 else panelTransitionEnd();
             });
         }
+
         panelTransitionEnd();
 
         $(document.body).addClass('with-panel-' + direction + '-' + effect);
@@ -6242,11 +6280,11 @@ Device/OS Detection
         $('body').addClass('panel-closing').removeClass('with-panel-' + panelPosition + '-' + effect);
     };
 
-    $(document).on("click", ".open-panel", function(e) {
+    $(document).on("click", ".open-panel", function (e) {
         var panel = $(e.target).data('panel');
         $.openPanel(panel);
     });
-    $(document).on("click", ".close-panel, .panel-overlay", function(e) {
+    $(document).on("click", ".close-panel, .panel-overlay", function (e) {
         $.closePanel();
     });
     /*======================================================
@@ -6261,10 +6299,11 @@ Device/OS Detection
         var swipePanelThreshold = 2;
         var swipePanelNoFollow = false;
 
-        if(!(swipePanel || swipePanelOnlyClose)) return;
+        if (!(swipePanel || swipePanelOnlyClose)) return;
 
         var panelOverlay = $('.panel-overlay');
-        var isTouched, isMoved, isScrolling, touchesStart = {}, touchStartTime, touchesDiff, translate, opened, panelWidth, effect, direction;
+        var isTouched, isMoved, isScrolling, touchesStart = {}, touchStartTime, touchesDiff, translate, opened,
+            panelWidth, effect, direction;
         var views = $('.page');
 
         function handleTouchStart(e) {
@@ -6286,7 +6325,7 @@ Device/OS Detection
                 if (!side) return;
             }
             panel = $('.panel.panel-' + side);
-            if(!panel[0]) return;
+            if (!panel[0]) return;
             opened = panel.hasClass('active');
             if (swipePanelActiveArea && !opened) {
                 if (side === 'left') {
@@ -6303,9 +6342,10 @@ Device/OS Detection
             touchStartTime = (new Date()).getTime();
             direction = undefined;
         }
+
         function handleTouchMove(e) {
             if (!isTouched) return;
-            if(!panel[0]) return;
+            if (!panel[0]) return;
             if (e.f7PreventPanelSwipe) return;
             var pageX = e.type === 'touchmove' ? e.targetTouches[0].pageX : e.pageX;
             var pageY = e.type === 'touchmove' ? e.targetTouches[0].pageY : e.pageY;
@@ -6333,8 +6373,7 @@ Device/OS Detection
                     (
                         direction === 'to-right' && !panel.hasClass('active')
                     )
-                )
-                {
+                ) {
                     isTouched = false;
                     return;
                 }
@@ -6382,14 +6421,14 @@ Device/OS Detection
             touchesDiff = pageX - touchesStart.x + threshold;
 
             if (side === 'right') {
-                translate = touchesDiff  - (opened ? panelWidth : 0);
+                translate = touchesDiff - (opened ? panelWidth : 0);
                 if (translate > 0) translate = 0;
                 if (translate < -panelWidth) {
                     translate = -panelWidth;
                 }
             }
             else {
-                translate = touchesDiff  + (opened ? panelWidth : 0);
+                translate = touchesDiff + (opened ? panelWidth : 0);
                 if (translate < 0) translate = 0;
                 if (translate > panelWidth) {
                     translate = panelWidth;
@@ -6405,6 +6444,7 @@ Device/OS Detection
                 //app.pluginHook('swipePanelSetTransform', views[0], panel[0], Math.abs(translate / panelWidth));
             }
         }
+
         function handleTouchEnd(e) {
             if (!isTouched || !isMoved) {
                 isTouched = false;
@@ -6489,6 +6529,7 @@ Device/OS Detection
             panel.transition('').transform('');
             panelOverlay.css({display: ''}).transform('');
         }
+
         $(document).on($.touchEvents.start, handleTouchStart);
         $(document).on($.touchEvents.move, handleTouchMove);
         $(document).on($.touchEvents.end, handleTouchEnd);
@@ -6559,12 +6600,12 @@ Device/OS Detection
  * 注: 以 _ 开头的函数标明用于此处内部使用，可根据需要随时重构变更，不对外确保兼容性。
  *
  */
-+function($) {
++function ($) {
     'use strict';
 
     if (!window.CustomEvent) {
-        window.CustomEvent = function(type, config) {
-            config = config || { bubbles: false, cancelable: false, detail: undefined};
+        window.CustomEvent = function (type, config) {
+            config = config || {bubbles: false, cancelable: false, detail: undefined};
             var e = document.createEvent('CustomEvent');
             e.initCustomEvent(type, config.bubbles, config.cancelable, config.detail);
             return e;
@@ -6596,7 +6637,7 @@ Device/OS Detection
          * @param {String} url url
          * @returns {String}
          */
-        getUrlFragment: function(url) {
+        getUrlFragment: function (url) {
             var hashIndex = url.indexOf('#');
             return hashIndex === -1 ? '' : url.slice(hashIndex + 1);
         },
@@ -6613,7 +6654,7 @@ Device/OS Detection
          * @param {String} url url
          * @returns {String}
          */
-        getAbsoluteUrl: function(url) {
+        getAbsoluteUrl: function (url) {
             var link = document.createElement('a');
             link.setAttribute('href', url);
             var absoluteUrl = link.href;
@@ -6626,7 +6667,7 @@ Device/OS Detection
          * @param {String} url url
          * @returns {String}
          */
-        getBaseUrl: function(url) {
+        getBaseUrl: function (url) {
             var hashIndex = url.indexOf('#');
             return hashIndex === -1 ? url.slice(0) : url.slice(0, hashIndex);
         },
@@ -6636,7 +6677,7 @@ Device/OS Detection
          * @param {String} url url
          * @returns {UrlObject}
          */
-        toUrlObject: function(url) {
+        toUrlObject: function (url) {
             var fullUrl = this.getAbsoluteUrl(url),
                 baseUrl = this.getBaseUrl(fullUrl),
                 fragment = this.getUrlFragment(url);
@@ -6652,13 +6693,13 @@ Device/OS Detection
          * 判断浏览器是否支持 sessionStorage，支持返回 true，否则返回 false
          * @returns {Boolean}
          */
-        supportStorage: function() {
+        supportStorage: function () {
             var mod = 'sm.router.storage.ability';
             try {
                 sessionStorage.setItem(mod, mod);
                 sessionStorage.removeItem(mod);
                 return true;
-            } catch(e) {
+            } catch (e) {
                 return false;
             }
         }
@@ -6683,7 +6724,7 @@ Device/OS Detection
 
     var theHistory = window.history;
 
-    var Router = function() {
+    var Router = function () {
         this.sessionNames = {
             currentState: 'sm.router.currentState',
             maxStateId: 'sm.router.maxStateId'
@@ -6706,7 +6747,7 @@ Device/OS Detection
      *
      * @private
      */
-    Router.prototype._init = function() {
+    Router.prototype._init = function () {
 
         this.$view = $('body');
 
@@ -6772,7 +6813,7 @@ Device/OS Detection
      * @param {String} url url
      * @param {Boolean=} ignoreCache 是否强制请求不使用缓存，对 document 生效，默认是 false
      */
-    Router.prototype.load = function(url, ignoreCache) {
+    Router.prototype.load = function (url, ignoreCache) {
         if (ignoreCache === undefined) {
             ignoreCache = false;
         }
@@ -6788,14 +6829,14 @@ Device/OS Detection
     /**
      * 调用 history.forward()
      */
-    Router.prototype.forward = function() {
+    Router.prototype.forward = function () {
         theHistory.forward();
     };
 
     /**
      * 调用 history.back()
      */
-    Router.prototype.back = function() {
+    Router.prototype.back = function () {
         theHistory.back();
     };
 
@@ -6816,7 +6857,7 @@ Device/OS Detection
      * @param {String} sectionId 待切换显示的块的 id
      * @private
      */
-    Router.prototype._switchToSection = function(sectionId) {
+    Router.prototype._switchToSection = function (sectionId) {
         if (!sectionId) {
             return;
         }
@@ -6849,7 +6890,7 @@ Device/OS Detection
      * @param {String=} direction 新文档切入的方向
      * @private
      */
-    Router.prototype._switchToDocument = function(url, ignoreCache, isPushState, direction) {
+    Router.prototype._switchToDocument = function (url, ignoreCache, isPushState, direction) {
         var baseUrl = Util.toUrlObject(url).base;
 
         if (ignoreCache) {
@@ -6863,7 +6904,7 @@ Device/OS Detection
             this._doSwitchDocument(url, isPushState, direction);
         } else {
             this._loadDocument(url, {
-                success: function($doc) {
+                success: function ($doc) {
                     try {
                         context._parseDocument(url, $doc);
                         context._doSwitchDocument(url, isPushState, direction);
@@ -6871,7 +6912,7 @@ Device/OS Detection
                         location.href = url;
                     }
                 },
-                error: function() {
+                error: function () {
                     location.href = url;
                 }
             });
@@ -6891,7 +6932,7 @@ Device/OS Detection
      * @param {String} direction 动画切换方向，默认是 DIRECTION.rightToLeft
      * @private
      */
-    Router.prototype._doSwitchDocument = function(url, isPushState, direction) {
+    Router.prototype._doSwitchDocument = function (url, isPushState, direction) {
         if (typeof isPushState === 'undefined') {
             isPushState = true;
         }
@@ -6947,7 +6988,7 @@ Device/OS Detection
      * @returns {Boolean}
      * @private
      */
-    Router.prototype._isTheSameDocument = function(url, anotherUrl) {
+    Router.prototype._isTheSameDocument = function (url, anotherUrl) {
         return Util.toUrlObject(url).base === Util.toUrlObject(anotherUrl).base;
     };
 
@@ -6970,9 +7011,9 @@ Device/OS Detection
      *
      * @private
      */
-    Router.prototype._loadDocument = function(url, callback) {
+    Router.prototype._loadDocument = function (url, callback) {
         if (this.xhr && this.xhr.readyState < 4) {
-            this.xhr.onreadystatechange = function() {
+            this.xhr.onreadystatechange = function () {
             };
             this.xhr.abort();
             this.dispatch(EVENTS.pageLoadCancel);
@@ -6985,17 +7026,17 @@ Device/OS Detection
 
         this.xhr = $.ajax({
             url: url,
-            success: $.proxy(function(data, status, xhr) {
+            success: $.proxy(function (data, status, xhr) {
                 // 给包一层 <html/>，从而可以拿到完整的结构
                 var $doc = $('<html></html>');
                 $doc.append(data);
                 callback.success && callback.success.call(null, $doc, status, xhr);
             }, this),
-            error: function(xhr, status, err) {
+            error: function (xhr, status, err) {
                 callback.error && callback.error.call(null, xhr, status, err);
                 self.dispatch(EVENTS.pageLoadError);
             },
-            complete: function(xhr, status) {
+            complete: function (xhr, status) {
                 callback.complete && callback.complete.call(null, xhr, status);
                 self.dispatch(EVENTS.pageLoadComplete);
             }
@@ -7009,7 +7050,7 @@ Device/OS Detection
      * @param $doc ajax 载入的页面的 jq 对象，可以看做是该页面的 $(document)
      * @private
      */
-    Router.prototype._parseDocument = function(url, $doc) {
+    Router.prototype._parseDocument = function (url, $doc) {
         var $innerView = $doc.find('.' + routerConfig.sectionGroupClass);
 
         if (!$innerView.length) {
@@ -7028,7 +7069,7 @@ Device/OS Detection
      * @param {String} url url
      * @private
      */
-    Router.prototype._saveDocumentIntoCache = function(doc, url) {
+    Router.prototype._saveDocumentIntoCache = function (doc, url) {
         var urlAsKey = Util.toUrlObject(url).base;
         var $doc = $(doc);
 
@@ -7046,11 +7087,11 @@ Device/OS Detection
      * @returns {State|null}
      * @private
      */
-    Router.prototype._getLastState = function() {
+    Router.prototype._getLastState = function () {
         var currentState = sessionStorage.getItem(this.sessionNames.currentState);
         try {
             currentState = JSON.parse(currentState);
-        } catch(e) {
+        } catch (e) {
             currentState = null;
         }
 
@@ -7063,7 +7104,7 @@ Device/OS Detection
      * @param {State} state
      * @private
      */
-    Router.prototype._saveAsCurrentState = function(state) {
+    Router.prototype._saveAsCurrentState = function (state) {
         sessionStorage.setItem(this.sessionNames.currentState, JSON.stringify(state));
     };
 
@@ -7075,7 +7116,7 @@ Device/OS Detection
      * @returns {number}
      * @private
      */
-    Router.prototype._getNextStateId = function() {
+    Router.prototype._getNextStateId = function () {
         var maxStateId = sessionStorage.getItem(this.sessionNames.maxStateId);
         return maxStateId ? parseInt(maxStateId, 10) + 1 : 1;
     };
@@ -7085,7 +7126,7 @@ Device/OS Detection
      *
      * @private
      */
-    Router.prototype._incMaxStateId = function() {
+    Router.prototype._incMaxStateId = function () {
         sessionStorage.setItem(this.sessionNames.maxStateId, this._getNextStateId());
     };
 
@@ -7098,7 +7139,7 @@ Device/OS Detection
      * @param direction 新文档切入方向
      * @private
      */
-    Router.prototype._animateDocument = function($from, $to, $visibleSection, direction) {
+    Router.prototype._animateDocument = function ($from, $to, $visibleSection, direction) {
         var sectionId = $visibleSection.attr('id');
 
 
@@ -7109,7 +7150,7 @@ Device/OS Detection
 
         this._animateElement($from, $to, direction);
 
-        $from.animationEnd(function() {
+        $from.animationEnd(function () {
             $visibleSectionInFrom.removeClass(routerConfig.visiblePageClass);
             // 移除 document 前后，发送 beforePageRemove 和 pageRemoved 事件
             $(window).trigger(EVENTS.beforePageRemove, [$from]);
@@ -7117,7 +7158,7 @@ Device/OS Detection
             $(window).trigger(EVENTS.pageRemoved);
         });
 
-        $to.animationEnd(function() {
+        $to.animationEnd(function () {
             $visibleSection.trigger(EVENTS.pageAnimationEnd, [sectionId, $visibleSection]);
             // 外层（init.js）中会绑定 pageInitInternal 事件，然后对页面进行初始化
             $visibleSection.trigger(EVENTS.pageInit, [sectionId, $visibleSection]);
@@ -7132,7 +7173,7 @@ Device/OS Detection
      * @param direction
      * @private
      */
-    Router.prototype._animateSection = function($from, $to, direction) {
+    Router.prototype._animateSection = function ($from, $to, direction) {
         var toId = $to.attr('id');
         $from.trigger(EVENTS.beforePageSwitch, [$from.attr('id'), $from]);
 
@@ -7140,7 +7181,7 @@ Device/OS Detection
         $to.addClass(routerConfig.curPageClass);
         $to.trigger(EVENTS.pageAnimationStart, [toId, $to]);
         this._animateElement($from, $to, direction);
-        $to.animationEnd(function() {
+        $to.animationEnd(function () {
             $to.trigger(EVENTS.pageAnimationEnd, [toId, $to]);
             // 外层（init.js）中会绑定 pageInitInternal 事件，然后对页面进行初始化
             $to.trigger(EVENTS.pageInit, [toId, $to]);
@@ -7157,7 +7198,7 @@ Device/OS Detection
      * @param direction 切换的方向
      * @private
      */
-    Router.prototype._animateElement = function($from, $to, direction) {
+    Router.prototype._animateElement = function ($from, $to, direction) {
         // todo: 可考虑如果入参不指定，那么尝试读取 $to 的属性，再没有再使用默认的
         // 考虑读取点击的链接上指定的方向
         if (typeof direction === 'undefined') {
@@ -7171,7 +7212,7 @@ Device/OS Detection
             'page-from-left-to-center'].join(' ');
 
         var classForFrom, classForTo;
-        switch(direction) {
+        switch (direction) {
             case DIRECTION.rightToLeft:
                 classForFrom = 'page-from-center-to-left';
                 classForTo = 'page-from-right-to-center';
@@ -7189,10 +7230,10 @@ Device/OS Detection
         $from.removeClass(animPageClasses).addClass(classForFrom);
         $to.removeClass(animPageClasses).addClass(classForTo);
 
-        $from.animationEnd(function() {
+        $from.animationEnd(function () {
             $from.removeClass(animPageClasses);
         });
-        $to.animationEnd(function() {
+        $to.animationEnd(function () {
             $to.removeClass(animPageClasses);
         });
     };
@@ -7203,7 +7244,7 @@ Device/OS Detection
      * @returns {*}
      * @private
      */
-    Router.prototype._getCurrentSection = function() {
+    Router.prototype._getCurrentSection = function () {
         return this.$view.find('.' + routerConfig.curPageClass).eq(0);
     };
 
@@ -7217,7 +7258,7 @@ Device/OS Detection
      * @param {State} fromState 旧 state
      * @private
      */
-    Router.prototype._back = function(state, fromState) {
+    Router.prototype._back = function (state, fromState) {
         if (this._isTheSameDocument(state.url.full, fromState.url.full)) {
             var $newPage = $('#' + state.pageId);
             if ($newPage.length) {
@@ -7241,7 +7282,7 @@ Device/OS Detection
      * @param {State} fromState 旧 state
      * @private
      */
-    Router.prototype._forward = function(state, fromState) {
+    Router.prototype._forward = function (state, fromState) {
         if (this._isTheSameDocument(state.url.full, fromState.url.full)) {
             var $newPage = $('#' + state.pageId);
             if ($newPage.length) {
@@ -7266,7 +7307,7 @@ Device/OS Detection
      * @param event
      * @private
      */
-    Router.prototype._onPopState = function(event) {
+    Router.prototype._onPopState = function (event) {
         var state = event.state;
         // if not a valid state, do nothing
         if (!state || !state.pageId) {
@@ -7300,7 +7341,7 @@ Device/OS Detection
      * @param {String} sectionId 新状态中显示的 section 元素的 id
      * @private
      */
-    Router.prototype._pushNewState = function(url, sectionId) {
+    Router.prototype._pushNewState = function (url, sectionId) {
         var state = {
             id: this._getNextStateId(),
             pageId: sectionId,
@@ -7318,11 +7359,11 @@ Device/OS Detection
      * @returns {string}
      * @private
      */
-    Router.prototype._generateRandomId = function() {
+    Router.prototype._generateRandomId = function () {
         return "page-" + (+new Date());
     };
 
-    Router.prototype.dispatch = function(event) {
+    Router.prototype.dispatch = function (event) {
         var e = new CustomEvent(event, {
             bubbles: true,
             cancelable: true
@@ -7348,7 +7389,7 @@ Device/OS Detection
             'close-panel'
         ];
 
-        for (var i = classBlackList.length -1 ; i >= 0; i--) {
+        for (var i = classBlackList.length - 1; i >= 0; i--) {
             if ($link.hasClass(classBlackList[i])) {
                 return true;
             }
@@ -7395,7 +7436,7 @@ Device/OS Detection
         return true;
     }
 
-    $(function() {
+    $(function () {
         // 用户可选关闭router功能
         if (!$.smConfig.router) {
             return;
@@ -7416,7 +7457,7 @@ Device/OS Detection
 
         var router = $.router = new Router();
 
-        $(document).on('click', 'a', function(e) {
+        $(document).on('click', 'a', function (e) {
             var $target = $(e.currentTarget);
 
             var filterResult = customClickFilter($target);
@@ -7473,37 +7514,39 @@ Device/OS Detection
 /*jshint unused: false*/
 +function ($) {
     "use strict";
-    $.lastPosition =function(options) {
-        if ( !sessionStorage) {
+    $.lastPosition = function (options) {
+        if (!sessionStorage) {
             return;
         }
         // 需要记忆模块的className
         var needMemoryClass = options.needMemoryClass || [];
 
-        $(window).off('beforePageSwitch').on('beforePageSwitch', function(event,id,arg) {
-            updateMemory(id,arg);
+        $(window).off('beforePageSwitch').on('beforePageSwitch', function (event, id, arg) {
+            updateMemory(id, arg);
         });
-        $(window).off('pageAnimationStart').on('pageAnimationStart', function(event,id,arg) {
-            getMemory(id,arg);
+        $(window).off('pageAnimationStart').on('pageAnimationStart', function (event, id, arg) {
+            getMemory(id, arg);
         });
+
         //让后退页面回到之前的高度
-        function getMemory(id,arg){
-            needMemoryClass.forEach(function(item, index) {
+        function getMemory(id, arg) {
+            needMemoryClass.forEach(function (item, index) {
                 if ($(item).length === 0) {
                     return;
                 }
-                var positionName = id ;
+                var positionName = id;
                 // 遍历对应节点设置存储的高度
                 var memoryHeight = sessionStorage.getItem(positionName);
                 arg.find(item).scrollTop(parseInt(memoryHeight));
 
             });
         }
+
         //记住即将离开的页面的高度
-        function updateMemory(id,arg) {
-            var positionName = id ;
+        function updateMemory(id, arg) {
+            var positionName = id;
             // 存储需要记忆模块的高度
-            needMemoryClass.forEach(function(item, index) {
+            needMemoryClass.forEach(function (item, index) {
                 if ($(item).length === 0) {
                     return;
                 }
@@ -7518,17 +7561,17 @@ Device/OS Detection
 }(Zepto);
 
 /*jshint unused: false*/
-+function($) {
++function ($) {
     'use strict';
 
-    var getPage = function() {
+    var getPage = function () {
         var $page = $(".page-current");
         if (!$page[0]) $page = $(".page").addClass('page-current');
         return $page;
     };
 
     //初始化页面中的JS组件
-    $.initPage = function(page) {
+    $.initPage = function (page) {
         var $page = getPage();
         if (!$page[0]) $page = $(document.body);
         var $content = $page.hasClass('content') ?
@@ -7546,26 +7589,26 @@ Device/OS Detection
 
     if ($.smConfig.showPageLoadingIndicator) {
         //这里的 以 push 开头的是私有事件，不要用
-        $(window).on('pageLoadStart', function() {
+        $(window).on('pageLoadStart', function () {
             $.showIndicator();
 
         });
-        $(window).on('pageAnimationStart', function() {
+        $(window).on('pageAnimationStart', function () {
             $.hideIndicator();
         });
-        $(window).on('pageLoadCancel', function() {
+        $(window).on('pageLoadCancel', function () {
             $.hideIndicator();
         });
-        $(window).on('pageLoadComplete', function() {
+        $(window).on('pageLoadComplete', function () {
             $.hideIndicator();
         });
-        $(window).on('pageLoadError', function() {
+        $(window).on('pageLoadError', function () {
             $.hideIndicator();
             $.toast('加载失败');
         });
     }
 
-    $(window).on('pageAnimationStart', function(event,id,page) {
+    $(window).on('pageAnimationStart', function (event, id, page) {
         // 在路由切换页面动画开始前,为了把位于 .page 之外的 popup 等隐藏,此处做些处理
         $.closeModal();
         $.closePanel();
@@ -7575,7 +7618,7 @@ Device/OS Detection
         $.allowPanelOpen = true;
     });
 
-    $(window).on('pageInit', function() {
+    $(window).on('pageInit', function () {
         $.hideIndicator();
         $.lastPosition({
             needMemoryClass: [
@@ -7591,13 +7634,13 @@ Device/OS Detection
     // 1. aD -> bDE
     // 2. back
     // 3. aD -> bD
-    window.addEventListener('pageshow', function(event) {
+    window.addEventListener('pageshow', function (event) {
         if (event.persisted) {
             location.reload();
         }
     });
 
-    $.init = function() {
+    $.init = function () {
         var $page = getPage();
         var id = $page[0].id;
         $.initPage();
@@ -7605,7 +7648,7 @@ Device/OS Detection
     };
 
     //DOM READY
-    $(function() {
+    $(function () {
         //直接绑定
         FastClick.attach(document.body);
 
@@ -7613,7 +7656,7 @@ Device/OS Detection
             $.init();
         }
 
-        $(document).on('pageInitInternal', function(e, id, page) {
+        $(document).on('pageInitInternal', function (e, id, page) {
             $.init();
         });
     });
@@ -7632,12 +7675,12 @@ Device/OS Detection
 ************   ScrollFix   ************
 =============================================================================== */
 
-+ function($) {
++function ($) {
     "use strict";
     //安卓微信中使用scrollfix会有问题，因此只在ios中使用，安卓机器按照原来的逻辑
 
-    if($.device.ios){
-        var ScrollFix = function(elem) {
+    if ($.device.ios) {
+        var ScrollFix = function (elem) {
 
             // Variables to track inputs
             var startY;
@@ -7646,37 +7689,37 @@ Device/OS Detection
             elem = elem || document.querySelector(elem);
 
             // If there is no element, then do nothing
-            if(!elem)
+            if (!elem)
                 return;
 
             // Handle the start of interactions
-            elem.addEventListener('touchstart', function(event){
+            elem.addEventListener('touchstart', function (event) {
                 startY = event.touches[0].pageY;
                 startTopScroll = elem.scrollTop;
 
-                if(startTopScroll <= 0)
+                if (startTopScroll <= 0)
                     elem.scrollTop = 1;
 
-                if(startTopScroll + elem.offsetHeight >= elem.scrollHeight)
+                if (startTopScroll + elem.offsetHeight >= elem.scrollHeight)
                     elem.scrollTop = elem.scrollHeight - elem.offsetHeight - 1;
             }, false);
         };
 
-        var initScrollFix = function(){
+        var initScrollFix = function () {
             var prefix = $('.page-current').length > 0 ? '.page-current ' : '';
             var scrollable = $(prefix + ".content");
             new ScrollFix(scrollable[0]);
         };
 
-        $(document).on($.touchEvents.move, ".page-current .bar",function(){
+        $(document).on($.touchEvents.move, ".page-current .bar", function () {
             event.preventDefault();
         });
         //监听ajax页面跳转
-        $(document).on("pageLoadComplete", function(){
+        $(document).on("pageLoadComplete", function () {
             initScrollFix();
         });
         //监听内联页面跳转
-        $(document).on("pageAnimationEnd", function(){
+        $(document).on("pageAnimationEnd", function () {
             initScrollFix();
         });
         initScrollFix();

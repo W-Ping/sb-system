@@ -4,68 +4,76 @@
  *
  * =====================================================
  */
-
-// jshint ignore: start
-+function ($) {
-    var initData = function (callback) {
-        $.ajax({
-            type: 'GET',
-            url: '/budget/classify/get',
-            success: function (result) {
-                if (result.code == 200) {
-                    var data = result.obj;
-                    if (data) {
-                        var dataRaw = [];
-                        $.each(data, function (i, item) {
-                            var data_item = {};
-                            data_item['name'] = item['name'];
-                            var subArr = [];
-                            $.each(item['sub'], function (ii, sub_item) {
-                                subArr.push({
-                                    'name': sub_item
-                                })
+$.smConfig.rawCitiesData = (function () {
+    "use strict";
+    var resultData = [];
+    $.ajax({
+        type: 'GET',
+        async: false,
+        url: '/budget/classify/get',
+        success: function (result) {
+            if (result.code == 200) {
+                var data = result.obj;
+                if (data) {
+                    var dataRaw = [];
+                    $.each(data, function (i, item) {
+                        var data_item = {};
+                        data_item['name'] = item['name'];
+                        var subArr = [];
+                        $.each(item['sub'], function (ii, sub_item) {
+                            subArr.push({
+                                'name': sub_item
                             })
+                        })
+                        if (subArr.length > 0) {
                             data_item['sub'] = subArr;
                             data_item['type'] = 0;
                             dataRaw.push(data_item)
-                        })
-                        callback(dataRaw);
-                    }
+                        }
+                    })
+                    console.log("dataRaw", dataRaw);
+                    resultData = dataRaw;
+                    // callback(dataRaw);
                 }
             }
-        })
-    }
-    console.log("initdata", initData)
-    $.smConfig.rawCitiesData = [
-        {
-            "name": "材料",
-            "sub": [
-                {
-                    "name": "瓷砖"
-                },
-                {
-                    "name": "水泥"
-                },
-            ],
-            "type": 0
-        },
-        {
-            "name": "人工",
-            "sub": [
-                {
-                    "name": "电工"
-                },
-                {
-                    "name": "水泥工"
-                },
-                {
-                    "name": "安装工"
-                },
-            ],
-            "type": 0
         }
-    ];
-}(Zepto);
+    })
+    console.log("resultData", resultData);
+    return resultData
+})();
+// jshint ignore: start
+// + function ($) {
+//
+//     $.smConfig.rawCitiesData = [
+//         {
+//             "name": "材料",
+//             "sub": [
+//                 {
+//                     "name": "瓷砖"
+//                 },
+//                 {
+//                     "name": "水泥"
+//                 },
+//             ],
+//             "type": 0
+//         },
+//         {
+//             "name": "人工",
+//             "sub": [
+//                 {
+//                     "name": "电工"
+//                 },
+//                 {
+//                     "name": "水泥工"
+//                 },
+//                 {
+//                     "name": "安装工"
+//                 },
+//             ],
+//             "type": 0
+//         }
+//     ];
+// }(Zepto);
 // jshint ignore: end
 
 /* jshint unused:false*/
@@ -108,18 +116,17 @@
         return [""];
     };
 
-    // var raw = [];
     var raw = $.smConfig.rawCitiesData;
 
     var provinces = raw.map(function (d) {
         return d.name;
     });
     var initCities = sub(raw[0]);
-    var initDistricts = [""];
+    // var initDistricts = [""];
 
     var currentProvince = provinces[0];
     var currentCity = initCities[0];
-    var currentDistrict = initDistricts[0];
+    // var currentDistrict = initDistricts[0];
 
     var t;
     var defaults = {
@@ -128,8 +135,6 @@
         rotateEffect: false,  //为了性能
 
         onChange: function (picker, values, displayValues) {
-            console.log(values)
-            console.log(displayValues)
             var newProvince = picker.cols[0].value;
             var newCity;
             if (newProvince !== currentProvince) {
@@ -139,9 +144,9 @@
                 t = setTimeout(function () {
                     var newCities = getCities(newProvince);
                     newCity = newCities[0];
-                    var newDistricts = getDistricts(newProvince, newCity);
+                    // var newDistricts = getDistricts(newProvince, newCity);
                     picker.cols[1].replaceValues(newCities);
-                    picker.cols[2].replaceValues(newDistricts);
+                    // picker.cols[2].replaceValues(newDistricts);
                     currentProvince = newProvince;
                     currentCity = newCity;
                     picker.updateValue();
@@ -149,11 +154,11 @@
                 return;
             }
             newCity = picker.cols[1].value;
-            if (newCity !== currentCity) {
-                picker.cols[2].replaceValues(getDistricts(newProvince, newCity));
-                currentCity = newCity;
-                picker.updateValue();
-            }
+            // if (newCity !== currentCity) {
+            //     picker.cols[2].replaceValues(getDistricts(newProvince, newCity));
+            //     currentCity = newCity;
+            //     picker.updateValue();
+            // }
         },
 
         cols: [
@@ -166,21 +171,21 @@
                 textAlign: 'center',
                 values: initCities,
                 cssClass: "col-city"
-            },
-            {
-                textAlign: 'center',
-                values: initDistricts,
-                cssClass: "col-district"
             }
+            // ,
+            // {
+            //     textAlign: 'center',
+            //     values: initDistricts,
+            //     cssClass: "col-district"
+            // }
         ]
     };
 
-    $.fn.cityPicker = function (params) {
-        // raw = params.row;
-        console.log(params)
+    $.fn.classifyPicker = function (params) {
         return this.each(function () {
             if (!this) return;
             var p = $.extend(defaults, params);
+
             //计算value
             if (p.value) {
                 $(this).val(p.value.join(' '));
@@ -195,14 +200,14 @@
                     currentProvince = p.value[0];
                     p.cols[1].values = getCities(p.value[0]);
                 }
-                if (p.value[1]) {
-                    currentCity = p.value[1];
-                    p.cols[2].values = getDistricts(p.value[0], p.value[1]);
-                } else {
-                    p.cols[2].values = getDistricts(p.value[0], p.cols[1].values[0]);
-                }
-                !p.value[2] && (p.value[2] = '');
-                currentDistrict = p.value[2];
+                // if (p.value[1]) {
+                //     currentCity = p.value[1];
+                //     p.cols[2].values = getDistricts(p.value[0], p.value[1]);
+                // } else {
+                //     p.cols[2].values = getDistricts(p.value[0], p.cols[1].values[0]);
+                // }
+                // !p.value[2] && (p.value[2] = '');
+                // currentDistrict = p.value[2];
             }
             $(this).picker(p);
         });
