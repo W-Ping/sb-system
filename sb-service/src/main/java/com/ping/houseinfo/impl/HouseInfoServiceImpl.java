@@ -289,7 +289,7 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
         }
         BudgetClassifyInfoVo budgetClassifyInfo = iBudgetInfoService.getBudgetClassifyInfoByName(houseBudgetInfoVo.getClassifyName());
         houseBudgetInfoVo.setClassifyCode(budgetClassifyInfo.getClassifyCode());
-        budgetClassifyInfo.setClassifyName(budgetClassifyInfo.getClassifyName());
+        houseBudgetInfoVo.setClassifyName(budgetClassifyInfo.getClassifyName());
         houseBudgetInfoVo.setHouseCode(houseDetailInfo.getHouseCode());
         HouseBudgetInfoPo houseBudgetInfoPo = BeanMapperUtil.map(houseBudgetInfoVo, HouseBudgetInfoPo.class);
         if (StringUtils.isNotBlank(houseBudgetCode)) {
@@ -304,7 +304,10 @@ public class HouseInfoServiceImpl extends BaseService implements IHouseInfoServi
                 houseBudgetInfoPo.setBudgetAmount(houseBudgetInfoVo.getBudgetAmount());
                 houseBudgetInfoPo.setBudgetName(houseBudgetInfoVo.getBudgetName());
             }
+            houseBudgetInfoPo.setClassifyName(houseBudgetInfoVo.getClassifyName());
             houseBudgetInfoPo.setBudgetCount(houseBudgetInfoVo.getBudgetCount());
+            houseBudgetInfoPo.setClassifyName(houseBudgetInfoVo.getClassifyName());
+            houseBudgetInfoPo.setClassifyCode(houseBudgetInfoVo.getClassifyCode());
             return iHouseBudgetInfoMapper.updateByPrimaryKeySelective(houseBudgetInfoPo) >= 0;
         } else {
             houseBudgetInfoPo.setHouseBudgetCode(super.getUniqueId(SysConstant.UNIQUEID_HOUSE_BUDGET_PRIFIX));
