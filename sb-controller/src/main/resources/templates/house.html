@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
     <link rel="stylesheet" type="text/css" media="all" href="/static/css/icon.css"
           th:href="@{/static/css/icon.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" href="/static/css/searchbar.css"
+          th:href="@{/static/css/searchbar.css}"/>
     <style>
         .to-page-link {
             margin: 10rem 1rem;
@@ -74,53 +76,27 @@
         }
 
         .list-block .item-inner {
-            padding-right: .75rem;
-            position: static;
-            width: 100%;
-            padding-top: .4rem;
-            padding-bottom: .35rem;
-            min-height: 2.2rem;
-            overflow: hidden;
-            box-sizing: border-box;
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: flex;
-            -webkit-box-flex: 1;
-            -ms-flex: 1;
-            -webkit-box-pack: justify;
-            -webkit-justify-content: space-between;
-            justify-content: space-between;
-            -webkit-box-align: center;
-            -webkit-align-items: center;
-            align-items: center;
+            /*padding-right: .75rem;*/
+            /*position: static;*/
+            /*width: 100%;*/
+            /*padding-top: .4rem;*/
+            /*padding-bottom: .35rem;*/
+            /*min-height: 2.2rem;*/
+            /*overflow: hidden;*/
+            /*box-sizing: border-box;*/
+            /*display: -webkit-box;*/
+            /*display: -webkit-flex;*/
+            /*display: flex;*/
+            /*-webkit-box-flex: 1;*/
+            /*-ms-flex: 1;*/
+            /*-webkit-box-pack: justify;*/
+            /*-webkit-justify-content: space-between;*/
+            /*justify-content: space-between;*/
+            /*-webkit-box-align: center;*/
+            /*-webkit-align-items: center;*/
+            /*align-items: center;*/
         }
 
-        .search-page {
-            margin-bottom: -3rem;
-            width: 100%;
-            float: bottom;
-            height: 100%;
-            /*line-height: 1.4rem;*/
-            /*text-align: center;*/
-            display: flex;
-            position: absolute;
-            background: white;
-            -webkit-transition: all .3s;
-            transition: all .3s;
-            opacity: 0;
-            overflow: hidden;
-            z-index: -10;
-            margin-bottom: 2.4rem;
-            -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-        }
-
-        .search-page-active {
-            margin-bottom: 2.4rem;
-            margin-top: 1.8rem;
-            opacity: 1;
-            z-index: 10;
-        }
     </style>
 </head>
 <body>
@@ -328,7 +304,8 @@
         </div>
     </div>
     <div th:if="${type==2}">
-        <div class="bar bar-header-secondary" style="top: 0.1rem;">
+        <!--<div class="bar bar-header-secondary" style="top: 0.1rem;">-->
+        <div class="search-box" page-hidden="cl-content">
             <div class="searchbar">
                 <a class="searchbar-cancel">取消</a>
                 <div class="search-input">
@@ -336,8 +313,15 @@
                     <input type="search" id='cl-search' placeholder='输入关键字...'/>
                 </div>
             </div>
+            <div class="search-page">
+                <div class="search-page-view">
+                    <p><a href="#" class="button button-light">瓷砖</a></p>
+                    <p><a href="#" class="button button-light">地板</a></p>
+                </div>
+            </div>
         </div>
-        <div id="cl-content" class="content  infinite-scroll infinite-scroll-bottom"
+        <!--</div>-->
+        <div id="cl-content" class="content  infinite-scroll infinite-scroll-bottom cl-content"
              style="top: 1.7rem;bottom: 2.4rem;">
             <div class="card" th:each="vo,stat:${list}">
                 <h3>
@@ -421,19 +405,15 @@
             </div>
         </div>
         <div class="content-block"
-             style="display: flex;justify-content: center;position: fixed;bottom: 2.8rem;z-index: 10;right:50%; left: 50%; opacity: 0.8; margin: 0 auto; padding: 0px;">
-            <!--                <p style="width: 60%;margin: auto;">-->
+             style="display: flex;justify-content: center;position: absolute;bottom: 2.8rem;z-index: 0;right:50%; left: 50%; opacity: 0.8; margin: 0 auto; padding: 0px;">
             <a th:href="@{'/budget/page/add/'+${mobilePhone}}" class="button button-big button-fill button-round">添加</a>
-            <!--                </p>-->
         </div>
     </div>
-<!--    <div class="content search-page">-->
-<!--        <div>查询条件页面</div>-->
-<!--    </div>-->
 </div>
 <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+<script type='text/javascript' th:src="@{/static/js/searchbar.js}" charset='utf-8'></script>
 
 <script>
     function toHouse(e) {
@@ -508,21 +488,6 @@
         window.location.href = "/house/page/budgetInfo/detail/" + type + "/" + mobilePhone;
     }
 
-    $(document).on("focus", ".searchbar input", function (e) {
-        var $input = $(e.target);
-        $(".search-page").addClass("search-page-active");
-    });
-    $(document).on("click", ".searchbar-cancel", function (e) {
-        var $btn = $(e.target);
-        $btn.parents(".searchbar").removeClass("searchbar-active");
-        $(".search-page").removeClass("search-page-active");
-    });
-    $(document).on("blur", ".searchbar input", function (e) {
-        var $input = $(e.target);
-        // $(".search-page").addClass("search-page-active");
-        // $input.parents(".searchbar").removeClass("searchbar-active");
-        // $(".search-page").removeClass("search-page-active");
-    });
     $(document).on('click', '.prompt-title-ok', function () {
         let budgetName = $(this).attr("date-budgetName");
         let budgetCode = $(this).attr("date-budgetCode");
