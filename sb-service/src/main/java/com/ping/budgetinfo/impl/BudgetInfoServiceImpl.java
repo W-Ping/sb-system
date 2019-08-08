@@ -10,8 +10,10 @@ import com.ping.exception.OptionsException;
 import com.ping.exception.ValidateException;
 import com.ping.mapper.IBudgetClassifyMapper;
 import com.ping.mapper.IBudgetInfoMapper;
+import com.ping.mapper.IHouseBudgetInfoMapper;
 import com.ping.po.house.BudgetClassifyInfoPo;
 import com.ping.po.house.BudgetInfoPo;
+import com.ping.po.house.HouseBudgetInfoPo;
 import com.ping.utils.BeanMapperUtil;
 import com.ping.vo.hosue.BudgetClassifyInfoVo;
 import com.ping.vo.hosue.BudgetInfoVo;
@@ -19,6 +21,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
@@ -37,6 +40,8 @@ public class BudgetInfoServiceImpl extends BaseService implements IBudgetInfoSer
 	private IBudgetInfoMapper iBudgetInfoMapper;
 	@Autowired
 	private IBudgetClassifyMapper iBudgetClassifyMapper;
+	@Autowired
+	private IHouseBudgetInfoMapper iHouseBudgetInfoMapper;
 
 	/**
 	 * @param budgetClassifyInfoVo
@@ -85,12 +90,9 @@ public class BudgetInfoServiceImpl extends BaseService implements IBudgetInfoSer
 		return resultMapList;
 	}
 
+	@Transactional(rollbackFor = {Exception.class})
 	@Override
 	public boolean saveBudgetInfo(final BudgetInfoVo budgetInfoVo) {
-//		HouseInfoVo houseInfo = iHouseInfoService.getHouseInfo(budgetInfoVo.getMobilePhone());
-//		if (houseInfo == null) {
-//			throw new ValidateException(ResultEnum.REQ_PARAMETER_ERROR, "请先填写房屋信息");
-//		}
 		String budgetCode = budgetInfoVo.getBudgetCode();
 		if (StringUtils.isBlank(budgetCode)) {
 			String classifyName = budgetInfoVo.getClassifyName();
@@ -111,8 +113,17 @@ public class BudgetInfoServiceImpl extends BaseService implements IBudgetInfoSer
 			BudgetInfoPo budgetInfoPo = budgetInfoPos.get(0);
 			BudgetInfoPo updatePo = BeanMapperUtil.map(budgetInfoVo, BudgetInfoPo.class);
 			updatePo.setId(budgetInfoPo.getId());
-			return iBudgetInfoMapper.updateByPrimaryKeySelective(updatePo) >= 0;
+			iBudgetInfoMapper.updateByPrimaryKeySelective(updatePo);
+			//刷新已经使用到的数据
+			HouseBudgetInfoPo houseBudgetInfoPo = new HouseBudgetInfoPo();
+			houseBudgetInfoPo.setBudgetAmount(budgetInfoVo.getBudgetAmount());
+			houseBudgetInfoPo.setBudgetName(budgetInfoVo.getBudgetName());
+			Example example1 = new Example(HouseBudgetInfoPo.class);
+			example1.createCriteria().andEqualTo("status", SysConstant.STATUS_0)
+					.andEqualTo("budgetCode", budgetCode);
+			iHouseBudgetInfoMapper.updateByExampleSelective(houseBudgetInfoPo, example1);
 		}
+		return true;
 	}
 
 	/**

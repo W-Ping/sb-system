@@ -6,7 +6,6 @@ import com.ping.vo.hosue.HouseBudgetInfoVo;
 import com.ping.vo.hosue.HouseDetailInfoVo;
 import com.ping.vo.hosue.HouseInfoVo;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 

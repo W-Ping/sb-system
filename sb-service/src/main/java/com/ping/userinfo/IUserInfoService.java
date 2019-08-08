@@ -1,7 +1,6 @@
 package com.ping.userinfo;
 
 import com.ping.co.UserInfoCo;
-import com.ping.po.UserInfoPo;
 import com.ping.vo.UserInfoVo;
 
 import java.util.List;
