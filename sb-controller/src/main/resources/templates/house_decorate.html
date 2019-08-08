@@ -105,7 +105,7 @@
                             <div class="item-inner">
                                 <div class="item-title label">数量</div>
                                 <div class="item-input">
-                                    <input type="text" id="budgetCount" th:value="${vo?.budgetCount}"
+                                    <input type="text" id="budgetCount" th:value="${(vo?.budgetCount)?:1}"
                                            th:placeholder="数量">
                                 </div>
                             </div>
@@ -155,10 +155,10 @@
             $.toast("请输入名称！");
             return;
         }
-        if (!budgetAmount) {
-            $.toast("请输入预算名称！");
-            return;
-        }
+        // if (!budgetAmount) {
+        //     $.toast("请输入预算名称！");
+        //     return;
+        // }
         if (!budgetCount) {
             $.toast("数量不能为空！");
             return;
