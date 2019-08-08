@@ -207,9 +207,9 @@
                                 <span>我的预算费用</span>
                                 <p>
                             <span style="font-size: 25px;"
-                                  th:text="${totalAmount>=10000?(totalAmount/10000):totalAmount}"></span>
+                                  th:text="${totalAmount>=10000.00 ? #numbers.formatDecimal(totalAmount/10000,0,2) : totalAmount}"></span>
                                     <span style="font-size: 20px;"
-                                          th:text="${totalAmount>=10000?'万元':'元'}"></span>
+                                          th:text="${totalAmount>=10000.00?'万元':'元'}"></span>
                                 </p>
                             </div>
                         </div>
@@ -221,9 +221,9 @@
                                 <span>最低预算费用</span>
                                 <p>
                             <span style="font-size: 25px;"
-                                  th:text="${totalAmount>=10000?(minTotalAmount/10000):minTotalAmount}"></span>
+                                  th:text="${minTotalAmount>=10000.00 ? #numbers.formatDecimal(minTotalAmount/10000,0,2) : minTotalAmount}"></span>
                                     <span style="font-size: 20px;"
-                                          th:text="${minTotalAmount>=10000?'万元':'元'}"></span>
+                                          th:text="${minTotalAmount>=10000.00?'万元':'元'}"></span>
                                 </p>
                             </div>
                         </div>
@@ -235,9 +235,9 @@
                                 <span>最高预算费用</span>
                                 <p>
                             <span style="font-size: 25px;"
-                                  th:text="${totalAmount>=10000?(maxTotalAmount/10000):maxTotalAmount}"></span>
+                                  th:text="${maxTotalAmount>=10000.00 ? #numbers.formatDecimal(maxTotalAmount/10000,0,2) : maxTotalAmount}"></span>
                                     <span style="font-size: 20px;"
-                                          th:text="${maxTotalAmount>=10000?'万元':'元'}"></span>
+                                          th:text="${maxTotalAmount>=10000.00?'万元':'元'}"></span>
                                 </p>
                             </div>
                         </div>

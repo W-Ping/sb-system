@@ -44,33 +44,33 @@
     </select>
     <select id="queryBudgetAmountDetailOfMax" parameterType="string" resultMap="BaseResultMap">
         SELECT
-        t2.`id`,
-        t4.room_type,
-        t4.room_nick_name,
-        t4.house_detail_name,
+        t3.`id`,
+        t2.room_type,
+        t2.room_nick_name,
+        t2.house_detail_name,
         t2.`house_code`,
         t2.`house_detail_code`,
-        t2.`house_budget_code`,
+        t3.`house_budget_code`,
         t3.`budget_code`,
-        t2.`budget_name`,
-        t3. `max_cost` as `budget_amount`,
-        t2.`budget_count`,
-        t2.`status`,
-        t2.`remark`,
-        t2.`version`,
-        t2.`update_time`,
-        t2.`create_time`
+        t3.`budget_name`,
+        IF(t4.max_cost > t3.budget_amount,t4.max_cost,t3.budget_amount) AS budget_amount,
+        t3.`budget_count`,
+        t3.`status`,
+        t3.`remark`,
+        t3.`version`,
+        t3.`update_time`,
+        t3.`create_time`
         FROM
         sbdb.house_info AS t1
-        INNER JOIN house_budget_info AS t2 ON t1.house_code = t2.house_code
-        INNER JOIN budget_info AS t3 ON t2.budget_code = t3.budget_code
-        INNER JOIN house_detail_info AS t4 ON t2.house_detail_code = t4.house_detail_code
+        INNER JOIN sbdb.house_detail_info AS t2 ON t1.house_code = t2.house_code
+        INNER JOIN sbdb.house_budget_info AS t3 ON t2.house_detail_code = t3.house_detail_code
+        INNER JOIN sbdb.budget_info AS t4 ON t3.budget_code = t4.budget_code
         WHERE
         t1.`status` = 0
         AND t2.`status` = 0
         AND t3.`status` = 0
         AND t4.`status` = 0
-        AND t2.budget_code is not null AND t2.budget_code!=''
+        AND t3.budget_code is not null AND t3.budget_code!=''
         <if test="mobilePhone!=null and mobilePhone!=''">
             AND t1.mobile_phone=#{mobilePhone}
         </if>
@@ -79,33 +79,33 @@
     </select>
     <select id="queryBudgetAmountDetailOfMin" parameterType="string" resultMap="BaseResultMap">
         SELECT
-        t2.`id`,
-        t4.room_type,
-        t4.room_nick_name,
-        t4.house_detail_name,
+        t3.`id`,
+        t2.room_type,
+        t2.room_nick_name,
+        t2.house_detail_name,
         t2.`house_code`,
         t2.`house_detail_code`,
-        t2.`house_budget_code`,
+        t3.`house_budget_code`,
         t3.`budget_code`,
-        t2.`budget_name`,
-        t3. `min_cost` as `budget_amount`,
-        t2.`budget_count`,
-        t2.`status`,
-        t2.`remark`,
-        t2.`version`,
-        t2.`update_time`,
-        t2.`create_time`
+        t3.`budget_name`,
+        IF(t4.min_cost > t3.budget_amount,t3.budget_amount,t4.min_cost) AS budget_amount,
+        t3.`budget_count`,
+        t3.`status`,
+        t3.`remark`,
+        t3.`version`,
+        t3.`update_time`,
+        t3.`create_time`
         FROM
         sbdb.house_info AS t1
-        INNER JOIN house_budget_info AS t2 ON t1.house_code = t2.house_code
-        INNER JOIN budget_info AS t3 ON t2.budget_code = t3.budget_code
-        INNER JOIN house_detail_info AS t4 ON t2.house_detail_code = t4.house_detail_code
+        INNER JOIN sbdb.house_detail_info AS t2 ON t1.house_code = t2.house_code
+        INNER JOIN sbdb.house_budget_info AS t3 ON t2.house_detail_code = t3.house_detail_code
+        INNER JOIN sbdb.budget_info AS t4 ON t3.budget_code = t4.budget_code
         WHERE
         t1.`status` = 0
         AND t2.`status` = 0
         AND t3.`status` = 0
         AND t4.`status` = 0
-        AND t2.budget_code is not null AND t2.budget_code!=''
+        AND t3.budget_code is not null AND t3.budget_code!=''
         <if test="mobilePhone!=null and mobilePhone!=''">
             AND t1.mobile_phone=#{mobilePhone}
         </if>
