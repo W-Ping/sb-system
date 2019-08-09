@@ -19,5 +19,7 @@ public class SysConstant {
     public static final String ADMIN_POST_TYPE = "admin";
     public static final String ORDINARY_POST_TYPE = "ordinary";
     public static final String FATHER_CLASSIFY_CODE = "0";
+    public static final String SEARCH_CODE_BUDGET_PAGE = "SBU001";
+    public static final String SEARCH_CODE_DEFAULT_PAGE = "DEFAUT";
 
 }

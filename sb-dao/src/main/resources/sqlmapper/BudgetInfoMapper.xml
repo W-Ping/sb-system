@@ -21,13 +21,31 @@
         <result property="createTime" column="create_time"/>
     </resultMap>
     <select id="searchByKeyword" resultMap="BaseResultMap" parameterType="com.ping.co.SearchCo">
-  SELECT
-	*
-FROM
-	sbdb.budget_info
-WHERE
-	`status` = 0
-AND (budget_name LIKE CONCAT('%','二','%') OR classify_name LIKE CONCAT('%','二','%') OR remark LIKE CONCAT('%','二','%'))
+        SELECT
+            *
+        FROM
+            sbdb.budget_info
+        WHERE
+            `status` = 0
+        AND mobile_phone=#{mobilePhone}
+        AND (budget_name LIKE CONCAT('%',#{keyword},'%')
+        OR classify_name LIKE CONCAT('%',#{keyword},'%')
+        OR remark LIKE CONCAT('%',#{keyword},'%'))
+    </select>
+    <select id="searchByAmount" resultMap="BaseResultMap" parameterType="com.ping.co.SearchCo">
+        SELECT
+        *
+        FROM
+        sbdb.budget_info
+        WHERE
+        `status` = 0
+        AND mobile_phone=#{mobilePhone}
+        <if test="maxAmount!=null">
+            AND budget_amount &lt;= #{maxAmount}
+        </if>
+        <if test="minAmount!=null">
+            AND budget_amount &gt;= #{minAmount}
+        </if>
     </select>
 
 </mapper>

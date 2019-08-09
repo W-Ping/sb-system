@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我的装修</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+</head>
+<body>
+<div class="page" id="page-search">
+    <input hidden id="mobilePhone" th:value="${mobilePhone}">
+    <header class="bar bar-nav">
+        <a class="button button-link button-nav pull-left back">
+            <span class="icon icon-left"></span>
+            返回
+        </a>
+    </header>
+    <div id="cl-content" class="content  infinite-scroll infinite-scroll-bottom cl-content"
+         style="top: 1.7rem;bottom: 2.4rem;">
+        <div class="card" th:each="vo,stat:${list}">
+            <h3>
+                <div class="card-header" th:text="${vo?.budgetName+'【'+vo?.classifyName+'】'}"></div>
+            </h3>
+            <div class="card-content">
+                <div class="list-block inset">
+                    <ul>
+                        <li>
+                            <a class="item-content item-link"
+                               th:href="@{'/house/page/budget/0/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.budgetName}}">
+                                <!--                                    <div class="item-media"><i class="icon icon-f71"></i></div>-->
+                                <div class="item-inner">
+                                    <div class="item-title">装修名称</div>
+                                    <div class="item-after" th:text="${vo?.budgetName}"></div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="item-content item-link"
+                               th:href="@{'/house/page/budget/3/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.maxCost}}">
+                                <!--                                    <div class="item-media"><i class="icon icon-f71"></i></div>-->
+                                <div class="item-inner">
+                                    <div class="item-title">最高成本</div>
+                                    <div class="item-after" th:text="${vo?.maxCost}"></div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="item-content item-link"
+                               th:href="@{'/house/page/budget/4/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.minCost}}">
+                                <!--                                    <div class="item-media"><i class="icon icon-f71"></i></div>-->
+                                <div class="item-inner">
+                                    <div class="item-title">最低成本</div>
+                                    <div class="item-after" th:text="${vo?.minCost}"></div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="item-content item-link"
+                               th:href="@{'/house/page/budget/5/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.actualCost}}">
+                                <!--                                    <div class="item-media"><i class="icon icon-f71"></i></div>-->
+                                <div class="item-inner">
+                                    <div class="item-title">实际成本</div>
+                                    <div class="item-after" th:text="${vo?.actualCost}"></div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="item-content item-link"
+                               th:href="@{'/house/page/budget/2/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.budgetAmount}}">
+                                <!--                                    <div class="item-media"><i class="icon icon-f7"></i></div>-->
+                                <div class="item-inner">
+                                    <div class="item-title">预算金额</div>
+                                    <div class="item-after" th:text="${vo?.budgetAmount}"></div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="item-content item-link"
+                               th:href="@{'/house/page/budget/-1/'+${mobilePhone}+'?bg_code='+${vo?.budgetCode}+'&val='+${vo?.remark}}">
+                                <!--                                    <div class="item-media"><i class="icon icon-f7"></i></div>-->
+                                <div class="item-inner">
+                                    <div class="item-title">备注</div>
+                                    <div class="item-after"
+                                         th:text="${vo?.remark!=null?#strings.length(vo?.remark):0} le 10 ? ${vo?.remark}:${#strings.append(#strings.substring(vo.remark,0,10),'...')}"></div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="#" style="font-size: 16px;"
+                   th:attr="date-budgetName=${vo?.budgetName},date-budgetCode=${vo?.budgetCode}"
+                   class="prompt-title-ok">快速复制</a>
+                <a href="#" style="font-size: 16px; color: red;"
+                   th:onclick="'javascript:deleteBudget(\''+${vo.id}+'\')'"
+                   class="link">删除</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+
+<script>
+    function deleteBudget(id) {
+        if (!id) {
+            $.toast("主键不存在！");
+            return;
+        }
+        let url = '/budget/delete/' + id;
+        $.confirm('确定要删除吗?', function () {
+            $.ajax({
+                type: 'DELETE',
+                url: url,
+                success: function (result) {
+                    if (result.code == 200) {
+                        $.toast('删除成功！');
+                        window.location.reload();
+                    } else {
+                        $.toast(result.message);
+                    }
+                },
+                error: function (result, type, err) {
+                    $.toast("删除失败!");
+                }
+            })
+        });
+
+    }
+
+    function toBudgetDetail(type) {
+        let mobilePhone = $("#mobilePhone").val();
+        window.location.href = "/house/page/budgetInfo/detail/" + type + "/" + mobilePhone;
+    }
+
+    $(document).on('click', '.prompt-title-ok', function () {
+        let budgetName = $(this).attr("date-budgetName");
+        let budgetCode = $(this).attr("date-budgetCode");
+        $.prompt('请填写新的名称', '快速复制【' + budgetName + "】", function (value) {
+            if (!value) {
+                $.alert('请填写新的名称！');
+                return;
+            }
+            if (budgetName == value) {
+                $.toast('名称不能一样！');
+                return;
+            }
+            let param = {};
+            param['budgetName'] = value;
+            param['budgetCode'] = budgetCode;
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                url: '/budget/copy/save',
+                data: JSON.stringify(param),
+                success: function (result) {
+                    if (result.code == 200) {
+                        $.toast('复制成功！');
+                        window.location.reload();
+                    } else {
+                        $.toast(result.message);
+                    }
+                },
+                error: function (result, type, err) {
+                    $.toast(err);
+                }
+            });
+        });
+    });
+    $.init();
+</script>
+</body>
+</html>

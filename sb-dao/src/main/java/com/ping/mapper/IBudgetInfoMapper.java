@@ -19,4 +19,10 @@ public interface IBudgetInfoMapper extends BaseMapper<BudgetInfoPo> {
      * @return
      */
     List<BudgetInfoPo> searchByKeyword(SearchCo budgetInfoCo);
+
+    /**
+     * @param budgetInfoCo
+     * @return
+     */
+    List<BudgetInfoPo> searchByAmount(SearchCo budgetInfoCo);
 }

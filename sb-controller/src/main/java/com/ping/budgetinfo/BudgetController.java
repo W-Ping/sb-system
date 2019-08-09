@@ -3,11 +3,9 @@ package com.ping.budgetinfo;
 import com.ping.Result;
 import com.ping.co.BudgetInfoCo;
 import com.ping.co.SearchCo;
+import com.ping.constant.SysConstant;
 import com.ping.houseinfo.IHouseInfoService;
-import com.ping.vo.hosue.BudgetClassifyInfoVo;
-import com.ping.vo.hosue.BudgetInfoVo;
-import com.ping.vo.hosue.HouseBudgetInfoVo;
-import com.ping.vo.hosue.HouseDetailInfoVo;
+import com.ping.vo.hosue.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -62,6 +60,26 @@ public class BudgetController {
     }
 
     /**
+     * @param model
+     * @param path
+     * @param mobilePhone
+     * @return
+     */
+    @GetMapping(value = "/toBudgetBar")
+    public String toBudgetBar(Model model, @RequestParam(name = "mobile_phone") String mobilePhone,
+                              @RequestParam(name = "budget_code") String budgetCode) {
+        BudgetInfoCo budgetInfoCo = new BudgetInfoCo();
+        budgetInfoCo.setMobilePhone(mobilePhone);
+        budgetInfoCo.setBudgetCode(budgetCode);
+        List<BudgetInfoVo> budgetInfoVos = iBudgetInfoService.queryBudgetInfoList(budgetInfoCo);
+        List<SearchKeyInfoVo> searchKeys = iBudgetInfoService.getSearchKeyInfo(SysConstant.SEARCH_CODE_BUDGET_PAGE, mobilePhone);
+        model.addAttribute("mobilePhone", mobilePhone);
+        model.addAttribute("list", budgetInfoVos);
+        model.addAttribute("searchKeys", searchKeys);
+        return "budget_search";
+    }
+
+    /**
      * @param houseInfoVo
      * @return
      */
@@ -106,6 +124,28 @@ public class BudgetController {
     public Result<List<BudgetInfoVo>> searchByKeyword(@RequestBody SearchCo searchCo) {
         List<BudgetInfoVo> budgetInfoVos = iBudgetInfoService.searchByKeyword(searchCo);
         return Result.success(budgetInfoVos);
+    }
+
+    /**
+     * @param searchCo
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(value = "/search/amount")
+    public Result<List<BudgetInfoVo>> searchByAmount(@RequestBody SearchCo searchCo) {
+        List<BudgetInfoVo> budgetInfoVos = iBudgetInfoService.searchByAmount(searchCo);
+        return Result.success(budgetInfoVos);
+    }
+
+    /**
+     * @param searchCo
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(value = "/search-key/query")
+    public Result<List<SearchKeyInfoVo>> getSearchKeyInfoList(@RequestBody SearchCo searchCo) {
+        List<SearchKeyInfoVo> searchKeyInfoList = iBudgetInfoService.getSearchKeyInfo(searchCo.getSearchGroupCode(), searchCo.getMobilePhone());
+        return Result.success(searchKeyInfoList);
     }
 
     /**

@@ -285,12 +285,12 @@
                         </div>
                         <div class="list-block inset">
                             <a class="item-content item-link list-button"
-                               th:href="@{'/house/page/detail/decorate/'+${vo?.houseDetailCode}}">添加材料</a>
+                               th:href="@{'/house/page/detail/decorate/'+${vo?.houseDetailCode}}">添加装修</a>
                         </div>
                     </div>
                     <div class="card-footer">
                         <a th:href="@{'/budget/query/list/'+${vo?.houseDetailCode}+'/'+${mobilePhone}}"
-                           class="link" style="font-size: 16px;">选择材料</a>
+                           class="link" style="font-size: 16px;">选择装修</a>
                         <label style="font-size: 16px;"
                                th:text="'合计：'+${vo!=null and vo.totalBudgetAmount!=null ?vo.totalBudgetAmount:0}+' 元'"></label>
 
@@ -306,8 +306,8 @@
     <div th:if="${type==2}">
         <!--<div class="bar bar-header-secondary" style="top: 0.1rem;">-->
         <div class="search-box" page-hidden="cl-content">
-            <div class="searchbar">
-                <a class="searchbar-cancel">取消</a>
+            <div class="searchbar1">
+                <a class="searchbar1-cancel">取消</a>
                 <div class="search-input">
                     <label class="icon icon-search" for="cl-search"></label>
                     <input type="search" id='cl-search' placeholder='输入关键字...'/>
@@ -315,8 +315,11 @@
             </div>
             <div class="search-page">
                 <div class="search-page-view">
-                    <p><a href="#" class="button button-light">瓷砖</a></p>
-                    <p><a href="#" class="button button-light">地板</a></p>
+                    <div class="result-view" id="result-view">
+                    </div>
+                    <div hidden class="item-view" th:unless="${#lists.isEmpty(searchKeys)}"
+                         th:each="skVo,stat:${searchKeys}"><a href="#" class="button button-light"
+                                                              th:text="${skVo.searchName}"></a></div>
                 </div>
             </div>
         </div>
@@ -427,10 +430,11 @@
     })
 
     function search(keyword) {
-        $("#cl-content").html('');
+        var mobilePhone = $("#mobilePhone").val();
         let url = '/budget/search/keyword'
         let param = {};
         param.keyword = keyword;
+        param.mobilePhone = mobilePhone;
         $.ajax({
             type: 'POST',
             contentType: 'application/json',
@@ -440,13 +444,29 @@
                 console.log("result", result)
                 let html = '';
                 if (result.code == 200) {
-                    let data = result.data;
+                    let data = result.obj;
                     if (data && data.length > 0) {
+                        $(".item-view").hide();
+                        html = '<div class="search-item" style="font-size: 15px;color: #e7e7e7">' +
+                            '<div class="s-item">名称</div>' +
+                            '<div class="s-item">预算</div>' +
+                            '<div class="s-item">成本</div>' +
+                            '</div>'
                         $.each(data, function (i, val) {
-                            html += val[''];
+                            let budgetName = val['budgetName'];
+                            let budgetCode = val['budgetCode'];
+                            let budgetAmount = val['budgetAmount'];
+                            let minCost = val['minCost'];
+                            let maxCost = val['maxCost'];
+                            let st = minCost + "~" + maxCost;
+                            html += '<div class="search-item" data-code="' + budgetCode + '" onclick="toBudgetBar(this)">' +
+                                '<div class="s-item">' + budgetName + '</div>' +
+                                '<div class="s-item">' + budgetAmount + '</div>' +
+                                '<div class="s-item">' + st + '</div>' +
+                                '</div class="s-item">'
                         })
-                        $("#zx-content").html(html);
                     }
+                    $("#result-view").html(html);
                 } else {
                     $.toast(result.message);
                 }
@@ -481,6 +501,12 @@
             })
         });
 
+    }
+
+    function toBudgetBar(e) {
+        let budgetCode = $(e).attr("data-code");
+        console.log(budgetCode)
+        window.location.href = "/budget/toBudgetBar?mobile_phone=" + $("#mobilePhone").val() + "&budget_code=" + budgetCode;
     }
 
     function toBudgetDetail(type) {

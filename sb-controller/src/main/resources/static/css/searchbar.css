@@ -13,7 +13,7 @@
     /*z-index: -1;*/
 }
 
-.searchbar {
+.searchbar1 {
     padding: 8px 0;
     overflow: hidden;
     height: 2.2rem;
@@ -22,7 +22,16 @@
     align-items: center;
 }
 
-.searchbar .searchbar-cancel {
+.searchbar1 {
+    padding: 8px 10px;
+    overflow: hidden;
+    height: 2.2rem;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+
+.searchbar1 .searchbar1-cancel {
     margin-right: -3rem;
     width: 2.2rem;
     float: right;
@@ -36,7 +45,7 @@
     transform: translate3d(0, 0, 0);
 }
 
-.searchbar .search-input {
+.searchbar1 .search-input {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
     margin-right: 0;
@@ -44,17 +53,17 @@
     transition: all .3s;
 }
 
-.searchbar .search-input input {
+.searchbar1 .search-input input {
     margin: 0;
     height: 1.4rem;
 }
 
-.searchbar.searchbar-active .searchbar-cancel {
+.searchbar1.searchbar1-active .searchbar1-cancel {
     margin-right: 0;
     opacity: 1;
 }
 
-.searchbar.searchbar-active .searchbar-cancel + .search-input {
+.searchbar1.searchbar1-active .searchbar1-cancel + .search-input {
     margin-right: 2.5rem;
 }
 
@@ -100,17 +109,17 @@
     padding-left: 1.4rem;
 }
 
-.bar .searchbar {
+.bar .searchbar1 {
     margin: 0 -0.5rem;
     padding: 0.4rem 0.5rem;
     background: rgba(0, 0, 0, 0.1);
 }
 
-.bar .searchbar .search-input input {
+.bar .searchbar1 .search-input input {
     border: 0;
 }
 
-.bar .searchbar .searchbar-cancel {
+.bar .searchbar1 .searchbar1-cancel {
     color: #5f646e;
 }
 
@@ -164,4 +173,32 @@
     justify-content: center;
     align-items: flex-start;
     width: 100%;
+    /*margin: 1rem auto;*/
+}
+
+.search-page-view .item-view {
+    margin: 0 2px;
+}
+
+.search-page-view .result-view {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+    margin: 0 1rem;
+}
+
+.result-view .search-item {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-bottom: #e7e7e7 solid 1px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.s-item {
+    width: 33%;
+    text-align: center;
 }
