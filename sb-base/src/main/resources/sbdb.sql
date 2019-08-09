@@ -134,3 +134,49 @@ CREATE TABLE `worker_node` (
   `CREATED` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'created time',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='DB WorkerID Assigner for UID Generator';
+
+
+
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : localhost
+Source Server Version : 80011
+Source Host           : 127.0.0.1:3306
+Source Database       : sbdb
+
+Target Server Type    : MYSQL
+Target Server Version : 80011
+File Encoding         : 65001
+
+Date: 2019-08-09 17:55:48
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for search_key_info
+-- ----------------------------
+DROP TABLE IF EXISTS `search_key_info`;
+CREATE TABLE `search_key_info` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `mobile_phone` varchar(100)  NOT NULL,
+  `group_code` varchar(100)  NOT NULL,
+  `code` varchar(100)  NOT NULL,
+  `search_key` varchar(100)  NOT NULL,
+  `search_name` varchar(100)  NOT NULL,
+  `order_num` int(11) NOT NULL DEFAULT '1' COMMENT '排列顺序',
+  `status` int(11) NOT NULL DEFAULT '0' COMMENT '状态【0：有效；1：无效】',
+  `remark` varchar(255)  DEFAULT NULL,
+  `version` int(11) NOT NULL DEFAULT '0',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of search_key_info
+-- ----------------------------
+INSERT INTO `search_key_info` VALUES ('1', '13012881773', 'SBU001', 'classifyCode', 'HCF608377990409093123', '瓷砖', '1', '0', null, '0', '2019-08-09 13:57:32', '2019-08-09 13:56:33');
+INSERT INTO `search_key_info` VALUES ('2', '13012881773', 'SBU001', 'classifyCode', 'HCF608429682433458185', '门面', '2', '0', null, '0', '2019-08-09 13:58:35', '2019-08-09 13:58:20');
+
